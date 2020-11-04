@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="180dp"
+    android:background="@color/colorPrimary"
+    android:layout_margin="10dp"
+    >
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background"/>
+    <TextView
+        android:id="@+id/tvActualPrice"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/ivImage"
+        android:text="Actual Price"
+        android:textColor="@color/white"
+        android:paddingTop="5dp"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"/>
+    <TextView
+        android:id="@+id/tvDiscountPrice"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@+id/tvActualPrice"
+        android:text="Discounted Price"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"/>
+    <TextView
+        android:id="@+id/tvQty"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@+id/tvDiscountPrice"
+        android:text="Quantity"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"/>
+
+</RelativeLayout>
