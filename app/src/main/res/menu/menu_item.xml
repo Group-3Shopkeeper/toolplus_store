@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/gp2">
+        <item android:id="@+id/name"
+            android:title="ToolPlus"
+            android:icon="@drawable/edit"/>
+        <item android:id="@+id/addProduct"
+            android:title="Add Product"
+            android:icon="@drawable/add" />
+    </group>
+    <group android:checkableBehavior="all"
+        android:id="@+id/gp3">
+        <item android:title="Orders">
+            <menu>
+                <item android:id="@+id/newOrder"
+                    android:title="New Order"
+                    android:icon="@drawable/ic_new"
+                    />
+                <item android:id="@+id/orderHistory"
+                    android:title="Order History"
+                    android:icon="@drawable/history"/>
+            </menu>
+        </item>
+    </group>
+
+        <item android:id="@+id/contactUs"
+            android:title="Contact Us"
+            android:icon="@drawable/contact"/>
+        <item android:title="About Us"
+            android:id="@+id/aboutUs"
+            android:icon="@drawable/about"/>
+        <item android:id="@+id/helpUs"
+            android:title="Help Us"
+            android:icon="@drawable/help"/>
+
+    </menu>
