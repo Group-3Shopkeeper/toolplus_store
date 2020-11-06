@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,6 +22,7 @@ import com.e.toolplusstore.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     String currentUser = null;
+    InternetConnectivity connectivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         binding.logo.startAnimation(animation);
         View v = binding.getRoot();
         setContentView(v);
-        if (!isConnected(MainActivity.this)) {
+        connectivity = new InternetConnectivity();
+        if (!connectivity.isConnected(MainActivity.this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setMessage("Please connect to the Internet to Proceed Further").setCancelable(false);
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -41,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
             }).setPositiveButton("Connect", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    Intent in = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+                    startActivity(in);
                 }
             });
             builder.show();
@@ -67,16 +71,5 @@ public class MainActivity extends AppCompatActivity {
     private void sendUserToLoginScreen() {
         Intent in = new Intent(MainActivity.this,LoginActivity.class);
         startActivity(in);
-    }
-
-    private boolean isConnected(MainActivity mainActivity) {
-        ConnectivityManager manager = (ConnectivityManager) mainActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiConnect = manager.getNetworkInfo(manager.TYPE_WIFI);
-        NetworkInfo mobileConnect = manager.getNetworkInfo(manager.TYPE_MOBILE);
-        if ((wifiConnect != null && wifiConnect.isConnected()) || (mobileConnect != null && mobileConnect.isConnected())) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
