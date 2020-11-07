@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Plumbing"
+        android:id="@+id/plumbing"/>
+    <item android:title="Nut and Bolts"
+        android:id="@+id/nutBoltes"/>
+    <item android:title="Paints"
+        android:id="@+id/paints"/>
+    <item android:title="Electric Supplies"
+        android:id="@+id/electricSupplies"/>
+    <item android:title="Wire and Cable"
+        android:id="@+id/wireCable"/>
+    <item android:title="Tools"
+        android:id="@+id/tools"/>
+
+</menu>
