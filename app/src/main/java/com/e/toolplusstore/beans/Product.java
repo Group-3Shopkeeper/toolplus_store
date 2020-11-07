@@ -2,7 +2,6 @@ package com.e.toolplusstore.beans;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class Product implements Serializable {
@@ -40,7 +39,22 @@ public class Product implements Serializable {
     @SerializedName("timestamp")
     @Expose
     private Long timestamp;
-
+    public Product() {
+    }
+    public Product(String productId, String categoryId, String shopKeeperId, String name, Double price, Double discount, String brand, Long qtyInStock, String imageUrl, String description, Long timestamp) {
+        super();
+        this.productId = productId;
+        this.categoryId = categoryId;
+        this.shopKeeperId = shopKeeperId;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
+        this.brand = brand;
+        this.qtyInStock = qtyInStock;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.timestamp = timestamp;
+    }
     public String getProductId() {
         return productId;
     }
@@ -128,5 +142,4 @@ public class Product implements Serializable {
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
-
 }
