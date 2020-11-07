@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:openDrawer="start"
+        android:id="@+id/drawer"
+        tools:context=".MainActivity">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/ll"
+            android:layout_height="match_parent">
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:id="@+id/toolbar"
+                    app:subtitleTextColor="@color/white"
+                    android:background="@drawable/search_bar_decorator"
+                    app:titleTextColor="@color/white"
+                    />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <EditText
+                android:id="@+id/etSearchBar"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:padding="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:hint="Search product here"
+                android:paddingLeft="10dp"
+                android:background="@drawable/search_bar_decorator"
+                android:textColor="@color/white"
+                android:textAlignment="textStart"
+                android:drawableRight="@drawable/search"
+                android:textCursorDrawable="@color/white"
+                android:textColorHint="@color/white"
+                android:paddingBottom="10dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/drawer"/>
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:id="@+id/btnSeach"
+                android:text="Search"
+                android:background="@drawable/search_bar_decorator"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:gravity="center"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/etSearchBar"
+                android:paddingTop="10dp"
+                android:id="@+id/rv"/>
+
+
+        </LinearLayout>
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/nav"
+            android:layout_gravity="start"
+            app:menu="@menu/menu_item"
+            app:itemTextColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/layout_header"/>
+
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/addProduct"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/add_product"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/black"
+        />
+</RelativeLayout>
