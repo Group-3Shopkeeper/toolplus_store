@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
 
-import com.e.toolplusstore.api.ProductService;
+import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
 import com.squareup.picasso.Picasso;

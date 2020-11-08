@@ -10,14 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
-
-import com.e.toolplusstore.api.ProductService;
+import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.databinding.ActivityProductDetailsBinding;
-import com.e.toolplusstore.databinding.ProductScreenBinding;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;

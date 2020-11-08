@@ -4,11 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
-import com.e.toolplusstore.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.firebase.ui.auth.AuthUI;
@@ -18,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-    ActivityLoginBinding binding;
     private static int AUTH_REQUEST_CODE = 786;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener listener;
@@ -79,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendUserToHomeScreen() {
-        Intent in = new Intent(LoginActivity.this, ProductActivity.class);
+        Intent in = new Intent(LoginActivity.this, SearchProductActivity.class);
         startActivity(in);
     }
 }

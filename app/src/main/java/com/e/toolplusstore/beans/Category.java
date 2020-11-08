@@ -4,7 +4,9 @@ package com.e.toolplusstore.beans;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Category {
+import java.io.Serializable;
+
+public class Category implements Serializable {
 
     @SerializedName("categoryId")
     @Expose

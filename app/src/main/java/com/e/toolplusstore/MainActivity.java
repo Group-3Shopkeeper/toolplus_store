@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         binding = ActivityMainBinding.inflate(inflater);
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.myanimation);
-        binding.logo.startAnimation(animation);
         View v = binding.getRoot();
         setContentView(v);
         connectivity = new InternetConnectivity();
