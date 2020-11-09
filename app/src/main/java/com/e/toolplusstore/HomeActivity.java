@@ -20,7 +20,6 @@ import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.e.toolplusstore.adapter.CategoryAdapter;
-import com.e.toolplusstore.adapter.ShowProductAdapter;
 import com.e.toolplusstore.apis.CategoryService;
 
 import com.e.toolplusstore.beans.Category;
@@ -37,9 +36,6 @@ public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     ActionBarDrawerToggle toggle;
     CategoryAdapter adapter;
-    ShowProductAdapter adapter1;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +73,9 @@ public class HomeActivity extends AppCompatActivity {
                     adapter.setOnItemClickListener(new CategoryAdapter.OnRecyclerViewClick() {
                         @Override
                         public void onItemClick(Category c, int position) {
-                            Toast.makeText(HomeActivity.this, c.getCategoryName(), Toast.LENGTH_SHORT).show();
+                            Intent in = new Intent(HomeActivity.this, ProductActivity.class);
+                            in.putExtra("categoryId",c.getCategoryId());
+                            startActivity(in);
                         }
                     });
                 }
@@ -93,7 +91,8 @@ public class HomeActivity extends AppCompatActivity {
             binding.addProduct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(HomeActivity.this, "add product", Toast.LENGTH_SHORT).show();
+                    Intent in = new Intent(HomeActivity.this,AddProductActivity.class);
+                    startActivity(in);
                 }
             });
             getSupportActionBar().setTitle("ToolPlus");
@@ -137,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             String name = "";
-                            Intent intent = new Intent(HomeActivity.this, ProductActivity.class);
+                            Intent intent = new Intent(HomeActivity.this, SearchProductActivity.class);
                             name = binding.etSearchBar.getText().toString();
                             if (TextUtils.isEmpty(name)) {
                                 binding.etSearchBar.setError("write here and than search..");

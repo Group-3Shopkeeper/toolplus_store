@@ -19,10 +19,11 @@
         <activity android:name=".EditProduct"></activity>
         <activity android:name=".ProductDetailsActivty" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".ProductActivity" />
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".NewOrderActivity"/>
+        <activity android:name=".ProductActivity"/>
+        <activity android:name=".SearchProductActivity"
+            android:parentActivityName=".HomeActivity"/>
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,5 @@
 package com.e.toolplusstore.apis;
 
-import com.e.toolplusstore.ServerAddress;
 import com.e.toolplusstore.beans.Category;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class CategoryService {
                 .readTimeout(2000, TimeUnit.SECONDS)
                 .build();
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl(ServerAddress.baseUrl)
+                .baseUrl(ServerAddress.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
