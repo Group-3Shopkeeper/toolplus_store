@@ -28,6 +28,7 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ProductActivityBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
+        initComponent();
         Intent intent = getIntent();
         String categoryId = intent.getStringExtra("categoryId");
         ProductService.ProductApi productApis = ProductService.getProductApiInstance();
@@ -39,10 +40,25 @@ public class ProductActivity extends AppCompatActivity {
                 adapter = new ShowProductAdapter(ProductActivity.this, productArrayList);
                 binding.rv1.setAdapter(adapter);
                 binding.rv1.setLayoutManager(new GridLayoutManager(ProductActivity.this, 2));
+                adapter.setOnItemClickListener(new ShowProductAdapter.OnRecyclerViewClick() {
+                    @Override
+                    public void onItemClick(Product product, int position) {
+                        Intent in = new Intent(ProductActivity.this, ProductDetailsActivty.class);
+                        in.putExtra("product",product);
+                        startActivity(in);
+                    }
+                });
             }
             @Override
             public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
             }
         });
+    }
+
+    private void initComponent() {
+        binding.toolbar.setTitle("Product");
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

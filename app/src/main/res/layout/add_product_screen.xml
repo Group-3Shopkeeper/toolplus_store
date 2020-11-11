@@ -74,6 +74,7 @@
             android:textColorHint="#AEB9C5"
             android:layout_marginRight="40dp"
             android:id="@+id/productQuantity"
+            android:inputType="number"
             android:layout_below="@+id/productBrand"
             android:layout_marginTop="5dp"
             android:hint="Quantity In Stock"
@@ -89,6 +90,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#AEB9C5"
+            android:inputType="number"
             android:layout_marginTop="5dp"
             android:hint="Product Price"
             android:textSize="15sp"
@@ -104,6 +106,7 @@
             android:textColorHint="#AEB9C5"
             android:layout_below="@+id/productPrice"
             android:layout_marginTop="5dp"
+            android:inputType="number"
             android:hint="Product Discount"
             android:textSize="15sp"
             android:padding="10dp"/>

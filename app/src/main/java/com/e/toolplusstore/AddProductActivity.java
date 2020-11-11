@@ -74,17 +74,23 @@ public class AddProductActivity extends AppCompatActivity {
                         title = menuItem.getTitle().toString();
                         switch (title) {
                             case "Plumbing": binding.productCategory.setText(title);
-                                categoryId ="qqM4MWpGJt68FHRgnBI7";break;
+                                categoryId ="qqM4MWpGJt68FHRgnBI7";
+                                break;
                             case "Nut and Bolts": binding.productCategory.setText(title);
-                                categoryId ="x11uXtVIGI26k6zSokZI";break;
+                                categoryId ="x11uXtVIGI26k6zSokZI";
+                                break;
                             case "Paints": binding.productCategory.setText(title);
-                                categoryId ="97lzoB3Npd5Vn7cdsJW9";break;
+                                categoryId ="97lzoB3Npd5Vn7cdsJW9";
+                                break;
                             case "Electric Supplies": binding.productCategory.setText(title);
-                                categoryId ="FS4xDKrIb2xotx2VMNJq";break;
+                                categoryId ="FS4xDKrIb2xotx2VMNJq";
+                                break;
                             case "Wire and Cable": binding.productCategory.setText(title);
-                                categoryId ="LFPMJJAa56dvJEcdMWIj";break;
+                                categoryId ="LFPMJJAa56dvJEcdMWIj";
+                                break;
                             case "Tools": binding.productCategory.setText(title);
-                                categoryId ="v2MQlC43M2gxTwZpkbcH";break;
+                                categoryId ="v2MQlC43M2gxTwZpkbcH";
+                                break;
                         }
                         return false;
                     }

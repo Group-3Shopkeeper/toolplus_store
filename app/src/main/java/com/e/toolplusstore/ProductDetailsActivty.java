@@ -30,10 +30,12 @@ public class ProductDetailsActivty extends AppCompatActivity {
         Intent in = getIntent();
         final Product p = (Product) in.getSerializableExtra("product");
         Picasso.get().load(p.getImageUrl()).into(binding.iv);
-        binding.tvBrand.setText(p.getBrand());
-        binding.tvDescription.setText(p.getDescription());
-        binding.tvPrice.setText(p.getPrice()+"");
-        binding.tvProductName.setText(p.getName());
+        binding.tvBrand.setText("Brand : "+p.getBrand());
+        binding.tvDescription.setText("Description : "+p.getDescription());
+        binding.tvPrice.setText("Price : "+p.getPrice()+"");
+        binding.tvProductName.setText("Product Name : "+p.getName());
+        binding.tvDiscount.setText("Discount : "+p.getDiscount()+"");
+        binding.tvQtyInStock.setText("Quantity In Stock : "+p.getQtyInStock());
         binding.btnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,8 +49,8 @@ public class ProductDetailsActivty extends AppCompatActivity {
                         call.enqueue(new Callback<Product>() {
                             @Override
                             public void onResponse(Call<Product> call, Response<Product> response) {
-                                Log.e("=============>",""+response.body());
-                                Toast.makeText(ProductDetailsActivty.this, ""+response.body(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ProductDetailsActivty.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(ProductDetailsActivty.this,HomeActivity.class));
                             }
 
                             @Override
@@ -61,9 +63,6 @@ public class ProductDetailsActivty extends AppCompatActivity {
                 ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent in = new Intent(ProductDetailsActivty.this,EditProduct.class);
-                        in.putExtra("product",p);
-                        startActivity(in);
                     }
                 });
                 ab.show();
@@ -72,7 +71,9 @@ public class ProductDetailsActivty extends AppCompatActivity {
         binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent in = new Intent(ProductDetailsActivty.this,EditProduct.class);
+                in.putExtra("product",p);
+                startActivity(in);
             }
         });
     }

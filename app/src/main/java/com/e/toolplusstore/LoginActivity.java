@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendUserToHomeScreen() {
-        Intent in = new Intent(LoginActivity.this, SearchProductActivity.class);
+        Intent in = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(in);
     }
 }
