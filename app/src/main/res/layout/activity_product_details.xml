@@ -62,24 +62,13 @@
         android:paddingBottom="15dp"
         android:textSize="20dp"/>
     <TextView
-        android:id="@+id/tvCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/white"
-        android:text="Category"
-        android:layout_below="@+id/tvQtyInStock"
-        android:paddingLeft="20dp"
-        android:paddingBottom="15dp"
-        android:textSize="20dp"/>
-    <TextView
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
         android:background="@color/white"
         android:text="Price"
-        android:layout_below="@+id/tvCategory"
+        android:layout_below="@+id/tvQtyInStock"
         android:paddingLeft="20dp"
         android:paddingBottom="15dp"
         android:textSize="20dp"/>

@@ -2,6 +2,7 @@ package com.e.toolplusstore.beans;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Product implements Serializable {
@@ -20,10 +21,10 @@ public class Product implements Serializable {
     private String name;
     @SerializedName("price")
     @Expose
-    private Double price;
+    private Long price;
     @SerializedName("discount")
     @Expose
-    private Double discount;
+    private Long discount;
     @SerializedName("brand")
     @Expose
     private String brand;
@@ -36,12 +37,17 @@ public class Product implements Serializable {
     @SerializedName("description")
     @Expose
     private String description;
+    @SerializedName("categoryName")
+    @Expose
+    private Object categoryName;
     @SerializedName("timestamp")
     @Expose
     private Long timestamp;
+
     public Product() {
     }
-    public Product(String productId, String categoryId, String shopKeeperId, String name, Double price, Double discount, String brand, Long qtyInStock, String imageUrl, String description, Long timestamp) {
+
+    public Product(String productId, String categoryId, String shopKeeperId, String name, Long price, Long discount, String brand, Long qtyInStock, String imageUrl, String description, Object categoryName, Long timestamp) {
         super();
         this.productId = productId;
         this.categoryId = categoryId;
@@ -53,8 +59,10 @@ public class Product implements Serializable {
         this.qtyInStock = qtyInStock;
         this.imageUrl = imageUrl;
         this.description = description;
+        this.categoryName = categoryName;
         this.timestamp = timestamp;
     }
+
     public String getProductId() {
         return productId;
     }
@@ -87,19 +95,19 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public Double getDiscount() {
+    public Long getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(Long discount) {
         this.discount = discount;
     }
 
@@ -135,6 +143,14 @@ public class Product implements Serializable {
         this.description = description;
     }
 
+    public Object getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(Object categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public Long getTimestamp() {
         return timestamp;
     }
@@ -142,4 +158,5 @@ public class Product implements Serializable {
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
+
 }

@@ -18,16 +18,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.e.toolplusstore.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    String currentUser = null;
+    FirebaseUser currentUser;
     InternetConnectivity connectivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         binding = ActivityMainBinding.inflate(inflater);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         View v = binding.getRoot();
         setContentView(v);
         connectivity = new InternetConnectivity();
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendUserToHomeScreen() {
-        Toast.makeText(this, "Home Screen", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this,HomeActivity.class));
     }
 
     private void sendUserToLoginScreen() {
