@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,7 +25,11 @@ import androidx.core.content.PermissionChecker;
 
 import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.beans.Product;
+import com.e.toolplusstore.beans.Store;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -43,13 +49,19 @@ import retrofit2.Response;
 public class AddProductActivity extends AppCompatActivity {
     AddProductScreenBinding binding;
     Uri imageUri;
-    String title,categoryId;
+    String title,categoryId=null,currentUserId;
+    ProgressDialog pd;
     InternetConnectivity connectivity;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = AddProductScreenBinding.inflate(LayoutInflater.from(AddProductActivity.this));
         setContentView(binding.getRoot());
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPref.getString(currentUserId,"");
+        final Store store = gson.fromJson(json,Store.class);
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PermissionChecker.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},11);
         }
@@ -119,19 +131,21 @@ public class AddProductActivity extends AppCompatActivity {
                     });
                     builder.show();
                 } else {
-                    final ProgressDialog pd = new ProgressDialog(AddProductActivity.this);
-                    pd.setTitle("Saving");
-                    pd.setMessage("Please wait");
-                    pd.show();
-                    String name = binding.productName.getText().toString();
-                    String brand = binding.productBrand.getText().toString();
-                    Long qtyInStock = Long.parseLong(binding.productQuantity.getText().toString());
-                    Double price = Double.parseDouble(binding.productPrice.getText().toString());
-                    Double discount = Double.parseDouble(binding.productDiscount.getText().toString());
-                    String description = binding.productDescription.getText().toString();
-                    String shopKeeperId = "ddfvfjhgbgcv";
+                    try {
+                        String name = binding.productName.getText().toString();
+                        String brand = binding.productBrand.getText().toString();
+                        Long qtyInStock = Long.parseLong(binding.productQuantity.getText().toString());
+                        Double price = Double.parseDouble(binding.productPrice.getText().toString());
+                        Double discount = Double.parseDouble(binding.productDiscount.getText().toString());
+                        String description = binding.productDescription.getText().toString();
+                        String shopKeeperId = store.getShopKeeperId();
+
                     if (TextUtils.isEmpty(name)) {
                         binding.productName.setError("Enter Product Name");
+                        return;
+                    }
+                    if(categoryId==null){
+                        Toast.makeText(AddProductActivity.this, "SELECT ATLEAST ONE CATEGORY", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (TextUtils.isEmpty(brand)) {
@@ -148,13 +162,16 @@ public class AddProductActivity extends AppCompatActivity {
                     }
                     if (TextUtils.isEmpty(discount.toString())) {
                         discount = 0.0;
-                        return;
                     }
                     if (TextUtils.isEmpty(description)) {
                         description = "";
-                        return;
                     }
+
                     if (imageUri != null) {
+                        pd = new ProgressDialog(AddProductActivity.this);
+                        pd.setTitle("Saving");
+                        pd.setMessage("Please wait");
+                        pd.show();
                         File file = FileUtils.getFile(AddProductActivity.this, imageUri);
                         RequestBody requestFile =
                                 RequestBody.create(
@@ -193,20 +210,26 @@ public class AddProductActivity extends AppCompatActivity {
                                     Toast.makeText(AddProductActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                                     finish();
                                 } else if (response.code() == 404) {
+                                    pd.dismiss();
                                     Toast.makeText(AddProductActivity.this, "404", Toast.LENGTH_SHORT).show();
                                 } else if (response.code() == 500) {
                                     Toast.makeText(AddProductActivity.this, "500", Toast.LENGTH_SHORT).show();
+                                    pd.dismiss();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Product> call, Throwable t) {
                                 Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                                pd.dismiss();
                             }
                         });
-                    } else
+                    } else {
                         Toast.makeText(AddProductActivity.this, "Please select Profile pic", Toast.LENGTH_SHORT).show();
-
+                    }
+                    }catch (NumberFormatException e){
+                        Toast.makeText(AddProductActivity.this, "Enter All Valid Inputs", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

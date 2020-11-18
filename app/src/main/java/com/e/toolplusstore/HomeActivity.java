@@ -2,6 +2,7 @@ package com.e.toolplusstore;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -24,7 +25,11 @@ import com.e.toolplusstore.apis.CategoryService;
 
 import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.databinding.ActivityHomeBinding;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -36,14 +41,15 @@ public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     ActionBarDrawerToggle toggle;
     CategoryAdapter adapter;
+    String currentUserId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(HomeActivity.this));
         setContentView(binding.getRoot());
-
         InternetConnectivity connectivity = new InternetConnectivity();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (!connectivity.isConnected(HomeActivity.this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
             builder.setMessage("Please connect to the Internet to Proceed Further").setCancelable(false);
@@ -75,6 +81,7 @@ public class HomeActivity extends AppCompatActivity {
                         public void onItemClick(Category c, int position) {
                             Intent in = new Intent(HomeActivity.this, ProductActivity.class);
                             in.putExtra("categoryId",c.getCategoryId());
+                            in.putExtra("categoryName",c.getCategoryName());
                             startActivity(in);
                         }
                     });
@@ -165,13 +172,28 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onOptionsItemSelected (@NonNull MenuItem item){
             String title = item.getTitle().toString();
             if (title.equals("Settings")) {
-                Intent intent = new Intent(HomeActivity.this, ViewProfileActivity.class);
+                Intent intent = new Intent(HomeActivity.this, EditStoreActivity.class);
                 startActivity(intent);
-            } else if (title.equals("Logout")) {
-
+            }
+            if (title.equals("Logout")) {
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+                                finish();;
+                            }
+                        });
             }
             return super.onOptionsItemSelected(item);
         }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
+        if(!mPref.contains(currentUserId))
+            startActivity(new Intent(HomeActivity.this, AddStore.class));
+    }
 }

@@ -55,5 +55,17 @@ public class ProductService {
                                          @Part("shopKeeperId") RequestBody shopKeeperId,
                                          @Part("brand") RequestBody brand,
                                          @Part("categoryId") RequestBody categoryId);
+        @Multipart
+        @POST("product/update")
+        public Call<Product> updateProduct(@Part  MultipartBody.Part file,
+                                         @Part("name")RequestBody name,
+                                         @Part("qtyInStock") RequestBody qtyInStock,
+                                         @Part("price") RequestBody price,
+                                         @Part("description") RequestBody description,
+                                         @Part("discount") RequestBody discount,
+                                         @Part("shopKeeperId") RequestBody shopKeeperId,
+                                         @Part("brand") RequestBody brand,
+                                         @Part("categoryId") RequestBody categoryId,
+                                         @Part("productId") RequestBody productId);
     }
 }

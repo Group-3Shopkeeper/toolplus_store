@@ -31,6 +31,7 @@ public class ProductActivity extends AppCompatActivity {
         initComponent();
         Intent intent = getIntent();
         String categoryId = intent.getStringExtra("categoryId");
+        final String categoryName = intent.getStringExtra("categoryName");
         ProductService.ProductApi productApis = ProductService.getProductApiInstance();
         final Call<ArrayList<Product>> call = productApis.getProductByCategory(categoryId);
         call.enqueue(new Callback<ArrayList<Product>>() {
@@ -45,6 +46,7 @@ public class ProductActivity extends AppCompatActivity {
                     public void onItemClick(Product product, int position) {
                         Intent in = new Intent(ProductActivity.this, ProductDetailsActivty.class);
                         in.putExtra("product",product);
+                        in.putExtra("categoryName",categoryName);
                         startActivity(in);
                     }
                 });

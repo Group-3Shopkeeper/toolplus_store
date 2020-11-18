@@ -29,6 +29,7 @@ public class ProductDetailsActivty extends AppCompatActivity {
         setContentView(binding.getRoot());
         Intent in = getIntent();
         final Product p = (Product) in.getSerializableExtra("product");
+        final String categoryName = in.getStringExtra("categoryName");
         Picasso.get().load(p.getImageUrl()).into(binding.iv);
         binding.tvBrand.setText("Brand : "+p.getBrand());
         binding.tvDescription.setText("Description : "+p.getDescription());
@@ -73,6 +74,7 @@ public class ProductDetailsActivty extends AppCompatActivity {
             public void onClick(View view) {
                 Intent in = new Intent(ProductDetailsActivty.this,EditProduct.class);
                 in.putExtra("product",p);
+                in.putExtra("categoryName",categoryName);
                 startActivity(in);
             }
         });

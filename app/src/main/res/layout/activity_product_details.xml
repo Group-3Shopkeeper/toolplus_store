@@ -4,108 +4,163 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:background="@color/white"
     tools:context=".ProductDetailsActivty">
-
-    <TextView
-        android:id="@+id/tvProductName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/white"
-        android:textStyle="bold"
-        android:text="Product Name"
-        android:padding="5dp"
-        android:layout_margin="10dp"
-        android:textSize="25dp"/>
 
     <ImageView
         android:id="@+id/iv"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/tvProductName"
+        android:layout_margin="20dp"
+        android:layout_width="400dp"
+        android:layout_height="250dp"
         android:src="@drawable/camera"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp" />
-    <TextView
-        android:id="@+id/tvBrand"
-        android:layout_width="wrap_content"
+         />
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
+        android:id="@+id/rv1"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@color/white"
-        android:text="Brand"
         android:layout_below="@+id/iv"
-        android:paddingLeft="20dp"
-        android:paddingBottom="15dp"
-        android:textSize="20dp"/>
-    <TextView
-        android:id="@+id/tvDescription"
-        android:layout_width="wrap_content"
+        android:elevation="6dp">
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Price"
+            android:textStyle="bold"
+            android:paddingLeft="5dp"
+            android:layout_below="@+id/tvProductName"
+            android:paddingBottom="3dp"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tvDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FA0303"
+            android:text="Discount"
+            android:layout_below="@+id/tvPrice"
+            android:paddingLeft="5dp"
+            android:textSize="17dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/white"
-        android:text="Description"
-        android:layout_below="@+id/tvBrand"
-        android:paddingLeft="20dp"
-        android:paddingBottom="15dp"
-        android:textSize="20dp"/>
-    <TextView
-        android:id="@+id/tvQtyInStock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/white"
-        android:text="Quantity In Stock"
-        android:layout_below="@+id/tvDescription"
-        android:paddingLeft="20dp"
-        android:paddingBottom="15dp"
-        android:textSize="20dp"/>
-    <TextView
-        android:id="@+id/tvPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/white"
-        android:text="Price"
-        android:layout_below="@+id/tvQtyInStock"
-        android:paddingLeft="20dp"
-        android:paddingBottom="15dp"
-        android:textSize="20dp"/>
-    <TextView
-        android:id="@+id/tvDiscount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/white"
-        android:text="Discount"
-        android:layout_below="@+id/tvPrice"
-        android:paddingLeft="20dp"
-        android:paddingBottom="15dp"
-        android:textSize="20dp"/>
-    <Button
-        android:id="@+id/btnEdit"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Edit"
-        android:layout_below="@id/tvDiscount"
-        android:textColor="@color/white"
-        android:textSize="17dp"
+        android:id="@+id/rv2"
         android:padding="10dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/search_bar_decorator"/>
-    <Button
-        android:id="@+id/btnRemove"
-        android:layout_width="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:layout_below="@+id/rv1"
+        android:elevation="6dp">
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            android:text="Description"
+            android:paddingLeft="5dp"
+            android:textSize="17dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Remove"
-        android:layout_below="@id/tvDiscount"
-        android:textColor="@color/black"
-        android:textSize="17dp"
-        android:layout_toRightOf="@id/btnEdit"
+        android:id="@+id/rv3"
         android:padding="10dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/border_white"/>
-
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/white"
+        android:layout_below="@+id/rv2"
+        android:elevation="6dp">
+        <TextView
+            android:id="@+id/tvQtyInStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            android:text="Quantity In Stock"
+            android:paddingLeft="5dp"
+            android:textSize="17dp"/>
+        <TextView
+            android:id="@+id/tvBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Price"
+            android:layout_below="@+id/tvQtyInStock"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:textSize="17dp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:background="@color/colorPrimary"
+            android:elevation="8dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:paddingRight="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.5">
+            <TextView
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:layout_weight="0.5"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:background="#FA0303"
+            android:elevation="8dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:paddingRight="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.5">
+            <TextView
+                android:id="@+id/btnRemove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove"
+                android:layout_weight="0.5"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                />
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
