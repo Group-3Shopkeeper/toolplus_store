@@ -1,10 +1,12 @@
 package com.e.toolplusstore;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -134,9 +136,9 @@ public class AddProductActivity extends AppCompatActivity {
                     try {
                         String name = binding.productName.getText().toString();
                         String brand = binding.productBrand.getText().toString();
-                        Long qtyInStock = Long.parseLong(binding.productQuantity.getText().toString());
-                        Double price = Double.parseDouble(binding.productPrice.getText().toString());
-                        Double discount = Double.parseDouble(binding.productDiscount.getText().toString());
+                        int qtyInStock = Integer.parseInt(binding.productQuantity.getText().toString());
+                        double price = Double.parseDouble(binding.productPrice.getText().toString());
+                        double discount = Double.parseDouble(binding.productDiscount.getText().toString());
                         String description = binding.productDescription.getText().toString();
                         String shopKeeperId = store.getShopKeeperId();
 
@@ -152,15 +154,15 @@ public class AddProductActivity extends AppCompatActivity {
                         binding.productBrand.setError("Enter Brand Name");
                         return;
                     }
-                    if (TextUtils.isEmpty(qtyInStock.toString())) {
+                    if (TextUtils.isEmpty(qtyInStock+"")) {
                         binding.productQuantity.setError("Enter Quantity In Stock");
                         return;
                     }
-                    if (TextUtils.isEmpty(price.toString())) {
+                    if (TextUtils.isEmpty(price+"")) {
                         binding.productPrice.setError("Enter Price");
                         return;
                     }
-                    if (TextUtils.isEmpty(discount.toString())) {
+                    if (TextUtils.isEmpty(discount+"")) {
                         discount = 0.0;
                     }
                     if (TextUtils.isEmpty(description)) {
@@ -243,6 +245,8 @@ public class AddProductActivity extends AppCompatActivity {
             Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
         }
     }
+
+
     private void initComponent() {
         binding.toolbar.setTitle("Add Product");
         setSupportActionBar(binding.toolbar);

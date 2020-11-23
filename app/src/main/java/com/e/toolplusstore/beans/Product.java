@@ -21,16 +21,16 @@ public class Product implements Serializable {
     private String name;
     @SerializedName("price")
     @Expose
-    private Long price;
+    private double price;
     @SerializedName("discount")
     @Expose
-    private Long discount;
+    private double discount;
     @SerializedName("brand")
     @Expose
     private String brand;
     @SerializedName("qtyInStock")
     @Expose
-    private Long qtyInStock;
+    private int qtyInStock;
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
@@ -47,7 +47,7 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String productId, String categoryId, String shopKeeperId, String name, Long price, Long discount, String brand, Long qtyInStock, String imageUrl, String description, Object categoryName, Long timestamp) {
+    public Product(String productId, String categoryId, String shopKeeperId, String name, double price, double discount, String brand, int qtyInStock, String imageUrl, String description, Object categoryName, Long timestamp) {
         super();
         this.productId = productId;
         this.categoryId = categoryId;
@@ -95,19 +95,19 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public Long getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public Long getDiscount() {
+    public double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Long discount) {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
 
@@ -119,11 +119,11 @@ public class Product implements Serializable {
         this.brand = brand;
     }
 
-    public Long getQtyInStock() {
+    public int getQtyInStock() {
         return qtyInStock;
     }
 
-    public void setQtyInStock(Long qtyInStock) {
+    public void setQtyInStock(int qtyInStock) {
         this.qtyInStock = qtyInStock;
     }
 
