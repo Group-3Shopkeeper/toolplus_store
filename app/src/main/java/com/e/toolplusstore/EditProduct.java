@@ -17,19 +17,15 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.e.toolplusstore.apis.CategoryService;
 import com.e.toolplusstore.apis.ProductService;
-import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.beans.Product;
-import com.e.toolplusstore.beans.Store;
+import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -57,7 +53,7 @@ public class EditProduct extends AppCompatActivity {
         final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId,"");
-        final Store store = gson.fromJson(json,Store.class);
+        final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
         binding.productName.setText(product.getName());
         binding.productBrand.setText(product.getBrand());
         binding.productQuantity.setText(product.getQtyInStock()+"");
@@ -177,7 +173,7 @@ public class EditProduct extends AppCompatActivity {
                                 okhttp3.MultipartBody.FORM, productId);
                         RequestBody productDescription = RequestBody.create(
                                 okhttp3.MultipartBody.FORM, description);
-                        RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, store.getShopKeeperId());
+                        RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopkeeper.getShopKeeperId());
 
                         ProductService.ProductApi productApi = ProductService.getProductApiInstance();
                         Call<Product> call = productApi.updateProduct(body, productName, productQtyInStock, productPrice, productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId, productid);
@@ -208,7 +204,7 @@ public class EditProduct extends AppCompatActivity {
                         progressDialog.setMessage("Please wait...");
                         progressDialog.show();
 
-                        String shopkeeperId = store.getShopKeeperId();
+                        String shopkeeperId = shopkeeper.getShopKeeperId();
                         String imageUrl = product.getImageUrl();
                         Product p = new Product();
                         p.setDescription(description);
@@ -230,6 +226,7 @@ public class EditProduct extends AppCompatActivity {
                                 if (response.code() == 200) {
                                     progressDialog.dismiss();
                                     Product p = response.body();
+                                    Log.e("=======================", "onResponse: "+p );
                                     Toast.makeText(EditProduct.this, "Updated", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(EditProduct.this, HomeActivity.class));
                                 } else if (response.code() == 404)

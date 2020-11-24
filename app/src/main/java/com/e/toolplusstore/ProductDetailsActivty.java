@@ -3,8 +3,10 @@ package com.e.toolplusstore;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,12 +32,21 @@ public class ProductDetailsActivty extends AppCompatActivity {
         Intent in = getIntent();
         final Product p = (Product) in.getSerializableExtra("product");
         final String categoryName = in.getStringExtra("categoryName");
+        if(p.getDiscount()<1) {
+            binding.tvDiscount.setVisibility(View.GONE);
+            binding.tvMRP.setVisibility(View.GONE);
+            binding.tvPrice.setText("Price : "+p.getPrice()+"");
+        }else{
+            binding.tvDiscount.setText("Off : ("+p.getDiscount()+"%)");
+            binding.tvMRP.setText("MRP : "+p.getPrice()+"");
+            binding.tvMRP.setPaintFlags(binding.tvMRP.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            Double ap = p.getPrice() -(p.getPrice()*p.getDiscount()/100);
+            binding.tvPrice.setText(""+ap);
+        }
         Picasso.get().load(p.getImageUrl()).into(binding.iv);
         binding.tvBrand.setText("Brand : "+p.getBrand());
         binding.tvDescription.setText("Description : "+p.getDescription());
-        binding.tvPrice.setText("Price : "+p.getPrice()+"");
         binding.tvProductName.setText("Product Name : "+p.getName());
-        binding.tvDiscount.setText("Discount : "+p.getDiscount()+"");
         binding.tvQtyInStock.setText("Quantity In Stock : "+p.getQtyInStock());
         binding.btnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,11 +56,15 @@ public class ProductDetailsActivty extends AppCompatActivity {
                 ab.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        final ProgressDialog pd =new ProgressDialog(ProductDetailsActivty.this);
+                        pd.setTitle("Deleting");
+                        pd.setMessage("Please wait..");
                         ProductService.ProductApi productApi = ProductService.getProductApiInstance();
                         Call<Product> call =productApi.deleteProduct(p.getProductId());
                         call.enqueue(new Callback<Product>() {
                             @Override
                             public void onResponse(Call<Product> call, Response<Product> response) {
+                                pd.dismiss();
                                 Toast.makeText(ProductDetailsActivty.this, "Deleted", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ProductDetailsActivty.this,HomeActivity.class));
                             }
