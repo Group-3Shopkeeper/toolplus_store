@@ -4,7 +4,7 @@ package com.e.toolplusstore.beans;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Store {
+public class Shopkeeper {
 
     @SerializedName("shopKeeperId")
     @Expose
@@ -29,10 +29,10 @@ public class Store {
     private String token;
 
 
-    public Store() {
+    public Shopkeeper() {
     }
 
-    public Store(String shopKeeperId, String shopName, String contactNumber, String address, String imageUrl, String email, String token) {
+    public Shopkeeper(String shopKeeperId, String shopName, String contactNumber, String address, String imageUrl, String email, String token) {
         super();
         this.shopKeeperId = shopKeeperId;
         this.shopName = shopName;

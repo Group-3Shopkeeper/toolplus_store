@@ -45,9 +45,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(HomeActivity.this));
         setContentView(binding.getRoot());
+
         InternetConnectivity connectivity = new InternetConnectivity();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (!connectivity.isConnected(HomeActivity.this)) {

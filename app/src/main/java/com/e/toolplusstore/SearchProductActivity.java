@@ -66,7 +66,6 @@ public class SearchProductActivity extends AppCompatActivity {
                         Toast.makeText(SearchProductActivity.this, "something went wrong...", Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
                     Toast.makeText(SearchProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
@@ -74,7 +73,6 @@ public class SearchProductActivity extends AppCompatActivity {
             });
         }
     }
-
     private void initComponent() {
         binding.toolbar.setTitle("Search Product");
         setSupportActionBar(binding.toolbar);
