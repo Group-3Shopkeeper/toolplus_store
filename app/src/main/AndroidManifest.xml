@@ -22,6 +22,8 @@
             android:parentActivityName=".ProductDetailsActivty" />
         <activity android:name=".ProductDetailsActivty" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".OrderItemActivity"
+            android:parentActivityName=".OrderHistoryActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,6 +45,8 @@
         <activity
             android:name=".AddProductActivity"
             android:parentActivityName=".HomeActivity" />
+        <activity android:name=".OrderHistoryActivity"
+            android:parentActivityName=".HomeActivity"/>
     </application>
 
 </manifest>
