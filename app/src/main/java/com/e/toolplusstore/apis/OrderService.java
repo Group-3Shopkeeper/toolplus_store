@@ -1,7 +1,5 @@
 package com.e.toolplusstore.apis;
 
-import com.e.toolplusstore.beans.Category;
-import com.e.toolplusstore.beans.Order;
 import com.e.toolplusstore.beans.PurchaseOrder;
 
 import java.util.ArrayList;

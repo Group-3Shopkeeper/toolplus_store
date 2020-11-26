@@ -24,11 +24,17 @@ public class OrderItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityOrderItemBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
+        initComponent();
         Intent in = getIntent();
         List<OrderItemList> itemList = (List<OrderItemList>) in.getSerializableExtra("orderItem");
         adapter = new OrderItemAdapter(this,itemList);
         binding.rv.setAdapter(adapter);
         binding.rv.setLayoutManager(new LinearLayoutManager(this));
     }
+    private void initComponent() {
+        binding.toolbar.setTitle("Purchase Order details");
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+}
