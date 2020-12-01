@@ -123,9 +123,11 @@ public class AddStore extends AppCompatActivity {
                         RequestBody storeEmail = RequestBody.create(okhttp3.MultipartBody.FORM, email);
                         RequestBody storeAddress = RequestBody.create(okhttp3.MultipartBody.FORM, address);
                         RequestBody storeToken = RequestBody.create(okhttp3.MultipartBody.FORM, token);
+                        RequestBody shopKeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, currentUserId);
+
 
                         StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
-                        Call<Shopkeeper> call = serviceApi.saveStore(body, storeName, storeNumber, storeAddress, storeEmail, storeToken);
+                        Call<Shopkeeper> call = serviceApi.saveStore(body, storeName, storeNumber, storeAddress, storeEmail,shopKeeperId, storeToken);
 
                         call.enqueue(new Callback<Shopkeeper>() {
                             @Override

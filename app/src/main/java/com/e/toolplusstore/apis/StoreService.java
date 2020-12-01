@@ -40,6 +40,7 @@ public class StoreService {
                                           @Part("contactNumber") RequestBody contactNumber,
                                           @Part("address") RequestBody address,
                                           @Part("email") RequestBody email,
+                                          @Part("shopKeeperId") RequestBody shopKeeperId,
                                           @Part("token") RequestBody token);
         @Multipart
         @POST("store/update")

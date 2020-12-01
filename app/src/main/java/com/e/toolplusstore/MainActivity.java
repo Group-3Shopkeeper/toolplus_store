@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+
 import com.e.toolplusstore.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         View v = binding.getRoot();
         setContentView(v);
         connectivity = new InternetConnectivity();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         if (!connectivity.isConnected(MainActivity.this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setMessage("Please connect to the Internet to Proceed Further").setCancelable(false);
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             });
             builder.show();
         }
-       else {
+        else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         sendUserToLoginScreen();
                     }
                 }
-            }, 5000);
+            }, 3000);
         }
     }
 
