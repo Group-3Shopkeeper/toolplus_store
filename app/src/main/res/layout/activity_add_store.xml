@@ -96,7 +96,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
-        android:text="Add Product"
+        android:text="Add Store"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@drawable/search_bar_decorator"
