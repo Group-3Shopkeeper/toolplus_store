@@ -26,6 +26,8 @@ import com.e.toolplusstore.apis.CategoryService;
 import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.databinding.ActivityHomeBinding;
 import com.firebase.ui.auth.AuthUI;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -66,16 +68,20 @@ public class HomeActivity extends AppCompatActivity {
             });
             builder.show();
         } else {
+            Sprite doubleBounce = new Wave();
+            binding.spinKit.setIndeterminateDrawable(doubleBounce);
             CategoryService.CategoryApi categoryApi = CategoryService.getCategoryApiInstance();
             Call<ArrayList<Category>> call = categoryApi.getCategoryList();
             call.enqueue(new Callback<ArrayList<Category>>() {
                 @Override
                 public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+
                     ArrayList<Category> categoryList = response.body();
 
                     adapter = new CategoryAdapter(HomeActivity.this, categoryList);
                     binding.rv.setAdapter(adapter);
                     binding.rv.setLayoutManager(new GridLayoutManager(HomeActivity.this, 2));
+                    binding.spinKit.setVisibility(View.INVISIBLE);
                     adapter.setOnItemClickListener(new CategoryAdapter.OnRecyclerViewClick() {
                         @Override
                         public void onItemClick(Category c, int position) {
@@ -112,7 +118,10 @@ public class HomeActivity extends AppCompatActivity {
                     binding.drawer.closeDrawer(GravityCompat.START);
                     String title = item.getTitle().toString();
                     if (title.equals("ToolPlus")) {
-                        Toast.makeText(HomeActivity.this, "toolpus", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(HomeActivity.this,EditStoreActivity.class);
+                        startActivity(intent);
+
+
                     } else if (title.equals("Add Product")) {
                         Intent intent = new Intent(HomeActivity.this, AddProductActivity.class);
                         startActivity(intent);

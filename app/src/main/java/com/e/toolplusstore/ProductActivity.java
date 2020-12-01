@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import com.e.toolplusstore.adapter.ShowProductAdapter;
 import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.databinding.ProductActivityBinding;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,8 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ProductActivityBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
+        Sprite doubleBounce = new Wave();
+        binding.spinKit.setIndeterminateDrawable(doubleBounce);
         initComponent();
         Intent intent = getIntent();
         String categoryId = intent.getStringExtra("categoryId");
@@ -41,6 +46,7 @@ public class ProductActivity extends AppCompatActivity {
                 adapter = new ShowProductAdapter(ProductActivity.this, productArrayList);
                 binding.rv1.setAdapter(adapter);
                 binding.rv1.setLayoutManager(new GridLayoutManager(ProductActivity.this, 2));
+                binding.spinKit.setVisibility(View.INVISIBLE);
                 adapter.setOnItemClickListener(new ShowProductAdapter.OnRecyclerViewClick() {
                     @Override
                     public void onItemClick(Product product, int position) {
