@@ -42,6 +42,13 @@ public class ProductService {
         @GET("product/t/{shopKeeperId}/{categoryId}")
         public Call<ArrayList<Product>> getProductByCategoryAndShopKeeper(@Path("categoryId") String categoryId,@Path("shopKeeperId") String shopKeeperId);
 
+        @GET("product/{shopKeeperId}/{name}")
+        public Call<ArrayList<Product>> getProductList(@Path("shopKeeperId") String shopKeeperId,@Path("name") String name);
+
+        @GET("product/c/{categoryId}")
+        public Call<ArrayList<Product>> getProductByCategory(@Path("categoryId") String categoryId);
+
+
         @DELETE("product/{id}")
         public Call<Product> deleteProduct(@Path("id") String id);
 
