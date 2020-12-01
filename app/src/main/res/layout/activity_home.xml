@@ -49,8 +49,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/drawer"/>
             <Button
-                android:layout_width="150dp"
-                android:layout_height="60dp"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
                 android:id="@+id/btnSeach"
                 android:text="Search"
                 android:background="@drawable/search_bar_decorator"
@@ -65,9 +65,8 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/etSearchBar"
                 android:paddingTop="10dp"
-                android:id="@+id/rv"/>
-
-
+                android:id="@+id/rv">
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
@@ -79,10 +78,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/layout_header"/>
-
-
     </androidx.drawerlayout.widget.DrawerLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -94,4 +90,13 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/white"
         />
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/colorPrimaryDark" />
 </RelativeLayout>

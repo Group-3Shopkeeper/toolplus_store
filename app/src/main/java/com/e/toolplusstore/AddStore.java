@@ -19,7 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
-
+import static android.content.ContentValues.TAG;
 import com.e.toolplusstore.apis.StoreService;
 import com.e.toolplusstore.beans.Store;
 import com.e.toolplusstore.databinding.ActivityAddStoreBinding;
@@ -149,7 +149,7 @@ public class AddStore extends AppCompatActivity {
                                 } else if (response.code() == 500) {
                                     pd.dismiss();
                                     Toast.makeText(AddStore.this, "500", Toast.LENGTH_SHORT).show();
-                                    Log.e("=========", "500");
+                                    Log.e(TAG, "onResponse:========================> "+response.errorBody());
                                 }
                             }
 
@@ -157,6 +157,7 @@ public class AddStore extends AppCompatActivity {
                             public void onFailure(Call<Store> call, Throwable t) {
                                 pd.dismiss();
                                 Toast.makeText(AddStore.this, "" + t, Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "onFailure: =====================>"+t );
                             }
                         });
                     } else {

@@ -64,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
             }, 5000);
         }
     }
-
     private void sendUserToHomeScreen() {
         startActivity(new Intent(MainActivity.this,HomeActivity.class));
+        finish();
     }
-
     private void sendUserToLoginScreen() {
         Intent in = new Intent(MainActivity.this,LoginActivity.class);
         startActivity(in);
+        finish();
     }
 }
