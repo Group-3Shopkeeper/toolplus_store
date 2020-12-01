@@ -17,7 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.e.toolplusstore.apis.StoreService;
-import com.e.toolplusstore.beans.Store;
+import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.ActivityAddStoreBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -49,12 +49,12 @@ public class EditStoreActivity extends AppCompatActivity {
         final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId,"");
-        final Store store = gson.fromJson(json,Store.class);
-        binding.storeNumber.setText(store.getContactNumber());
-        binding.storeEmail.setText(store.getEmail());
-        Picasso.get().load(store.getImageUrl()).into(binding.storeImage);
-        binding.storeName.setText(store.getShopName());
-        binding.storeAddress.setText(store.getAddress());
+        final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
+        binding.storeNumber.setText(shopkeeper.getContactNumber());
+        binding.storeEmail.setText(shopkeeper.getEmail());
+        Picasso.get().load(shopkeeper.getImageUrl()).into(binding.storeImage);
+        binding.storeName.setText(shopkeeper.getShopName());
+        binding.storeAddress.setText(shopkeeper.getAddress());
         binding.btnAddStore.setText("Update Store");
         binding.storeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +85,7 @@ public class EditStoreActivity extends AppCompatActivity {
                     });
                     builder.show();
                 } else {
+                    try{
                     String address = binding.storeAddress.getText().toString();
                     String name = binding.storeName.getText().toString();
                     String email = binding.storeEmail.getText().toString();
@@ -105,8 +106,8 @@ public class EditStoreActivity extends AppCompatActivity {
                         binding.storeNumber.setError("Enter Number");
                         return;
                     }
-                    shopKeeperId = store.getShopKeeperId();
-                    token = store.getToken();
+                    shopKeeperId = shopkeeper.getShopKeeperId();
+                    token = shopkeeper.getToken();
                     if (imageUri != null) {
                         pd = new ProgressDialog(EditStoreActivity.this);
                         pd.setTitle("Updating");
@@ -129,14 +130,14 @@ public class EditStoreActivity extends AppCompatActivity {
                         RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM,shopKeeperId);
 
                         StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
-                        Call<Store> call = serviceApi.updateStore(body,storeName,storeNumber,storeAddress,storeEmail,shopkeeperId,storeToken);
+                        Call<Shopkeeper> call = serviceApi.updateStore(body,storeName,storeNumber,storeAddress,storeEmail,shopkeeperId,storeToken);
 
-                        call.enqueue(new Callback<Store>() {
+                        call.enqueue(new Callback<Shopkeeper>() {
                             @Override
-                            public void onResponse(Call<Store> call, Response<Store> response) {
+                            public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
                                 if(response.code()==200) {
                                     pd.dismiss();
-                                    Store s = response.body();
+                                    Shopkeeper s = response.body();
                                     SharedPreferences.Editor editor = mPref.edit();
                                     Gson gson = new Gson();
                                     String json = gson.toJson(s);
@@ -148,14 +149,43 @@ public class EditStoreActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<Store> call, Throwable t) {
+                            public void onFailure(Call<Shopkeeper> call, Throwable t) {
 
                             }
                         });
                     }else{
-                        Toast.makeText(EditStoreActivity.this, "Please select store image", Toast.LENGTH_SHORT).show();
+                        final ProgressDialog progressDialog = new ProgressDialog(EditStoreActivity.this);
+                        progressDialog.setTitle("Updating");
+                        progressDialog.setMessage("Please wait...");
+                        progressDialog.show();
 
+                        Shopkeeper s = new Shopkeeper(shopKeeperId,name,number,address, shopkeeper.getImageUrl(),email,token);
+                        StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
+
+                        Call<Shopkeeper> call = serviceApi.updateStoreWithoutImage(s);
+                        call.enqueue(new Callback<Shopkeeper>() {
+                            @Override
+                            public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
+                                if(response.code()==200) {
+                                    progressDialog.dismiss();
+                                    Shopkeeper shopkeeper1 = response.body();
+                                    SharedPreferences.Editor editor = mPref.edit();
+                                    Gson gson = new Gson();
+                                    String json = gson.toJson(shopkeeper1);
+                                    editor.putString(currentUserId,json);
+                                    editor.commit();
+                                    Toast.makeText(EditStoreActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Shopkeeper> call, Throwable t) {
+
+                            }
+                        });
                     }
+                }catch (Exception e){
+                        Toast.makeText(EditStoreActivity.this, ""+e.toString(), Toast.LENGTH_SHORT).show();}
                 }
             }
         });

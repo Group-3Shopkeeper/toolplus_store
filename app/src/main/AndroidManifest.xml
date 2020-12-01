@@ -16,16 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddStore">
-
-        </activity>
+        <activity android:name=".AddStore"/>
         <activity
             android:name=".EditProduct"
             android:parentActivityName=".ProductDetailsActivty" />
         <activity android:name=".ProductDetailsActivty" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".OrderItemActivity"
+            android:parentActivityName=".OrderHistoryActivity"/>
         <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +47,12 @@
         <activity
             android:name=".AddProductActivity"
             android:parentActivityName=".HomeActivity" />
+
         <activity android:name=".OrderItemActivity"/>
+
+        <activity android:name=".OrderHistoryActivity"
+            android:parentActivityName=".HomeActivity"/>
+
     </application>
 
 </manifest>

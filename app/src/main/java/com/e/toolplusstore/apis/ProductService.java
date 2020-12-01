@@ -11,6 +11,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -70,5 +71,8 @@ public class ProductService {
                                          @Part("brand") RequestBody brand,
                                          @Part("categoryId") RequestBody categoryId,
                                          @Part("productId") RequestBody productId);
+
+        @POST("product/update/withoutImage")
+        public Call<Product> updateProductWithoutImage(@Body Product product);
     }
 }

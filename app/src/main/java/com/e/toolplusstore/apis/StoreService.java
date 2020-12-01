@@ -1,7 +1,7 @@
 package com.e.toolplusstore.apis;
 
 
-import com.e.toolplusstore.beans.Store;
+import com.e.toolplusstore.beans.Shopkeeper;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +11,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -34,20 +35,22 @@ public class StoreService {
     public  interface ServiceApi{
         @Multipart
         @POST("store/save")
-        public Call<Store> saveStore(@Part MultipartBody.Part file,
-                                     @Part("shopName") RequestBody shopName,
-                                     @Part("contactNumber") RequestBody contactNumber,
-                                     @Part("address") RequestBody address,
-                                     @Part("email") RequestBody email,
-                                     @Part("token") RequestBody token);
+        public Call<Shopkeeper> saveStore(@Part MultipartBody.Part file,
+                                          @Part("shopName") RequestBody shopName,
+                                          @Part("contactNumber") RequestBody contactNumber,
+                                          @Part("address") RequestBody address,
+                                          @Part("email") RequestBody email,
+                                          @Part("token") RequestBody token);
         @Multipart
         @POST("store/update")
-        public Call<Store> updateStore(@Part MultipartBody.Part file,
-                                     @Part("shopName") RequestBody shopName,
-                                     @Part("contactNumber") RequestBody contactNumber,
-                                     @Part("address") RequestBody address,
-                                     @Part("email") RequestBody email,
-                                     @Part("shopKeeperId") RequestBody shopKeeperId,
-                                     @Part("token") RequestBody token);
+        public Call<Shopkeeper> updateStore(@Part MultipartBody.Part file,
+                                            @Part("shopName") RequestBody shopName,
+                                            @Part("contactNumber") RequestBody contactNumber,
+                                            @Part("address") RequestBody address,
+                                            @Part("email") RequestBody email,
+                                            @Part("shopKeeperId") RequestBody shopKeeperId,
+                                            @Part("token") RequestBody token);
+        @POST("store/update/withoutImage")
+        public Call<Shopkeeper> updateStoreWithoutImage(@Body Shopkeeper shopkeeper);
     }
 }

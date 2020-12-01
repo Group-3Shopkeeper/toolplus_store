@@ -21,13 +21,12 @@ import android.view.View;
 import android.widget.Toast;
 import static android.content.ContentValues.TAG;
 import com.e.toolplusstore.apis.StoreService;
-import com.e.toolplusstore.beans.Store;
+import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.ActivityAddStoreBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.util.Objects;
@@ -126,17 +125,17 @@ public class AddStore extends AppCompatActivity {
                         RequestBody storeToken = RequestBody.create(okhttp3.MultipartBody.FORM, token);
 
                         StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
-                        Call<Store> call = serviceApi.saveStore(body, storeName, storeNumber, storeAddress, storeEmail, storeToken);
+                        Call<Shopkeeper> call = serviceApi.saveStore(body, storeName, storeNumber, storeAddress, storeEmail, storeToken);
 
-                        call.enqueue(new Callback<Store>() {
+                        call.enqueue(new Callback<Shopkeeper>() {
                             @Override
-                            public void onResponse(Call<Store> call, Response<Store> response) {
+                            public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
                                 if (response.code() == 200) {
                                     pd.dismiss();
-                                    Store store = response.body();
+                                    Shopkeeper shopkeeper = response.body();
                                     SharedPreferences.Editor editor = mPref.edit();
                                     Gson gson = new Gson();
-                                    String json = gson.toJson(store);
+                                    String json = gson.toJson(shopkeeper);
                                     editor.putString(currentUserId, json);
                                     editor.commit();
                                     Toast.makeText(AddStore.this, "Saved", Toast.LENGTH_SHORT).show();
@@ -154,7 +153,7 @@ public class AddStore extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<Store> call, Throwable t) {
+                            public void onFailure(Call<Shopkeeper> call, Throwable t) {
                                 pd.dismiss();
                                 Toast.makeText(AddStore.this, "" + t, Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "onFailure: =====================>"+t );

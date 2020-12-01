@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProductDetailsActivty">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll"
+        android:layout_marginBottom="10dp"
+        android:fillViewport="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainRl"
+        >
 
     <ImageView
         android:id="@+id/iv"
@@ -37,21 +48,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="Price"
+            android:text="Actual Price"
             android:textStyle="bold"
             android:paddingLeft="5dp"
             android:layout_below="@+id/tvProductName"
             android:paddingBottom="3dp"
             android:textSize="20sp"/>
         <TextView
+            android:id="@+id/tvMRP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="MRP"
+            android:layout_below="@+id/tvPrice"
+            android:paddingLeft="5dp"
+            android:textSize="12dp"/>
+        <TextView
             android:id="@+id/tvDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FA0303"
             android:text="Discount"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/tvMRP"
             android:layout_below="@+id/tvPrice"
             android:paddingLeft="5dp"
-            android:textSize="17dp"/>
+            android:textSize="12dp"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -84,7 +106,8 @@
         android:layout_marginRight="20dp"
         android:background="@color/white"
         android:layout_below="@+id/rv2"
-        android:elevation="6dp">
+        android:elevation="6dp"
+        >
         <TextView
             android:id="@+id/tvQtyInStock"
             android:layout_width="wrap_content"
@@ -105,12 +128,17 @@
             android:paddingTop="5dp"
             android:textSize="17dp"/>
     </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/ll"
+        android:paddingTop="10dp"
         android:layout_alignParentBottom="true"
-        android:weightSum="1">
+        android:weightSum="1"
+        >
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
