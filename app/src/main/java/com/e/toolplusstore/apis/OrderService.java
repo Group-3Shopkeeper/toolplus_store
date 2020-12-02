@@ -16,8 +16,6 @@ public class OrderService {
     public static OrderApi orderApi;
     public  static OrderApi getOrderApiInstance(){
 
-    public static OrderService.OrderApi orderApi;
-    public  static OrderService.OrderApi getOrderApiInstance(){
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(2000, TimeUnit.SECONDS)
                 .readTimeout(2000, TimeUnit.SECONDS)

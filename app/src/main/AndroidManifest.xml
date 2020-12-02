@@ -48,7 +48,7 @@
             android:name=".AddProductActivity"
             android:parentActivityName=".HomeActivity" />
 
-        <activity android:name=".OrderItemActivity"/>
+
 
         <activity android:name=".OrderHistoryActivity"
             android:parentActivityName=".HomeActivity"/>
