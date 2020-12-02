@@ -15,6 +15,7 @@ import com.e.toolplusstore.apis.OrderService;
 import com.e.toolplusstore.beans.OrderItemList;
 import com.e.toolplusstore.beans.PurchaseOrder;
 import com.e.toolplusstore.databinding.ActivityOrderHistoryBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import retrofit2.Response;
 public class OrderHistoryActivity extends AppCompatActivity {
     ActivityOrderHistoryBinding binding;
     OrderHistoryAdapter adapter;
-
+    String currentUserId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,8 +36,12 @@ public class OrderHistoryActivity extends AppCompatActivity {
         binding = ActivityOrderHistoryBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
         initComponent();
+        currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
-        Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList("DsGMI9MODAAoaU1sVch2");
+        Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
+
+        
+
         call.enqueue(new Callback<ArrayList<PurchaseOrder>>() {
             @Override
             public void onResponse(Call<ArrayList<PurchaseOrder>> call, Response<ArrayList<PurchaseOrder>> response) {

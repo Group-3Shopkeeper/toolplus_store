@@ -3,6 +3,7 @@ package com.e.toolplusstore.apis;
 import com.e.toolplusstore.beans.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MultipartBody;
@@ -39,8 +40,7 @@ public class ProductService {
         @GET("product/name/{name}")
         public Call<ArrayList<Product>> getProductList(@Path("name") String name);
 
-        @GET("product/t/{shopKeeperId}/{categoryId}")
-        public Call<ArrayList<Product>> getProductByCategoryAndShopKeeper(@Path("categoryId") String categoryId,@Path("shopKeeperId") String shopKeeperId);
+    
 
         @GET("product/{shopKeeperId}/{name}")
         public Call<ArrayList<Product>> getProductList(@Path("shopKeeperId") String shopKeeperId,@Path("name") String name);
@@ -48,6 +48,8 @@ public class ProductService {
         @GET("product/c/{categoryId}")
         public Call<ArrayList<Product>> getProductByCategory(@Path("categoryId") String categoryId);
 
+        @GET("product/t/{shopKeeperId}/{categoryId}")
+        public Call<List<Product>> getProductByCategoryAndShopkeeper(@Path("categoryId") String categoryId, @Path("shopKeeperId") String shopKeeperId);
 
         @DELETE("product/{id}")
         public Call<Product> deleteProduct(@Path("id") String id);

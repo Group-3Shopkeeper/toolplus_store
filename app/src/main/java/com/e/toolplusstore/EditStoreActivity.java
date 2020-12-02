@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -16,7 +17,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.e.toolplusstore.apis.OrderService;
 import com.e.toolplusstore.apis.StoreService;
+import com.e.toolplusstore.beans.PurchaseOrder;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.ActivityAddStoreBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +27,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -46,9 +50,9 @@ public class EditStoreActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initComponent();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
+        final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mPref.getString(currentUserId,"");
+        String json = mPref.getString(currentUserId, "");
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
         binding.storeNumber.setText(shopkeeper.getContactNumber());
         binding.storeEmail.setText(shopkeeper.getEmail());
@@ -61,7 +65,7 @@ public class EditStoreActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent in = new Intent(Intent.ACTION_GET_CONTENT);
                 in.setType("image/*");
-                startActivityForResult(Intent.createChooser(in,"Select image"),111);
+                startActivityForResult(Intent.createChooser(in, "Select image"), 111);
             }
         });
         binding.btnAddStore.setOnClickListener(new View.OnClickListener() {
@@ -85,108 +89,130 @@ public class EditStoreActivity extends AppCompatActivity {
                     });
                     builder.show();
                 } else {
-                    try{
-                    String address = binding.storeAddress.getText().toString();
-                    String name = binding.storeName.getText().toString();
-                    String email = binding.storeEmail.getText().toString();
-                    String number = binding.storeNumber.getText().toString();
-                    if (TextUtils.isEmpty(name)) {
-                        binding.storeName.setError("Enter Store Name");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(address)) {
-                        binding.storeAddress.setError("Enter Address");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(email)) {
-                        binding.storeEmail.setError("Enter Email");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(number)) {
-                        binding.storeNumber.setError("Enter Number");
-                        return;
-                    }
-                    shopKeeperId = shopkeeper.getShopKeeperId();
-                    token = shopkeeper.getToken();
-                    if (imageUri != null) {
-                        pd = new ProgressDialog(EditStoreActivity.this);
-                        pd.setTitle("Updating");
-                        pd.setMessage("Please wait");
-                        pd.show();
-                        File file = FileUtils.getFile(EditStoreActivity.this, imageUri);
-                        RequestBody requestFile =
-                                RequestBody.create(
-                                        MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
-                                        file
-                                );
+                    try {
+                        String address = binding.storeAddress.getText().toString();
+                        String name = binding.storeName.getText().toString();
+                        String email = binding.storeEmail.getText().toString();
+                        String number = binding.storeNumber.getText().toString();
+                        if (TextUtils.isEmpty(name)) {
+                            binding.storeName.setError("Enter Store Name");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(address)) {
+                            binding.storeAddress.setError("Enter Address");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(email)) {
+                            binding.storeEmail.setError("Enter Email");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(number)) {
+                            binding.storeNumber.setError("Enter Number");
+                            return;
+                        }
+                        shopKeeperId = shopkeeper.getShopKeeperId();
+                        token = shopkeeper.getToken();
+                        if (imageUri != null) {
+                            pd = new ProgressDialog(EditStoreActivity.this);
+                            pd.setTitle("Updating");
+                            pd.setMessage("Please wait");
+                            pd.show();
+                            File file = FileUtils.getFile(EditStoreActivity.this, imageUri);
+                            RequestBody requestFile =
+                                    RequestBody.create(
+                                            MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
+                                            file
+                                    );
 
-                        MultipartBody.Part body =
-                                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                        RequestBody storeName = RequestBody.create(okhttp3.MultipartBody.FORM, name);
-                        RequestBody storeNumber = RequestBody.create(okhttp3.MultipartBody.FORM, number);
-                        RequestBody storeEmail = RequestBody.create(okhttp3.MultipartBody.FORM, email);
-                        RequestBody storeAddress = RequestBody.create(okhttp3.MultipartBody.FORM, address);
-                        RequestBody storeToken = RequestBody.create(okhttp3.MultipartBody.FORM, token);
-                        RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM,shopKeeperId);
+                            MultipartBody.Part body =
+                                    MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                            RequestBody storeName = RequestBody.create(okhttp3.MultipartBody.FORM, name);
+                            RequestBody storeNumber = RequestBody.create(okhttp3.MultipartBody.FORM, number);
+                            RequestBody storeEmail = RequestBody.create(okhttp3.MultipartBody.FORM, email);
+                            RequestBody storeAddress = RequestBody.create(okhttp3.MultipartBody.FORM, address);
+                            RequestBody storeToken = RequestBody.create(okhttp3.MultipartBody.FORM, token);
+                            RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopKeeperId);
 
-                        StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
-                        Call<Shopkeeper> call = serviceApi.updateStore(body,storeName,storeNumber,storeAddress,storeEmail,shopkeeperId,storeToken);
+                            StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
+                            Call<Shopkeeper> call = serviceApi.updateStore(body, storeName, storeNumber, storeAddress, storeEmail, shopkeeperId, storeToken);
 
-                        call.enqueue(new Callback<Shopkeeper>() {
-                            @Override
-                            public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
-                                if(response.code()==200) {
-                                    pd.dismiss();
-                                    Shopkeeper s = response.body();
-                                    SharedPreferences.Editor editor = mPref.edit();
-                                    Gson gson = new Gson();
-                                    String json = gson.toJson(s);
-                                    editor.putString(currentUserId,json);
-                                    editor.commit();
-                                    Toast.makeText(EditStoreActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                                    finish();
+                            call.enqueue(new Callback<Shopkeeper>() {
+                                @Override
+                                public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
+                                    if (response.code() == 200) {
+                                        pd.dismiss();
+                                        Shopkeeper s = response.body();
+                                        SharedPreferences.Editor editor = mPref.edit();
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(s);
+                                        editor.putString(currentUserId, json);
+                                        editor.commit();
+                                        Toast.makeText(EditStoreActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<Shopkeeper> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<Shopkeeper> call, Throwable t) {
 
-                            }
-                        });
-                    }else{
-                        final ProgressDialog progressDialog = new ProgressDialog(EditStoreActivity.this);
-                        progressDialog.setTitle("Updating");
-                        progressDialog.setMessage("Please wait...");
-                        progressDialog.show();
-
-                        Shopkeeper s = new Shopkeeper(shopKeeperId,name,number,address, shopkeeper.getImageUrl(),email,token);
-                        StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
-
-                        Call<Shopkeeper> call = serviceApi.updateStoreWithoutImage(s);
-                        call.enqueue(new Callback<Shopkeeper>() {
-                            @Override
-                            public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
-                                if(response.code()==200) {
-                                    progressDialog.dismiss();
-                                    Shopkeeper shopkeeper1 = response.body();
-                                    SharedPreferences.Editor editor = mPref.edit();
-                                    Gson gson = new Gson();
-                                    String json = gson.toJson(shopkeeper1);
-                                    editor.putString(currentUserId,json);
-                                    editor.commit();
-                                    Toast.makeText(EditStoreActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                                    finish();
                                 }
-                            }
-                            @Override
-                            public void onFailure(Call<Shopkeeper> call, Throwable t) {
+                            });
+                        } else {
+                            final ProgressDialog progressDialog = new ProgressDialog(EditStoreActivity.this);
+                            progressDialog.setTitle("Updating");
+                            progressDialog.setMessage("Please wait...");
+                            progressDialog.show();
 
-                            }
-                        });
+                            Shopkeeper s = new Shopkeeper(shopKeeperId, name, number, address, shopkeeper.getImageUrl(), email, token);
+                            StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
+
+                            Call<Shopkeeper> call = serviceApi.updateStoreWithoutImage(s);
+                            call.enqueue(new Callback<Shopkeeper>() {
+                                @Override
+                                public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
+                                    if (response.code() == 200) {
+                                        progressDialog.dismiss();
+                                        Shopkeeper shopkeeper1 = response.body();
+                                        SharedPreferences.Editor editor = mPref.edit();
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(shopkeeper1);
+                                        editor.putString(currentUserId, json);
+                                        editor.commit();
+                                        Toast.makeText(EditStoreActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Shopkeeper> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(EditStoreActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
                     }
-                }catch (Exception e){
-                        Toast.makeText(EditStoreActivity.this, ""+e.toString(), Toast.LENGTH_SHORT).show();}
                 }
+            }
+        });
+        OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
+        Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
+        call.enqueue(new Callback<ArrayList<PurchaseOrder>>() {
+            @Override
+            public void onResponse(Call<ArrayList<PurchaseOrder>> call, Response<ArrayList<PurchaseOrder>> response) {
+                Log.e("Response", "=====>" + response.code());
+                if (response.code() == 200) {
+                    final ArrayList<PurchaseOrder> orderList = response.body();
+                    for(PurchaseOrder order : orderList){
+                        long totalAmount = order.getTotalAmount();
+                        Toast.makeText(EditStoreActivity.this, ""+totalAmount, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<PurchaseOrder>> call, Throwable t) {
+
             }
         });
     }

@@ -14,12 +14,13 @@ import com.e.toolplusstore.databinding.ShowCategoryBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShowProductAdapter  extends RecyclerView.Adapter<ShowProductAdapter.ShowProductViewHolder> {
     Context context;
-    ArrayList<Product> productList;
+    List<Product> productList;
     OnRecyclerViewClick listener;
-    public  ShowProductAdapter(Context context, ArrayList<Product> productList){
+    public  ShowProductAdapter(Context context, List<Product> productList){
         this.context=context;
         this.productList=productList;
     }
