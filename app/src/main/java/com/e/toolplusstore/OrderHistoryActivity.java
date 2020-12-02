@@ -39,6 +39,9 @@ public class OrderHistoryActivity extends AppCompatActivity {
         currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
         Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
+
+        
+
         call.enqueue(new Callback<ArrayList<PurchaseOrder>>() {
             @Override
             public void onResponse(Call<ArrayList<PurchaseOrder>> call, Response<ArrayList<PurchaseOrder>> response) {

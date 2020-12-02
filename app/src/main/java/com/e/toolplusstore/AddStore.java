@@ -19,7 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
-
+import static android.content.ContentValues.TAG;
 import com.e.toolplusstore.apis.StoreService;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.ActivityAddStoreBinding;
@@ -123,9 +123,11 @@ public class AddStore extends AppCompatActivity {
                         RequestBody storeEmail = RequestBody.create(okhttp3.MultipartBody.FORM, email);
                         RequestBody storeAddress = RequestBody.create(okhttp3.MultipartBody.FORM, address);
                         RequestBody storeToken = RequestBody.create(okhttp3.MultipartBody.FORM, token);
+                        RequestBody shopKeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, currentUserId);
+
 
                         StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
-                        Call<Shopkeeper> call = serviceApi.saveStore(body, storeName, storeNumber, storeAddress, storeEmail, storeToken);
+                        Call<Shopkeeper> call = serviceApi.saveStore(body, storeName, storeNumber, storeAddress, storeEmail,shopKeeperId, storeToken);
 
                         call.enqueue(new Callback<Shopkeeper>() {
                             @Override
@@ -148,7 +150,7 @@ public class AddStore extends AppCompatActivity {
                                 } else if (response.code() == 500) {
                                     pd.dismiss();
                                     Toast.makeText(AddStore.this, "500", Toast.LENGTH_SHORT).show();
-                                    Log.e("=========", "500");
+                                    Log.e(TAG, "onResponse:========================> "+response.errorBody());
                                 }
                             }
 
@@ -156,6 +158,7 @@ public class AddStore extends AppCompatActivity {
                             public void onFailure(Call<Shopkeeper> call, Throwable t) {
                                 pd.dismiss();
                                 Toast.makeText(AddStore.this, "" + t, Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "onFailure: =====================>"+t );
                             }
                         });
                     } else {

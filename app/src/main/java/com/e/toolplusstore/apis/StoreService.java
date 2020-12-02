@@ -20,8 +20,8 @@ public class StoreService {
     public static StoreService.ServiceApi storeApi;
     public  static StoreService.ServiceApi getStoreApiInstance(){
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(1000, TimeUnit.SECONDS)
-                .readTimeout(1000, TimeUnit.SECONDS)
+                .connectTimeout(2000, TimeUnit.SECONDS)
+                .readTimeout(2000, TimeUnit.SECONDS)
                 .build();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(ServerAddress.BASE_URL)
@@ -40,6 +40,7 @@ public class StoreService {
                                           @Part("contactNumber") RequestBody contactNumber,
                                           @Part("address") RequestBody address,
                                           @Part("email") RequestBody email,
+                                          @Part("shopKeeperId") RequestBody shopKeeperId,
                                           @Part("token") RequestBody token);
         @Multipart
         @POST("store/update")

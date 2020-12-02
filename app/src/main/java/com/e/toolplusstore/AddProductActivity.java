@@ -119,8 +119,11 @@ public class AddProductActivity extends AppCompatActivity {
                     }).setPositiveButton("Connect", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent in = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
-                            startActivity(in);
+                            //Intent in = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+                            //startActivity(in);
+                            Intent intent = new Intent(Intent.ACTION_MAIN);
+                            intent.setClassName("com.android.phone","com.android.phone.NetworkSetting");
+                            startActivity(intent);
                         }
                     });
                     builder.show();
@@ -134,96 +137,97 @@ public class AddProductActivity extends AppCompatActivity {
                         String description = binding.productDescription.getText().toString();
                         String shopKeeperId = shopkeeper.getShopKeeperId();
 
-                    if (TextUtils.isEmpty(name)) {
-                        binding.productName.setError("Enter Product Name");
-                        return;
-                    }
-                    if(categoryId==null){
-                        Toast.makeText(AddProductActivity.this, "SELECT ATLEAST ONE CATEGORY", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(brand)) {
-                        binding.productBrand.setError("Enter Brand Name");
-                        return;
-                    }
-                    if (qtyInStock<=0) {
-                        binding.productQuantity.setError("Quantity can't be zero");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(price.toString())) {
-                        binding.productPrice.setError("Enter Price");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(discount.toString())) {
-                        discount = 0.0;
-                    }
-                    if (TextUtils.isEmpty(description)) {
-                        description = "";
-                    }
+                        if (TextUtils.isEmpty(name)) {
+                            binding.productName.setError("Enter Product Name");
+                            return;
+                        }
+                        if (categoryId == null) {
+                            Toast.makeText(AddProductActivity.this, "SELECT ATLEAST ONE CATEGORY", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (TextUtils.isEmpty(brand)) {
+                            binding.productBrand.setError("Enter Brand Name");
+                            return;
+                        }
+                        if (qtyInStock <= 0) {
+                            binding.productQuantity.setError("Quantity can't be zero");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(price.toString())) {
+                            binding.productPrice.setError("Enter Price");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(discount.toString())) {
+                            discount = 0.0;
+                        }
+                        if (TextUtils.isEmpty(description)) {
+                            description = "";
+                        }
 
-                    if (imageUri != null) {
-                        pd = new ProgressDialog(AddProductActivity.this);
-                        pd.setTitle("Saving");
-                        pd.setMessage("Please wait");
-                        pd.show();
-                        File file = FileUtils.getFile(AddProductActivity.this, imageUri);
-                        RequestBody requestFile =
-                                RequestBody.create(
-                                        MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
-                                        file
-                                );
+                        if (imageUri != null) {
+                            pd = new ProgressDialog(AddProductActivity.this);
+                            pd.setTitle("Saving");
+                            pd.setMessage("Please wait");
+                            pd.show();
+                            File file = FileUtils.getFile(AddProductActivity.this, imageUri);
+                            RequestBody requestFile =
+                                    RequestBody.create(
+                                            MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
+                                            file
+                                    );
 
-                        MultipartBody.Part body =
-                                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                        RequestBody productName = RequestBody.create(
-                                okhttp3.MultipartBody.FORM, name);
+                            MultipartBody.Part body =
+                                    MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                            RequestBody productName = RequestBody.create(
+                                    okhttp3.MultipartBody.FORM, name);
 
-                        RequestBody productBrand = RequestBody.create(okhttp3.MultipartBody.FORM, brand);
-                        RequestBody productPrice = RequestBody.create(
-                                okhttp3.MultipartBody.FORM, String.valueOf(price));
-                        RequestBody productDiscount = RequestBody.create(
-                                okhttp3.MultipartBody.FORM, String.valueOf(discount));
-                        RequestBody productQtyInStock = RequestBody.create(
-                                okhttp3.MultipartBody.FORM, String.valueOf(qtyInStock));
-                        RequestBody productCategoryId = RequestBody.create(
-                                okhttp3.MultipartBody.FORM, categoryId);
-                        RequestBody productDescription = RequestBody.create(
-                                okhttp3.MultipartBody.FORM, description);
-                        RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopKeeperId);
+                            RequestBody productBrand = RequestBody.create(okhttp3.MultipartBody.FORM, brand);
+                            RequestBody productPrice = RequestBody.create(
+                                    okhttp3.MultipartBody.FORM, String.valueOf(price));
+                            RequestBody productDiscount = RequestBody.create(
+                                    okhttp3.MultipartBody.FORM, String.valueOf(discount));
+                            RequestBody productQtyInStock = RequestBody.create(
+                                    okhttp3.MultipartBody.FORM, String.valueOf(qtyInStock));
+                            RequestBody productCategoryId = RequestBody.create(
+                                    okhttp3.MultipartBody.FORM, categoryId);
+                            RequestBody productDescription = RequestBody.create(
+                                    okhttp3.MultipartBody.FORM, description);
+                            RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopKeeperId);
 
-                        ProductService.ProductApi productApi = ProductService.getProductApiInstance();
-                        Call<Product> call = productApi.saveProduct(body, productName, productQtyInStock, productPrice
-                                , productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId);
+                            ProductService.ProductApi productApi = ProductService.getProductApiInstance();
+                            Call<Product> call = productApi.saveProduct(body, productName, productQtyInStock, productPrice
+                                    , productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId);
 
-                        call.enqueue(new Callback<Product>() {
-                            @Override
-                            public void onResponse(Call<Product> call, Response<Product> response) {
-                                if (response.code() == 200) {
-                                    pd.dismiss();
-                                    Product product = response.body();
-                                    Toast.makeText(AddProductActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                } else if (response.code() == 404) {
-                                    pd.dismiss();
-                                    Toast.makeText(AddProductActivity.this, "404", Toast.LENGTH_SHORT).show();
-                                } else if (response.code() == 500) {
-                                    Toast.makeText(AddProductActivity.this, "500", Toast.LENGTH_SHORT).show();
+                            call.enqueue(new Callback<Product>() {
+                                @Override
+                                public void onResponse(Call<Product> call, Response<Product> response) {
+                                    if (response.code() == 200) {
+                                        pd.dismiss();
+                                        Product product = response.body();
+                                        Toast.makeText(AddProductActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else if (response.code() == 404) {
+                                        pd.dismiss();
+                                        Toast.makeText(AddProductActivity.this, "404", Toast.LENGTH_SHORT).show();
+                                    } else if (response.code() == 500) {
+                                        Toast.makeText(AddProductActivity.this, "500", Toast.LENGTH_SHORT).show();
+                                        pd.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Product> call, Throwable t) {
+                                    Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
                                     pd.dismiss();
                                 }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Product> call, Throwable t) {
-                                Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
-                                pd.dismiss();
-                            }
-                        });
-                    } else {
-                        Toast.makeText(AddProductActivity.this, "Please select Profile pic", Toast.LENGTH_SHORT).show();
-                    }
-                    }catch (NumberFormatException e){
+                            });
+                        } else {
+                            Toast.makeText(AddProductActivity.this, "Please select Profile pic", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (NumberFormatException e) {
                         Toast.makeText(AddProductActivity.this, "Enter All Valid Inputs", Toast.LENGTH_SHORT).show();
                     }
+
                 }
             }
         });

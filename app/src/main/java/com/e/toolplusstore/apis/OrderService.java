@@ -13,6 +13,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public class OrderService {
+    public static OrderApi orderApi;
+    public  static OrderApi getOrderApiInstance(){
+
     public static OrderService.OrderApi orderApi;
     public  static OrderService.OrderApi getOrderApiInstance(){
         OkHttpClient client = new OkHttpClient.Builder()
@@ -25,12 +28,18 @@ public class OrderService {
                 .build();
 
         if(orderApi==null)
+            orderApi=retrofit.create(OrderApi.class);
+
             orderApi=retrofit.create(OrderService.OrderApi.class);
         return  orderApi;
     }
     public  interface OrderApi{
         @GET("order/orderHistory/{shopKeeperId}")
         public Call<ArrayList<PurchaseOrder>> getOrderList(@Path("shopKeeperId") String shopKeeperId);
+
+        @GET("order/newOrder/{shopKeeperId}")
+        public Call<ArrayList<PurchaseOrder>> getNewOreder(@Path("shopKeeperId") String shopKeeperId);
+
     }
 
 }
