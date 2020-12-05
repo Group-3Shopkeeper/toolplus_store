@@ -22,6 +22,10 @@
             android:parentActivityName=".ProductDetailsActivty" />
         <activity android:name=".ProductDetailsActivty" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".ViewStoreActivity"
+            android:parentActivityName=".HomeActivity">
+
+        </activity>
         <activity android:name=".OrderItemActivity"
             android:parentActivityName=".OrderHistoryActivity"/>
         <activity android:name=".MainActivity"
@@ -36,7 +40,7 @@
         <activity android:name=".NewOrderActivity"
             android:parentActivityName=".HomeActivity"/>
         <activity android:name=".EditStoreActivity"
-            android:parentActivityName=".HomeActivity"/>
+            android:parentActivityName=".ViewStoreActivity"/>
         <activity
             android:name=".ProductActivity"
             android:parentActivityName=".HomeActivity" />
