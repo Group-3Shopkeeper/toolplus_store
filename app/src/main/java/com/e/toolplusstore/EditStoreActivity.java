@@ -52,14 +52,11 @@ public class EditStoreActivity extends AppCompatActivity {
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = mPref.getString(currentUserId, "");
-        final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
-        binding.storeNumber.setHint(shopkeeper.getContactNumber());
-        binding.storeEmail.setHint(shopkeeper.getEmail());
-        Picasso.get().load(shopkeeper.getImageUrl()).into(binding.storeImage);
-        binding.storeName.setHint(shopkeeper.getShopName());
-        binding.storeAddress.setHint(shopkeeper.getAddress());
+        binding.storeNumber.setText(mPref.getString("contact","Contact number"));
+        binding.storeEmail.setText(mPref.getString("email","email"));
+        Picasso.get().load(mPref.getString("imageUrl","")).into(binding.storeImage);
+        binding.storeName.setText(mPref.getString("name","Store name"));
+        binding.storeAddress.setText(mPref.getString("address","Address"));
         binding.btnAddStore.setText("Update Store");
         binding.storeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,8 +108,8 @@ public class EditStoreActivity extends AppCompatActivity {
                             binding.storeNumber.setError("Enter Number");
                             return;
                         }
-                        shopKeeperId = shopkeeper.getShopKeeperId();
-                        token = shopkeeper.getToken();
+                        shopKeeperId = mPref.getString("userId","");
+                        token = mPref.getString("token","");
                         if (imageUri != null) {
                             pd = new ProgressDialog(EditStoreActivity.this);
                             pd.setTitle("Updating");
@@ -142,11 +139,16 @@ public class EditStoreActivity extends AppCompatActivity {
                                 public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
                                     if (response.code() == 200) {
                                         pd.dismiss();
-                                        Shopkeeper s = response.body();
+                                        Shopkeeper shopkeeper = response.body();
                                         SharedPreferences.Editor editor = mPref.edit();
-                                        Gson gson = new Gson();
-                                        String json = gson.toJson(s);
-                                        editor.putString(currentUserId, json);
+
+                                        editor.putString("userId",shopkeeper.getShopKeeperId());
+                                        editor.putString("address",shopkeeper.getAddress());
+                                        editor.putString("email",shopkeeper.getEmail());
+                                        editor.putString("contact",shopkeeper.getContactNumber());
+                                        editor.putString("token",shopkeeper.getToken());
+                                        editor.putString("imageUrl",shopkeeper.getImageUrl());
+                                        editor.putString("name",shopkeeper.getShopName());
                                         editor.commit();
                                         Toast.makeText(EditStoreActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                                         finish();
@@ -164,7 +166,7 @@ public class EditStoreActivity extends AppCompatActivity {
                             progressDialog.setMessage("Please wait...");
                             progressDialog.show();
 
-                            Shopkeeper s = new Shopkeeper(shopKeeperId, name, number, address, shopkeeper.getImageUrl(), email, token);
+                            Shopkeeper s = new Shopkeeper(shopKeeperId, name, number, address, mPref.getString("imageUrl",""), email, token);
                             StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
 
                             Call<Shopkeeper> call = serviceApi.updateStoreWithoutImage(s);

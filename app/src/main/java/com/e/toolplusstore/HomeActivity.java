@@ -24,7 +24,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.e.toolplusstore.adapter.CategoryAdapter;
 import com.e.toolplusstore.apis.CategoryService;
 
+import com.e.toolplusstore.apis.StoreService;
 import com.e.toolplusstore.beans.Category;
+import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.ActivityHomeBinding;
 import com.firebase.ui.auth.AuthUI;
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -33,6 +35,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
@@ -50,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(HomeActivity.this));
         setContentView(binding.getRoot());
+
 
         InternetConnectivity connectivity = new InternetConnectivity();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -69,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
             });
             builder.show();
         } else {
+            checkUserProfile();
             Sprite doubleBounce = new Wave();
             binding.spinKit.setIndeterminateDrawable(doubleBounce);
             CategoryService.CategoryApi categoryApi = CategoryService.getCategoryApiInstance();
@@ -199,11 +205,75 @@ public class HomeActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
-        if(!mPref.contains(currentUserId))
-            startActivity(new Intent(HomeActivity.this, AddStore.class));
+    private void checkUserProfile(){
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final SharedPreferences sp = getSharedPreferences("MyStore",MODE_PRIVATE);
+        String id = sp.getString("userId","Not found");
+        Log.e("status : ","=====>"+id);
+        if(!id.equals("Not found")){
+                if(!id.equals(currentUserId)){
+                    StoreService.ServiceApi storeApi = StoreService.getStoreApiInstance();
+                    Call<Shopkeeper> call = storeApi.getStoreProfile(currentUserId);
+                    call.enqueue(new Callback<Shopkeeper>() {
+                        @Override
+                        public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
+                            if(response.code() == 200){
+                                Shopkeeper shopkeeper = response.body();
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putString("userId",shopkeeper.getShopKeeperId());
+                                editor.putString("address",shopkeeper.getAddress());
+                                editor.putString("email",shopkeeper.getEmail());
+                                editor.putString("contact",shopkeeper.getContactNumber());
+                                editor.putString("token",shopkeeper.getToken());
+                                editor.putString("imageUrl",shopkeeper.getImageUrl());
+                                editor.putString("name",shopkeeper.getShopName());
+                                editor.commit();
+                            }
+                            else if(response.code() == 404){
+                                sendUserToAddStoreActivity();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Shopkeeper> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+        else{
+            StoreService.ServiceApi storeApi = StoreService.getStoreApiInstance();
+            Call<Shopkeeper> call = storeApi.getStoreProfile(currentUserId);
+            call.enqueue(new Callback<Shopkeeper>() {
+                @Override
+                public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
+                    if(response.code() == 200){
+                        Shopkeeper shopkeeper = response.body();
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("userId",shopkeeper.getShopKeeperId());
+                        editor.putString("address",shopkeeper.getAddress());
+                        editor.putString("email",shopkeeper.getEmail());
+                        editor.putString("contact",shopkeeper.getContactNumber());
+                        editor.putString("token",shopkeeper.getToken());
+                        editor.putString("imageUrl",shopkeeper.getImageUrl());
+                        editor.putString("name",shopkeeper.getShopName());
+                        editor.commit();
+                    }
+                    else if(response.code() == 404){
+                        sendUserToAddStoreActivity();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Shopkeeper> call, Throwable t) {
+
+                }
+            });
+        }
+
+    }
+    private void sendUserToAddStoreActivity(){
+        Intent in = new Intent(this,AddStore.class);
+        startActivity(in);
     }
 }

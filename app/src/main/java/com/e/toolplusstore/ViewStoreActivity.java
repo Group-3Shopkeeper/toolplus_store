@@ -37,14 +37,11 @@ public class ViewStoreActivity extends AppCompatActivity {
         initComponent();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = mPref.getString(currentUserId, "");
-        final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
-        binding.tvStoreNumber.setText(shopkeeper.getContactNumber());
-        binding.tvStoreEmail.setText(shopkeeper.getEmail());
-        Picasso.get().load(shopkeeper.getImageUrl()).into(binding.storeImage);
-        binding.tvStoreName.setText(shopkeeper.getShopName());
-        binding.tvStoreAddress.setText(shopkeeper.getAddress());
+        binding.tvStoreNumber.setText(mPref.getString("contact","Contact number"));
+        binding.tvStoreEmail.setText(mPref.getString("email","Email"));
+        Picasso.get().load(mPref.getString("imageUrl",""));
+        binding.tvStoreName.setText(mPref.getString("name","Name"));
+        binding.tvStoreAddress.setText(mPref.getString("address","address"));
         binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

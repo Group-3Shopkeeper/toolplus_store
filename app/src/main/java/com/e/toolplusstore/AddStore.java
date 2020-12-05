@@ -136,9 +136,15 @@ public class AddStore extends AppCompatActivity {
                                     pd.dismiss();
                                     Shopkeeper shopkeeper = response.body();
                                     SharedPreferences.Editor editor = mPref.edit();
-                                    Gson gson = new Gson();
-                                    String json = gson.toJson(shopkeeper);
-                                    editor.putString(currentUserId, json);
+                                    //Gson gson = new Gson();
+                                    //String json = gson.toJson(shopkeeper);
+                                    editor.putString("userId",shopkeeper.getShopKeeperId());
+                                    editor.putString("address",shopkeeper.getAddress());
+                                    editor.putString("email",shopkeeper.getEmail());
+                                    editor.putString("contact",shopkeeper.getContactNumber());
+                                    editor.putString("token",shopkeeper.getToken());
+                                    editor.putString("imageUrl",shopkeeper.getImageUrl());
+                                    editor.putString("name",shopkeeper.getShopName());
                                     editor.commit();
                                     Toast.makeText(AddStore.this, "Saved", Toast.LENGTH_SHORT).show();
                                     finish();
