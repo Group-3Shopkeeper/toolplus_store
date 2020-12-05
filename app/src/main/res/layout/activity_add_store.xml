@@ -102,6 +102,5 @@
         android:background="@drawable/search_bar_decorator"
         android:layout_below="@+id/storeNumber"
         android:id="@+id/btnAddStore"/>
-
 </RelativeLayout>
 </ScrollView>

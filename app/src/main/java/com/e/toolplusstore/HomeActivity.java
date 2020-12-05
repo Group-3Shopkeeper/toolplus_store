@@ -182,7 +182,7 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onOptionsItemSelected (@NonNull MenuItem item){
             String title = item.getTitle().toString();
             if (title.equals("Settings")) {
-                Intent intent = new Intent(HomeActivity.this, EditStoreActivity.class);
+                Intent intent = new Intent(HomeActivity.this, ViewStoreActivity.class);
                 startActivity(intent);
             }
             if (title.equals("Logout")) {

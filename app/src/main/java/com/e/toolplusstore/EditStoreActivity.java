@@ -50,15 +50,16 @@ public class EditStoreActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initComponent();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId, "");
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
-        binding.storeNumber.setText(shopkeeper.getContactNumber());
-        binding.storeEmail.setText(shopkeeper.getEmail());
+        binding.storeNumber.setHint(shopkeeper.getContactNumber());
+        binding.storeEmail.setHint(shopkeeper.getEmail());
         Picasso.get().load(shopkeeper.getImageUrl()).into(binding.storeImage);
-        binding.storeName.setText(shopkeeper.getShopName());
-        binding.storeAddress.setText(shopkeeper.getAddress());
+        binding.storeName.setHint(shopkeeper.getShopName());
+        binding.storeAddress.setHint(shopkeeper.getAddress());
         binding.btnAddStore.setText("Update Store");
         binding.storeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,26 +194,6 @@ public class EditStoreActivity extends AppCompatActivity {
                         Toast.makeText(EditStoreActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-        });
-        OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
-        Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
-        call.enqueue(new Callback<ArrayList<PurchaseOrder>>() {
-            @Override
-            public void onResponse(Call<ArrayList<PurchaseOrder>> call, Response<ArrayList<PurchaseOrder>> response) {
-                Log.e("Response", "=====>" + response.code());
-                if (response.code() == 200) {
-                    final ArrayList<PurchaseOrder> orderList = response.body();
-                    for(PurchaseOrder order : orderList){
-                        long totalAmount = order.getTotalAmount();
-                        Toast.makeText(EditStoreActivity.this, ""+totalAmount, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<PurchaseOrder>> call, Throwable t) {
-
             }
         });
     }
