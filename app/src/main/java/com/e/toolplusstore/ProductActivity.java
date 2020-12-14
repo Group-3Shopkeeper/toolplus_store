@@ -63,8 +63,10 @@ public class ProductActivity extends AppCompatActivity {
                 if(response.code()==200) {
                     List<Product> productArrayList = response.body();
                     Log.e("=============", "product: " + productArrayList);
-                    if (productArrayList.size() == 0)
-                        Toast.makeText(ProductActivity.this, "No data found", Toast.LENGTH_SHORT).show();
+                    if (productArrayList.size() == 0) {
+                        binding.spinKit.setVisibility(View.INVISIBLE);
+                        binding.noMatch.setVisibility(View.VISIBLE);
+                    }
                     else {
                         adapter = new ShowProductAdapter(ProductActivity.this, productArrayList);
                         binding.rv1.setAdapter(adapter);

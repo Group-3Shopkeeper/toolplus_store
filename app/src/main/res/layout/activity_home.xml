@@ -25,41 +25,35 @@
                     android:id="@+id/toolbar"
                     app:subtitleTextColor="@color/white"
                     android:background="@drawable/search_bar_decorator"
-                    app:titleTextColor="@color/white"
-                    />
-            </com.google.android.material.appbar.AppBarLayout>
+                    app:titleTextColor="@color/white">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ivsearch"
+                        android:src="@drawable/search"
+                        android:layout_gravity="right"
+                        android:paddingTop="2dp"/>
+                    <EditText
+                        android:id="@+id/etSearchBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:hint="Search product here"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/white_searchbar_decorator"
+                        android:textColor="@color/colorPrimary"
+                        android:textAlignment="textStart"
+                        android:textCursorDrawable="@color/white"
+                        android:textColorHint="@color/white"
+                        android:paddingBottom="10dp"
+                        android:visibility="gone"
+                        android:layout_alignParentStart="true"
+                        />
 
-            <EditText
-                android:id="@+id/etSearchBar"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:hint="Search product here"
-                android:paddingLeft="10dp"
-                android:background="@drawable/search_bar_decorator"
-                android:textColor="@color/white"
-                android:textAlignment="textStart"
-                android:drawableRight="@drawable/search"
-                android:textCursorDrawable="@color/white"
-                android:textColorHint="@color/white"
-                android:paddingBottom="10dp"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/drawer"/>
-            <Button
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:id="@+id/btnSeach"
-                android:text="Search"
-                android:background="@drawable/search_bar_decorator"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:padding="10dp"
-                android:visibility="gone"
-                android:gravity="center"/>
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
