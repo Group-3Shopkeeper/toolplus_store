@@ -151,31 +151,29 @@ public class HomeActivity extends AppCompatActivity {
                     return false;
                 }
             });
-            binding.etSearchBar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    binding.btnSeach.setVisibility(View.VISIBLE);
-                    binding.btnSeach.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String name = "";
-                            Intent intent = new Intent(HomeActivity.this, SearchProductActivity.class);
-                            name = binding.etSearchBar.getText().toString();
-                            if (TextUtils.isEmpty(name)) {
-                                binding.etSearchBar.setError("write here and than search..");
-                            } else {
-                                intent.putExtra("name", name);
-                                startActivity(intent);
-                                binding.btnSeach.setVisibility(View.GONE);
-                            }
+        binding.ivsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.etSearchBar.setVisibility(View.VISIBLE);
+                binding.ivsearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = "";
+                        Intent intent = new Intent(HomeActivity.this, SearchProductActivity.class);
+                        name = binding.etSearchBar.getText().toString();
+                        if (TextUtils.isEmpty(name)) {
+                            binding.etSearchBar.setError("write here and than search..");
+                        } else {
+                            intent.putExtra("name", name);
+                            startActivity(intent);
+                            binding.etSearchBar.setVisibility(View.GONE);
                         }
-                    });
+                    }
+                });
+            }
+        });
 
-                }
-
-            });
-
-        }
+    }
         @Override
         public boolean onCreateOptionsMenu (Menu menu){
             menu.add("Settings");
