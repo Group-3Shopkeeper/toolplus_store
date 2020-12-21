@@ -135,8 +135,7 @@ public class AddProductActivity extends AppCompatActivity {
                         Double price = Double.parseDouble(binding.productPrice.getText().toString());
                         Double discount = Double.parseDouble(binding.productDiscount.getText().toString());
                         String description = binding.productDescription.getText().toString();
-                        String shopKeeperId = shopkeeper.getShopKeeperId();
-
+                        String shopKeeperId=currentUserId;
                         if (TextUtils.isEmpty(name)) {
                             binding.productName.setError("Enter Product Name");
                             return;
