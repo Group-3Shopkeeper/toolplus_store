@@ -41,9 +41,6 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ProductActivityBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
-
-        
-
         Sprite doubleBounce = new Wave();
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
         initComponent();
@@ -65,13 +62,13 @@ public class ProductActivity extends AppCompatActivity {
                     Log.e("=============", "product: " + productArrayList);
                     if (productArrayList.size() == 0) {
                         binding.spinKit.setVisibility(View.INVISIBLE);
-                        binding.noMatch.setVisibility(View.VISIBLE);
+                        binding.nope.setVisibility(View.VISIBLE);
                     }
                     else {
                         adapter = new ShowProductAdapter(ProductActivity.this, productArrayList);
                         binding.rv1.setAdapter(adapter);
                         binding.rv1.setLayoutManager(new GridLayoutManager(ProductActivity.this, 2));
-                      binding.spinKit.setVisibility(View.INVISIBLE);
+                        binding.spinKit.setVisibility(View.INVISIBLE);
                         adapter.setOnItemClickListener(new ShowProductAdapter.OnRecyclerViewClick() {
                             @Override
                             public void onItemClick(Product product, int position) {

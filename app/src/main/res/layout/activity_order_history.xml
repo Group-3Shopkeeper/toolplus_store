@@ -9,11 +9,35 @@
         android:background="@color/colorPrimaryDark"
         android:id="@+id/toolbar"
         />
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:layout_margin="15dp"
         android:id="@+id/rvOrderHistory"/>
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/colorPrimaryDark" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notFound"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/toolbar"
+        android:src="@drawable/orderhistorynotavailble"
+        android:visibility="gone"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notavailble"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/toolbar"
+        android:src="@drawable/newordernotavailble"
+        android:visibility="gone"/>
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,6 +16,8 @@ import com.e.toolplusstore.apis.OrderService;
 import com.e.toolplusstore.beans.OrderItemList;
 import com.e.toolplusstore.beans.PurchaseOrder;
 import com.e.toolplusstore.databinding.ActivityOrderHistoryBinding;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
@@ -36,6 +39,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
         binding = ActivityOrderHistoryBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
         initComponent();
+        Sprite doubleBounce = new Wave();
+        binding.spinKit.setIndeterminateDrawable(doubleBounce);
         currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
         Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
@@ -46,12 +51,17 @@ public class OrderHistoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<PurchaseOrder>> call, Response<ArrayList<PurchaseOrder>> response) {
                 Log.e("Response","=====>"+response.code());
+                if (response.body().isEmpty()){
+                    binding.spinKit.setVisibility(View.INVISIBLE);
+                    binding.notFound.setVisibility(View.VISIBLE);
+                }
                 if(response.code() == 200) {
                     final ArrayList<PurchaseOrder> orderList = response.body();
                     Log.e("====", "" + orderList);
                     adapter = new OrderHistoryAdapter(OrderHistoryActivity.this, orderList);
                     binding.rvOrderHistory.setAdapter(adapter);
                     binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(OrderHistoryActivity.this));
+                    binding.spinKit.setVisibility(View.INVISIBLE);
                     adapter.setOnItemClickListener(new OrderHistoryAdapter.OnRecyclerViewClick() {
                         @Override
                         public void onItemClick(PurchaseOrder o, int position) {

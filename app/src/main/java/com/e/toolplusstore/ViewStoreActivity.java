@@ -39,13 +39,12 @@ public class ViewStoreActivity extends AppCompatActivity {
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
         binding.tvStoreNumber.setText(mPref.getString("contact","Contact number"));
         binding.tvStoreEmail.setText(mPref.getString("email","Email"));
-        Picasso.get().load(mPref.getString("imageUrl",""));
+        Picasso.get().load(mPref.getString("imageUrl","")).into(binding.cvstoreImage);
         binding.tvStoreName.setText(mPref.getString("name","Name"));
         binding.tvStoreAddress.setText(mPref.getString("address","address"));
         binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ViewStoreActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 Intent in = new Intent(ViewStoreActivity.this,EditStoreActivity.class);
                 startActivity(in);
             }
