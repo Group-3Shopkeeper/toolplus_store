@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,11 +20,13 @@ import android.widget.Toast;
 
 
 import com.e.toolplusstore.databinding.ActivityMainBinding;
+import com.e.toolplusstore.databinding.OfflineActivityBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
     ActivityMainBinding binding;
+    OfflineActivityBinding offlineActivityBinding;
     FirebaseUser currentUser;
     InternetConnectivity connectivity;
     @Override
@@ -35,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
         View v = binding.getRoot();
         setContentView(v);
         connectivity = new InternetConnectivity();
+        checkInternetConnection();
     }
-
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         if (!connectivity.isConnected(MainActivity.this)) {
@@ -68,7 +71,45 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }, 3000);
+         }
+     }
+    */
+    private void checkInternetConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        changeActivity(isConnected);
+    }
+
+    private void changeActivity(boolean isConnected) {
+        if(isConnected){
+            Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+            setContentView(binding.getRoot());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (currentUser != null) {
+                        sendUserToHomeScreen();
+                    } else {
+                        sendUserToLoginScreen();
+                    }
+                }
+            }, 3000);
         }
+        else {
+            Toast.makeText(this, "Not Connected", Toast.LENGTH_SHORT).show();
+            offlineActivityBinding = OfflineActivityBinding.inflate(LayoutInflater.from(this));
+            setContentView(offlineActivityBinding.getRoot());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+        ConnectivityReceiver connectivityReceiver = new ConnectivityReceiver();
+        registerReceiver(connectivityReceiver,intentFilter);
+        MyApp.getInstance().setConnectivityListener(this);
     }
     private void sendUserToHomeScreen() {
         startActivity(new Intent(MainActivity.this,HomeActivity.class));
@@ -78,5 +119,10 @@ public class MainActivity extends AppCompatActivity {
         Intent in = new Intent(MainActivity.this,LoginActivity.class);
         startActivity(in);
         finish();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        changeActivity(isConnected);
     }
 }
