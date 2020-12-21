@@ -74,6 +74,14 @@ public class SearchProductActivity extends AppCompatActivity {
                             adapter = new ShowProductAdapter(SearchProductActivity.this, productList);
                             binding.rv1.setAdapter(adapter);
                             binding.rv1.setLayoutManager(new GridLayoutManager(SearchProductActivity.this, 2));
+                            adapter.setOnItemClickListener(new ShowProductAdapter.OnRecyclerViewClick() {
+                                @Override
+                                public void onItemClick(Product product, int position) {
+                                    Intent in=new Intent(SearchProductActivity.this,ProductDetailsActivty.class);
+                                    in.putExtra("product", product);
+                                    startActivity(in);
+                                }
+                            });
                             binding.spinKit.setVisibility(View.INVISIBLE);
                         }
                         else {
