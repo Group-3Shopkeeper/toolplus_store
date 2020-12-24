@@ -22,8 +22,8 @@
         android:layout_centerInParent="true"
         app:SpinKit_Color="@color/colorPrimaryDark" />
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/noMatch"
         android:gravity="center"
         android:scaleType="fitXY"
@@ -32,10 +32,9 @@
         android:src="@drawable/searchnotavailble"
         />
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/nope"
-        android:gravity="center"
         android:scaleType="fitXY"
         android:visibility="gone"
         android:layout_below="@+id/toolbar"

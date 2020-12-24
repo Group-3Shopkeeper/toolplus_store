@@ -12,10 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
+
+import com.e.toolplusstore.apis.CommentService;
 import com.e.toolplusstore.apis.ProductService;
+import com.e.toolplusstore.beans.Comment;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.databinding.ActivityProductDetailsBinding;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +37,7 @@ public class ProductDetailsActivty extends AppCompatActivity {
         Intent in = getIntent();
         final Product p = (Product) in.getSerializableExtra("product");
         final String categoryName = in.getStringExtra("categoryName");
+
         if(p.getDiscount()<1) {
             binding.tvDiscount.setVisibility(View.GONE);
             binding.tvMRP.setVisibility(View.GONE);
@@ -48,7 +54,7 @@ public class ProductDetailsActivty extends AppCompatActivity {
         binding.tvDescription.setText("Description : "+p.getDescription());
         binding.tvProductName.setText("Product Name : "+p.getName());
         binding.tvQtyInStock.setText("Quantity In Stock : "+p.getQtyInStock());
-        binding.btnRemove.setOnClickListener(new View.OnClickListener() {
+        binding.rlBtnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder ab = new AlertDialog.Builder(ProductDetailsActivty.this);
@@ -84,7 +90,7 @@ public class ProductDetailsActivty extends AppCompatActivity {
                 ab.show();
             }
         });
-        binding.btnEdit.setOnClickListener(new View.OnClickListener() {
+        binding.rlBtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ProductDetailsActivty.this,EditProduct.class);
@@ -93,5 +99,14 @@ public class ProductDetailsActivty extends AppCompatActivity {
                 startActivity(in);
             }
         });
+        binding.tvViewComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ProductDetailsActivty.this,ViewComments.class);
+                in.putExtra("product",p);
+                startActivity(in);
+            }
+        });
+
     }
 }

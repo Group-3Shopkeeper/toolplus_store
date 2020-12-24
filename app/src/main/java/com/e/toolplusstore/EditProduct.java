@@ -173,7 +173,7 @@ public class EditProduct extends AppCompatActivity {
                                 okhttp3.MultipartBody.FORM, productId);
                         RequestBody productDescription = RequestBody.create(
                                 okhttp3.MultipartBody.FORM, description);
-                        RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopkeeper.getShopKeeperId());
+                        RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, currentUserId);
 
                         ProductService.ProductApi productApi = ProductService.getProductApiInstance();
                         Call<Product> call = productApi.updateProduct(body, productName, productQtyInStock, productPrice, productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId, productid);
@@ -204,7 +204,7 @@ public class EditProduct extends AppCompatActivity {
                         progressDialog.setMessage("Please wait...");
                         progressDialog.show();
 
-                        String shopkeeperId = shopkeeper.getShopKeeperId();
+                        String shopkeeperId = currentUserId;
                         String imageUrl = product.getImageUrl();
                         Product p = new Product();
                         p.setDescription(description);
