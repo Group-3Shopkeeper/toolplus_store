@@ -17,46 +17,48 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddStore"/>
+        <activity android:name=".ViewComments"
+            android:parentActivityName=".ProductDetailsActivty"/>
+        <activity android:name=".AddStore" />
         <activity
             android:name=".EditProduct"
             android:parentActivityName=".ProductDetailsActivty" />
         <activity android:name=".ProductDetailsActivty" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ViewStoreActivity"
-            android:parentActivityName=".HomeActivity">
-
-        </activity>
-        <activity android:name=".OrderItemActivity"
-            android:parentActivityName=".OrderHistoryActivity"/>
-        <activity android:name=".MainActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".ViewStoreActivity"
+            android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".OrderItemActivity"
+            android:parentActivityName=".OrderHistoryActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewOrderActivity"
-            android:parentActivityName=".HomeActivity"/>
-        <activity android:name=".EditStoreActivity"
-            android:parentActivityName=".ViewStoreActivity"/>
+        <activity
+            android:name=".NewOrderActivity"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".EditStoreActivity"
+            android:parentActivityName=".ViewStoreActivity" />
         <activity
             android:name=".ProductActivity"
             android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".SearchProductActivity"
             android:parentActivityName=".HomeActivity" />
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".HomeActivity" />
         <activity
             android:name=".AddProductActivity"
             android:parentActivityName=".HomeActivity" />
-
-
-
-        <activity android:name=".OrderHistoryActivity"
-            android:parentActivityName=".HomeActivity"/>
-
+        <activity
+            android:name=".OrderHistoryActivity"
+            android:parentActivityName=".HomeActivity" />
     </application>
 
 </manifest>

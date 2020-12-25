@@ -121,13 +121,29 @@
             android:id="@+id/tvBrand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Price"
             android:layout_below="@+id/tvQtyInStock"
+            android:text="Price"
+            android:textColor="@color/black"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:textSize="17dp"/>
     </RelativeLayout>
+        <TextView
+            android:id="@+id/tvViewComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv3"
+            android:text="View Comments..."
+            android:textColor="@color/black"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:textSize="14dp"
+            android:padding="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:elevation="6dp"/>
     </RelativeLayout>
 </ScrollView>
     <LinearLayout
@@ -148,6 +164,7 @@
             android:paddingLeft="5dp"
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
+            android:id="@+id/rlBtnEdit"
             android:paddingRight="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="20dp"
@@ -165,6 +182,7 @@
                 />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/rlBtnRemove"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
