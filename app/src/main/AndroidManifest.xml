@@ -17,8 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ViewComments"
-            android:parentActivityName=".ProductDetailsActivty"/>
+
+        <service android:name=".FirebaseReceivingNotification"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".ViewComments"
+            android:parentActivityName=".ProductDetailsActivty" />
         <activity android:name=".AddStore" />
         <activity
             android:name=".EditProduct"
@@ -27,7 +37,7 @@
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".ViewStoreActivity"
-            android:parentActivityName=".HomeActivity"/>
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".OrderItemActivity"
             android:parentActivityName=".OrderHistoryActivity" />
