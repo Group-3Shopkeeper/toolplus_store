@@ -2,17 +2,23 @@ package com.e.toolplusstore;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ClipData;
+
+import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
+
+import android.text.TextUtils;
+import android.view.GestureDetector;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,6 +26,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -52,13 +59,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddProductActivity extends AppCompatActivity {
+public class AddProductActivity extends AppCompatActivity{
     AddProductScreenBinding binding;
     Uri imageUri;
+
     Uri secondImageUri ;
     Uri thirdImageuri;
     String title,categoryId=null,currentUserId;
-    URL url;
     ProgressDialog pd;
     MultipartBody.Part body2,body3,body;
     InternetConnectivity connectivity;
@@ -68,19 +75,16 @@ public class AddProductActivity extends AppCompatActivity {
         binding = AddProductScreenBinding.inflate(LayoutInflater.from(AddProductActivity.this));
         setContentView(binding.getRoot());
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
+        final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mPref.getString(currentUserId,"");
-        try {
-            url = new URL("https://image.shutterstock.com/image-vector/vector-graphic-no-thumbnail-symbol-260nw-1391095985.jpg");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        String json = mPref.getString(currentUserId, "");
+
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PermissionChecker.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},11);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
         }
         initComponent();
+
         binding.iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,31 +116,37 @@ public class AddProductActivity extends AppCompatActivity {
         binding.productCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(AddProductActivity.this,binding.productCategory);
-                popupMenu.getMenuInflater().inflate(R.menu.category_list_menu,popupMenu.getMenu());
+                PopupMenu popupMenu = new PopupMenu(AddProductActivity.this, binding.productCategory);
+                popupMenu.getMenuInflater().inflate(R.menu.category_list_menu, popupMenu.getMenu());
                 popupMenu.setGravity(Gravity.END);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         title = menuItem.getTitle().toString();
                         switch (title) {
-                            case "Plumbing": binding.productCategory.setText(title);
-                                categoryId ="qqM4MWpGJt68FHRgnBI7";
+                            case "Plumbing":
+                                binding.productCategory.setText(title);
+                                categoryId = "qqM4MWpGJt68FHRgnBI7";
                                 break;
-                            case "Nut and Bolts": binding.productCategory.setText(title);
-                                categoryId ="x11uXtVIGI26k6zSokZI";
+                            case "Nut and Bolts":
+                                binding.productCategory.setText(title);
+                                categoryId = "x11uXtVIGI26k6zSokZI";
                                 break;
-                            case "Paints": binding.productCategory.setText(title);
-                                categoryId ="97lzoB3Npd5Vn7cdsJW9";
+                            case "Paints":
+                                binding.productCategory.setText(title);
+                                categoryId = "97lzoB3Npd5Vn7cdsJW9";
                                 break;
-                            case "Electric Supplies": binding.productCategory.setText(title);
-                                categoryId ="FS4xDKrIb2xotx2VMNJq";
+                            case "Electric Supplies":
+                                binding.productCategory.setText(title);
+                                categoryId = "FS4xDKrIb2xotx2VMNJq";
                                 break;
-                            case "Wire and Cable": binding.productCategory.setText(title);
-                                categoryId ="LFPMJJAa56dvJEcdMWIj";
+                            case "Wire and Cable":
+                                binding.productCategory.setText(title);
+                                categoryId = "LFPMJJAa56dvJEcdMWIj";
                                 break;
-                            case "Tools": binding.productCategory.setText(title);
-                                categoryId ="v2MQlC43M2gxTwZpkbcH";
+                            case "Tools":
+                                binding.productCategory.setText(title);
+                                categoryId = "v2MQlC43M2gxTwZpkbcH";
                                 break;
                         }
                         return false;
@@ -163,7 +173,7 @@ public class AddProductActivity extends AppCompatActivity {
                             //Intent in = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
                             //startActivity(in);
                             Intent intent = new Intent(Intent.ACTION_MAIN);
-                            intent.setClassName("com.android.phone","com.android.phone.NetworkSetting");
+                            intent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
                             startActivity(intent);
                         }
                     });
@@ -209,6 +219,7 @@ public class AddProductActivity extends AppCompatActivity {
                             pd.setTitle("Saving");
                             pd.setMessage("Please wait");
                             pd.show();
+
                             if (imageUri != null && secondImageUri != null && thirdImageuri != null) {
                                 File file = FileUtils.getFile(AddProductActivity.this, imageUri);
                                 RequestBody requestFile =
@@ -278,7 +289,8 @@ public class AddProductActivity extends AppCompatActivity {
                                     @Override
                                     public void onFailure(Call<Product> call, Throwable t) {
                                         Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
-                                        pd.dismiss();
+
+                                                                    pd.dismiss();
                                     }
                                 });
                             }
@@ -301,6 +313,7 @@ public class AddProductActivity extends AppCompatActivity {
             imageUri = data.getData();
             Picasso.get().load(imageUri).into(binding.iv1);
             Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
+
         }
         if (requestCode == 112 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             secondImageUri = data.getData();
@@ -313,10 +326,12 @@ public class AddProductActivity extends AppCompatActivity {
             Toast.makeText(this, ""+thirdImageuri, Toast.LENGTH_SHORT).show();
         }
     }
+
     private void initComponent() {
         binding.toolbar.setTitle("Add Product");
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 }

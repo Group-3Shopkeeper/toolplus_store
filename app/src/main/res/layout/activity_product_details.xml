@@ -16,14 +16,32 @@
         android:layout_height="match_parent"
         android:id="@+id/mainRl"
         >
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_slider_mainActivity"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_alignParentTop="true"
+            android:layout_margin="30dp"
+            app:cardCornerRadius="8dp">
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/iv"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                app:sliderAnimationDuration="600"
+                android:background="@drawable/ic_launcher_background"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorEnabled="true"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1" />
 
-    <ImageView
-        android:id="@+id/iv"
-        android:layout_margin="20dp"
-        android:layout_width="400dp"
-        android:layout_height="250dp"
-        android:src="@drawable/camera"
-         />
+        </androidx.cardview.widget.CardView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +50,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@color/white"
-        android:layout_below="@+id/iv"
+        android:layout_below="@+id/cv_slider_mainActivity"
         android:elevation="6dp">
         <TextView
             android:id="@+id/tvProductName"
