@@ -14,14 +14,37 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
             android:id="@+id/toolbar"/>
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ViewFlipper
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_below="@id/toolbar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/camera"
-            android:id="@+id/productImage"/>
+            android:id="@+id/view_flipper"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginHorizontal="120dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_below="@id/toolbar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/camera"
+                android:id="@+id/productImage"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_below="@id/toolbar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/camera"
+                android:id="@+id/productImage2"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_below="@id/toolbar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/camera"
+                android:id="@+id/productImage3"/>
+        </ViewFlipper>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +53,7 @@
             android:background="@drawable/border_white"
             android:gravity="left"
             android:drawableEnd="@drawable/drop_down"
-            android:layout_below="@+id/productImage"
+            android:layout_below="@+id/view_flipper"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="20dp"

@@ -2,17 +2,20 @@ package com.e.toolplusstore;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -40,10 +43,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddProductActivity extends AppCompatActivity {
+public class AddProductActivity extends AppCompatActivity{
     AddProductScreenBinding binding;
     Uri imageUri;
-    String title,categoryId=null,currentUserId;
+    String title, categoryId = null, currentUserId;
     ProgressDialog pd;
     InternetConnectivity connectivity;
     @Override
@@ -52,50 +55,57 @@ public class AddProductActivity extends AppCompatActivity {
         binding = AddProductScreenBinding.inflate(LayoutInflater.from(AddProductActivity.this));
         setContentView(binding.getRoot());
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
+        final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mPref.getString(currentUserId,"");
+        String json = mPref.getString(currentUserId, "");
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PermissionChecker.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},11);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
         }
         initComponent();
+
         binding.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(Intent.ACTION_GET_CONTENT);
                 in.setType("image/*");
-                startActivityForResult(Intent.createChooser(in,"Select image"),111);
+                startActivityForResult(Intent.createChooser(in, "Select image"), 111);
             }
         });
         binding.productCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(AddProductActivity.this,binding.productCategory);
-                popupMenu.getMenuInflater().inflate(R.menu.category_list_menu,popupMenu.getMenu());
+                PopupMenu popupMenu = new PopupMenu(AddProductActivity.this, binding.productCategory);
+                popupMenu.getMenuInflater().inflate(R.menu.category_list_menu, popupMenu.getMenu());
                 popupMenu.setGravity(Gravity.END);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         title = menuItem.getTitle().toString();
                         switch (title) {
-                            case "Plumbing": binding.productCategory.setText(title);
-                                categoryId ="qqM4MWpGJt68FHRgnBI7";
+                            case "Plumbing":
+                                binding.productCategory.setText(title);
+                                categoryId = "qqM4MWpGJt68FHRgnBI7";
                                 break;
-                            case "Nut and Bolts": binding.productCategory.setText(title);
-                                categoryId ="x11uXtVIGI26k6zSokZI";
+                            case "Nut and Bolts":
+                                binding.productCategory.setText(title);
+                                categoryId = "x11uXtVIGI26k6zSokZI";
                                 break;
-                            case "Paints": binding.productCategory.setText(title);
-                                categoryId ="97lzoB3Npd5Vn7cdsJW9";
+                            case "Paints":
+                                binding.productCategory.setText(title);
+                                categoryId = "97lzoB3Npd5Vn7cdsJW9";
                                 break;
-                            case "Electric Supplies": binding.productCategory.setText(title);
-                                categoryId ="FS4xDKrIb2xotx2VMNJq";
+                            case "Electric Supplies":
+                                binding.productCategory.setText(title);
+                                categoryId = "FS4xDKrIb2xotx2VMNJq";
                                 break;
-                            case "Wire and Cable": binding.productCategory.setText(title);
-                                categoryId ="LFPMJJAa56dvJEcdMWIj";
+                            case "Wire and Cable":
+                                binding.productCategory.setText(title);
+                                categoryId = "LFPMJJAa56dvJEcdMWIj";
                                 break;
-                            case "Tools": binding.productCategory.setText(title);
-                                categoryId ="v2MQlC43M2gxTwZpkbcH";
+                            case "Tools":
+                                binding.productCategory.setText(title);
+                                categoryId = "v2MQlC43M2gxTwZpkbcH";
                                 break;
                         }
                         return false;
@@ -122,7 +132,7 @@ public class AddProductActivity extends AppCompatActivity {
                             //Intent in = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
                             //startActivity(in);
                             Intent intent = new Intent(Intent.ACTION_MAIN);
-                            intent.setClassName("com.android.phone","com.android.phone.NetworkSetting");
+                            intent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
                             startActivity(intent);
                         }
                     });
@@ -135,7 +145,7 @@ public class AddProductActivity extends AppCompatActivity {
                         Double price = Double.parseDouble(binding.productPrice.getText().toString());
                         Double discount = Double.parseDouble(binding.productDiscount.getText().toString());
                         String description = binding.productDescription.getText().toString();
-                        String shopKeeperId=currentUserId;
+                        String shopKeeperId = currentUserId;
                         if (TextUtils.isEmpty(name)) {
                             binding.productName.setError("Enter Product Name");
                             return;
@@ -177,24 +187,28 @@ public class AddProductActivity extends AppCompatActivity {
 
                             MultipartBody.Part body =
                                     MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                            MultipartBody.Part body2 =
+                                    MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                            MultipartBody.Part body3 =
+                                    MultipartBody.Part.createFormData("file", file.getName(), requestFile);
                             RequestBody productName = RequestBody.create(
-                                    okhttp3.MultipartBody.FORM, name);
+                                    MultipartBody.FORM, name);
 
-                            RequestBody productBrand = RequestBody.create(okhttp3.MultipartBody.FORM, brand);
+                            RequestBody productBrand = RequestBody.create(MultipartBody.FORM, brand);
                             RequestBody productPrice = RequestBody.create(
-                                    okhttp3.MultipartBody.FORM, String.valueOf(price));
+                                    MultipartBody.FORM, String.valueOf(price));
                             RequestBody productDiscount = RequestBody.create(
-                                    okhttp3.MultipartBody.FORM, String.valueOf(discount));
+                                    MultipartBody.FORM, String.valueOf(discount));
                             RequestBody productQtyInStock = RequestBody.create(
-                                    okhttp3.MultipartBody.FORM, String.valueOf(qtyInStock));
+                                    MultipartBody.FORM, String.valueOf(qtyInStock));
                             RequestBody productCategoryId = RequestBody.create(
-                                    okhttp3.MultipartBody.FORM, categoryId);
+                                    MultipartBody.FORM, categoryId);
                             RequestBody productDescription = RequestBody.create(
-                                    okhttp3.MultipartBody.FORM, description);
-                            RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopKeeperId);
+                                    MultipartBody.FORM, description);
+                            RequestBody shopkeeperId = RequestBody.create(MultipartBody.FORM, shopKeeperId);
 
                             ProductService.ProductApi productApi = ProductService.getProductApiInstance();
-                            Call<Product> call = productApi.saveProduct(body, productName, productQtyInStock, productPrice
+                            Call<Product> call = productApi.saveProduct(body,body2,body3, productName, productQtyInStock, productPrice
                                     , productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId);
 
                             call.enqueue(new Callback<Product>() {
@@ -231,19 +245,22 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 111 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             Picasso.get().load(imageUri).into(binding.productImage);
-            Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "" + imageUri, Toast.LENGTH_SHORT).show();
         }
     }
+
     private void initComponent() {
         binding.toolbar.setTitle("Add Product");
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 }

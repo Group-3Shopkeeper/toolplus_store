@@ -57,10 +57,12 @@ public class ProductService {
         @Multipart
         @POST("product/")
         public Call<Product> saveProduct(@Part  MultipartBody.Part file,
-                                      @Part("name")RequestBody name,
-                                      @Part("qtyInStock") RequestBody qtyInStock,
-                                      @Part("price") RequestBody price,
-                                      @Part("description") RequestBody description,
+                                         @Part  MultipartBody.Part file2,
+                                         @Part  MultipartBody.Part file3,
+                                         @Part("name")RequestBody name,
+                                         @Part("qtyInStock") RequestBody qtyInStock,
+                                         @Part("price") RequestBody price,
+                                         @Part("description") RequestBody description,
                                          @Part("discount") RequestBody discount,
                                          @Part("shopKeeperId") RequestBody shopKeeperId,
                                          @Part("brand") RequestBody brand,
