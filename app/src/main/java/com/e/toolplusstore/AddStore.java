@@ -8,6 +8,7 @@ import androidx.core.content.PermissionChecker;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +18,9 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import static android.content.ContentValues.TAG;
 import com.e.toolplusstore.apis.StoreService;
@@ -42,7 +45,7 @@ public class AddStore extends AppCompatActivity {
      ActivityAddStoreBinding binding;
      String currentUserId;
      InternetConnectivity connectivity;
-    Uri imageUri;
+     Uri imageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +183,6 @@ public class AddStore extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
