@@ -2,20 +2,31 @@ package com.e.toolplusstore;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+
 import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.util.Log;
+
 import android.text.TextUtils;
 import android.view.GestureDetector;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -29,11 +40,16 @@ import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
+import com.e.toolplusstore.utility.OnSwipeTouchListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -46,8 +62,12 @@ import retrofit2.Response;
 public class AddProductActivity extends AppCompatActivity{
     AddProductScreenBinding binding;
     Uri imageUri;
-    String title, categoryId = null, currentUserId;
+
+    Uri secondImageUri ;
+    Uri thirdImageuri;
+    String title,categoryId=null,currentUserId;
     ProgressDialog pd;
+    MultipartBody.Part body2,body3,body;
     InternetConnectivity connectivity;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,18 +78,39 @@ public class AddProductActivity extends AppCompatActivity{
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId, "");
+
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
         }
         initComponent();
 
-        binding.productImage.setOnClickListener(new View.OnClickListener() {
+        binding.iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent in = new Intent();
                 in.setType("image/*");
-                startActivityForResult(Intent.createChooser(in, "Select image"), 111);
+                in.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(in,"Select image"),111);
+            }
+        });
+        binding.iv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent();
+                in.setType("image/*");
+                in.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(in,"Select image"),112);
+            }
+        });
+        binding.iv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent();
+                in.setType("image/*");
+                in.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(in,"Select image"),113);
+                //binding.btnAddMore.setVisibility(View.GONE);
             }
         });
         binding.productCategory.setOnClickListener(new View.OnClickListener() {
@@ -173,72 +214,91 @@ public class AddProductActivity extends AppCompatActivity{
                             description = "";
                         }
 
-                        if (imageUri != null) {
+                        if (imageUri != null && secondImageUri != null && thirdImageuri != null) {
                             pd = new ProgressDialog(AddProductActivity.this);
                             pd.setTitle("Saving");
                             pd.setMessage("Please wait");
                             pd.show();
-                            File file = FileUtils.getFile(AddProductActivity.this, imageUri);
-                            RequestBody requestFile =
-                                    RequestBody.create(
-                                            MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
-                                            file
-                                    );
 
-                            MultipartBody.Part body =
-                                    MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                            MultipartBody.Part body2 =
-                                    MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                            MultipartBody.Part body3 =
-                                    MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                            RequestBody productName = RequestBody.create(
-                                    MultipartBody.FORM, name);
+                            if (imageUri != null && secondImageUri != null && thirdImageuri != null) {
+                                File file = FileUtils.getFile(AddProductActivity.this, imageUri);
+                                RequestBody requestFile =
+                                        RequestBody.create(
+                                                MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
+                                                file
+                                        );
+                                body =
+                                        MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-                            RequestBody productBrand = RequestBody.create(MultipartBody.FORM, brand);
-                            RequestBody productPrice = RequestBody.create(
-                                    MultipartBody.FORM, String.valueOf(price));
-                            RequestBody productDiscount = RequestBody.create(
-                                    MultipartBody.FORM, String.valueOf(discount));
-                            RequestBody productQtyInStock = RequestBody.create(
-                                    MultipartBody.FORM, String.valueOf(qtyInStock));
-                            RequestBody productCategoryId = RequestBody.create(
-                                    MultipartBody.FORM, categoryId);
-                            RequestBody productDescription = RequestBody.create(
-                                    MultipartBody.FORM, description);
-                            RequestBody shopkeeperId = RequestBody.create(MultipartBody.FORM, shopKeeperId);
 
-                            ProductService.ProductApi productApi = ProductService.getProductApiInstance();
-                            Call<Product> call = productApi.saveProduct(body,body2,body3, productName, productQtyInStock, productPrice
-                                    , productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId);
+                                File file2 = FileUtils.getFile(AddProductActivity.this, secondImageUri);
+                                RequestBody requestFile2 =
+                                        RequestBody.create(
+                                                MediaType.parse(Objects.requireNonNull(getContentResolver().getType(secondImageUri))),
+                                                file2
+                                        );
+                                body2 =
+                                        MultipartBody.Part.createFormData("file2", file2.getName(), requestFile2);
 
-                            call.enqueue(new Callback<Product>() {
-                                @Override
-                                public void onResponse(Call<Product> call, Response<Product> response) {
-                                    if (response.code() == 200) {
-                                        pd.dismiss();
-                                        Product product = response.body();
-                                        Toast.makeText(AddProductActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    } else if (response.code() == 404) {
-                                        pd.dismiss();
-                                        Toast.makeText(AddProductActivity.this, "404", Toast.LENGTH_SHORT).show();
-                                    } else if (response.code() == 500) {
-                                        Toast.makeText(AddProductActivity.this, "500", Toast.LENGTH_SHORT).show();
-                                        pd.dismiss();
+                                File file3 = FileUtils.getFile(AddProductActivity.this, thirdImageuri);
+                                RequestBody requestFile3 =
+                                        RequestBody.create(
+                                                MediaType.parse(Objects.requireNonNull(getContentResolver().getType(thirdImageuri))),
+                                                file3
+                                        );
+                                body3 =
+                                        MultipartBody.Part.createFormData("file3", file3.getName(), requestFile3);
+
+                                RequestBody productName = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, name);
+
+                                RequestBody productBrand = RequestBody.create(okhttp3.MultipartBody.FORM, brand);
+                                RequestBody productPrice = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, String.valueOf(price));
+                                RequestBody productDiscount = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, String.valueOf(discount));
+                                RequestBody productQtyInStock = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, String.valueOf(qtyInStock));
+                                RequestBody productCategoryId = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, categoryId);
+                                RequestBody productDescription = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, description);
+                                RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopKeeperId);
+
+                                ProductService.ProductApi productApi = ProductService.getProductApiInstance();
+                                Call<Product> call = productApi.saveProduct(body, body2, body3, productName, productQtyInStock, productPrice
+                                        , productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId);
+
+                                call.enqueue(new Callback<Product>() {
+                                    @Override
+                                    public void onResponse(Call<Product> call, Response<Product> response) {
+                                        if (response.code() == 200) {
+                                            pd.dismiss();
+                                            Product product = response.body();
+                                            Toast.makeText(AddProductActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else if (response.code() == 404) {
+                                            pd.dismiss();
+                                            Toast.makeText(AddProductActivity.this, "404", Toast.LENGTH_SHORT).show();
+                                        } else if (response.code() == 500) {
+                                            Toast.makeText(AddProductActivity.this, "500", Toast.LENGTH_SHORT).show();
+                                            pd.dismiss();
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<Product> call, Throwable t) {
-                                    Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
-                                    pd.dismiss();
-                                }
-                            });
+                                    @Override
+                                    public void onFailure(Call<Product> call, Throwable t) {
+                                        Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+
+                                                                    pd.dismiss();
+                                    }
+                                });
+                            }
                         } else {
-                            Toast.makeText(AddProductActivity.this, "Please select Profile pic", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddProductActivity.this, "Select All Images", Toast.LENGTH_SHORT).show();
                         }
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(AddProductActivity.this, "Enter All Valid Inputs", Toast.LENGTH_SHORT).show();
+                    }catch(NumberFormatException e){
+                        Toast.makeText(AddProductActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -251,8 +311,19 @@ public class AddProductActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 111 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-            Picasso.get().load(imageUri).into(binding.productImage);
-            Toast.makeText(this, "" + imageUri, Toast.LENGTH_SHORT).show();
+            Picasso.get().load(imageUri).into(binding.iv1);
+            Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
+
+        }
+        if (requestCode == 112 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            secondImageUri = data.getData();
+            Picasso.get().load(secondImageUri).into(binding.iv2);
+            Toast.makeText(this, ""+secondImageUri, Toast.LENGTH_SHORT).show();
+        }
+        if (requestCode == 113 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            thirdImageuri = data.getData();
+            Picasso.get().load(thirdImageuri).into(binding.iv3);
+            Toast.makeText(this, ""+thirdImageuri, Toast.LENGTH_SHORT).show();
         }
     }
 
