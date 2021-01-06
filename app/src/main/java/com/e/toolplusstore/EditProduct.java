@@ -17,7 +17,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.e.toolplusstore.apis.CategoryService;
 import com.e.toolplusstore.apis.ProductService;
+import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
@@ -26,6 +28,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -37,8 +40,10 @@ import retrofit2.Response;
 
 public class EditProduct extends AppCompatActivity {
     AddProductScreenBinding binding;
-    String categoryName,currentUserId,categoryId=null,title;
+    String currentUserId,categoryId=null,title;
+    String categoryName,cN;
     Uri imageUri=null;
+    ArrayList<Category> al;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,24 +52,28 @@ public class EditProduct extends AppCompatActivity {
         initComponent();
         final Intent in = getIntent();
         final Product product = (Product) in.getSerializableExtra("product");
+
+
         categoryName = in.getStringExtra("categoryName");
-        Toast.makeText(this, categoryName, Toast.LENGTH_SHORT).show();
+        Log.e("categoryName ","==========================>>"+categoryName);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId,"");
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
-        binding.productName.setText(product.getName());
-        binding.productBrand.setText(product.getBrand());
-        binding.productQuantity.setText(product.getQtyInStock()+"");
-        binding.productPrice.setText(product.getPrice()+"");
-        binding.productDescription.setText(product.getDescription());
-        binding.productDiscount.setText(product.getDiscount()+"");
-        Picasso.get().load(product.getImageUrl()).into(binding.productImage);
+        binding.productName.setText("Product name : "+product.getName());
+        binding.productBrand.setText("Brand : "+product.getBrand());
+        binding.productQuantity.setText("Quantity : "+""+product.getQtyInStock()+".0");
+        binding.productPrice.setText("Price : "+"₹"+product.getPrice()+"");
+        binding.productDescription.setText("Description : "+product.getDescription());
+        binding.productDiscount.setText("Discount : "+product.getDiscount()+"%");
+        Picasso.get().load(product.getImageUrl()).into(binding.iv1);
+        Picasso.get().load(product.getSecondImageUrl()).into(binding.iv2);
+        Picasso.get().load(product.getThirdImageurl()).into(binding.iv3);
         binding.btnAddProduct.setText("Update Product");
         binding.productCategory.setText(categoryName);
         categoryId = product.getCategoryId();
-        binding.productImage.setOnClickListener(new View.OnClickListener() {
+        binding.iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(Intent.ACTION_GET_CONTENT);
@@ -72,42 +81,13 @@ public class EditProduct extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(in,"Select image"),111);
             }
         });
-        binding.productCategory.setOnClickListener(new View.OnClickListener() {
+         binding.productCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(EditProduct.this,binding.productCategory);
-                popupMenu.getMenuInflater().inflate(R.menu.category_list_menu,popupMenu.getMenu());
-                popupMenu.setGravity(Gravity.END);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        title = menuItem.getTitle().toString();
-                        switch (title) {
-                            case "Plumbing": binding.productCategory.setText(title);
-                                categoryId ="qqM4MWpGJt68FHRgnBI7";
-                                break;
-                            case "Nut and Bolts": binding.productCategory.setText(title);
-                                categoryId ="x11uXtVIGI26k6zSokZI";
-                                break;
-                            case "Paints": binding.productCategory.setText(title);
-                                categoryId ="97lzoB3Npd5Vn7cdsJW9";
-                                break;
-                            case "Electric Supplies": binding.productCategory.setText(title);
-                                categoryId ="FS4xDKrIb2xotx2VMNJq";
-                                break;
-                            case "Wire and Cable": binding.productCategory.setText(title);
-                                categoryId ="LFPMJJAa56dvJEcdMWIj";
-                                break;
-                            case "Tools": binding.productCategory.setText(title);
-                                categoryId ="v2MQlC43M2gxTwZpkbcH";
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
+            setCategoryCode();
+
             }
-        });
+         });
         binding.btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,7 +233,7 @@ public class EditProduct extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == 111 && resultCode == RESULT_OK && data != null && data.getData() != null) {
                 imageUri = data.getData();
-                Picasso.get().load(imageUri).into(binding.productImage);
+                Picasso.get().load(imageUri).into(binding.iv1);
                 Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
             }
         }
@@ -263,4 +243,41 @@ public class EditProduct extends AppCompatActivity {
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+    public void setCategoryCode(){
+
+                final PopupMenu popupMenu = new PopupMenu(EditProduct.this, binding.productCategory);
+                popupMenu.setGravity(Gravity.END);
+                CategoryService.CategoryApi userapi= CategoryService.getCategoryApiInstance();
+                Call<ArrayList<Category>> call = userapi.getCategoryList();
+                call.enqueue(new Callback<ArrayList<Category>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                        al = response.body();
+                        for(Category c : al){
+                            popupMenu.getMenu().add(c.getCategoryName());
+                        }
+                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                String  categoryName=item.getTitle().toString();
+                                binding.productCategory.setText(categoryName);
+                                for(Category c : al){
+                                    if(c.getCategoryName()==categoryName){
+                                        categoryId = c.getCategoryId();
+                                    }
+                                }
+                                popupMenu.dismiss();
+                                return false;
+                            }
+                        });
+                        popupMenu.show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+
+                    }
+                });
+            }
+
 }

@@ -18,38 +18,79 @@
 
         <LinearLayout
             android:id="@+id/rl"
-            android:weightSum="1"
+            android:weightSum="3.0"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="150dp"
             android:orientation="horizontal"
             android:layout_below="@id/toolbar">
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_weight="1.0"
+                android:layout_height="fill_parent"
+                app:cardCornerRadius="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="40dp"
+                android:id="@+id/cv1"
+                app:cardElevation="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorPrimary"
+                >
                 <ImageView
                     android:id="@+id/iv1"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.33"
+                    android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:layout_gravity="center"
                     android:adjustViewBounds="true"
+                    android:padding="5dp"
                     android:src="@drawable/add_photos"
-                     />
+                    />
+            </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv2"
+                android:layout_width="0dp"
+                android:layout_weight="1.0"
+                android:layout_height="fill_parent"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp"
+                android:layout_toRightOf="@+id/cv1"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorPrimary"
+                >
                 <ImageView
                     android:id="@+id/iv2"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.33"
+                    android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:layout_gravity="center"
                     android:adjustViewBounds="true"
+                    android:padding="5dp"
                     android:src="@drawable/add_photos"
-                     />
-                <ImageView
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv3"
+                android:layout_width="0dp"
+                android:layout_weight="1.0"
+                android:layout_height="fill_parent"
+                app:cardCornerRadius="15dp"
+                android:layout_toRightOf="@+id/cv2"
+                app:cardElevation="10dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorPrimary"
+                >
+               <ImageView
                     android:id="@+id/iv3"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.33"
+                    android:layout_width="match_parent"
                     android:layout_height="fill_parent"
+                    android:padding="5dp"
                     android:adjustViewBounds="true"
                     android:src="@drawable/add_photos"
-                     />
+                    />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <Button

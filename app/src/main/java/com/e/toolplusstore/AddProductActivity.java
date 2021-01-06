@@ -21,6 +21,7 @@ import android.view.GestureDetector;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,11 +37,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
 
+import com.e.toolplusstore.apis.CategoryService;
 import com.e.toolplusstore.apis.ProductService;
+import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
-import com.e.toolplusstore.utility.OnSwipeTouchListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -50,6 +53,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -62,7 +66,7 @@ import retrofit2.Response;
 public class AddProductActivity extends AppCompatActivity{
     AddProductScreenBinding binding;
     Uri imageUri;
-
+    ArrayList<Category> al;
     Uri secondImageUri ;
     Uri thirdImageuri;
     String title,categoryId=null,currentUserId;
@@ -116,43 +120,39 @@ public class AddProductActivity extends AppCompatActivity{
         binding.productCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(AddProductActivity.this, binding.productCategory);
-                popupMenu.getMenuInflater().inflate(R.menu.category_list_menu, popupMenu.getMenu());
+                final PopupMenu popupMenu = new PopupMenu(AddProductActivity.this, binding.productCategory);
                 popupMenu.setGravity(Gravity.END);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                CategoryService.CategoryApi userapi= CategoryService.getCategoryApiInstance();
+                Call<ArrayList<Category>> call = userapi.getCategoryList();
+                call.enqueue(new Callback<ArrayList<Category>>() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        title = menuItem.getTitle().toString();
-                        switch (title) {
-                            case "Plumbing":
-                                binding.productCategory.setText(title);
-                                categoryId = "qqM4MWpGJt68FHRgnBI7";
-                                break;
-                            case "Nut and Bolts":
-                                binding.productCategory.setText(title);
-                                categoryId = "x11uXtVIGI26k6zSokZI";
-                                break;
-                            case "Paints":
-                                binding.productCategory.setText(title);
-                                categoryId = "97lzoB3Npd5Vn7cdsJW9";
-                                break;
-                            case "Electric Supplies":
-                                binding.productCategory.setText(title);
-                                categoryId = "FS4xDKrIb2xotx2VMNJq";
-                                break;
-                            case "Wire and Cable":
-                                binding.productCategory.setText(title);
-                                categoryId = "LFPMJJAa56dvJEcdMWIj";
-                                break;
-                            case "Tools":
-                                binding.productCategory.setText(title);
-                                categoryId = "v2MQlC43M2gxTwZpkbcH";
-                                break;
+                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                        al = response.body();
+                        for(Category c : al){
+                            popupMenu.getMenu().add(c.getCategoryName());
                         }
-                        return false;
+                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                String  categoryName=item.getTitle().toString();
+                                binding.productCategory.setText(categoryName);
+                                for(Category c : al){
+                                    if(c.getCategoryName()==categoryName){
+                                        categoryId = c.getCategoryId();
+                                    }
+                                }
+                                popupMenu.dismiss();
+                                return false;
+                            }
+                        });
+                        popupMenu.show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+
                     }
                 });
-                popupMenu.show();
             }
         });
         binding.btnAddProduct.setOnClickListener(new View.OnClickListener() {

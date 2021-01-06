@@ -16,8 +16,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.e.toolplusstore.adapter.SliderAdapterExample;
+import com.e.toolplusstore.apis.CategoryService;
 import com.e.toolplusstore.apis.CommentService;
 import com.e.toolplusstore.apis.ProductService;
+import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.beans.Comment;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.beans.SliderItem;
@@ -47,7 +49,38 @@ public class ProductDetailsActivty extends AppCompatActivity {
         setContentView(binding.getRoot());
         Intent in = getIntent();
         p = (Product) in.getSerializableExtra("product");
-        categoryName = in.getStringExtra("categoryName");
+        CategoryService.CategoryApi categoryApi=CategoryService.getCategoryApiInstance();
+        Call<ArrayList<Category>> call1=categoryApi.getCategoryList();
+        call1.enqueue(new Callback<ArrayList<Category>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                ArrayList<Category> arrayList=response.body();
+                for (Category c:arrayList){
+                    if (c.getCategoryId().equals(p.getCategoryId())){
+                        CategoryService.CategoryApi categoryApi1=CategoryService.getCategoryApiInstance();
+                        Call<Category> call2=categoryApi1.getCategoryById(c.getCategoryId());
+                        call2.enqueue(new Callback<Category>() {
+                            @Override
+                            public void onResponse(Call<Category> call, Response<Category> response) {
+                                Category category=response.body();
+                                 categoryName=category.getCategoryName().toString();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Category> call, Throwable t) {
+
+                            }
+                        });
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+
+            }
+        });
         if (p.getDiscount() < 1) {
             binding.tvDiscount.setVisibility(View.GONE);
             binding.tvMRP.setVisibility(View.GONE);
