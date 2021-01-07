@@ -16,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.e.toolplusstore.adapter.ShowProductAdapter;
+import com.e.toolplusstore.apis.CategoryService;
 import com.e.toolplusstore.apis.ProductService;
+import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.databinding.ProductActivityBinding;
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -34,6 +36,9 @@ public class SearchProductActivity extends AppCompatActivity {
     ProductActivityBinding binding;
     ShowProductAdapter adapter;
     String currentUserId;
+    String categoryName;
+    Category category;
+    ArrayList<Category> al;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +49,7 @@ public class SearchProductActivity extends AppCompatActivity {
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
         initComponent();
         Intent in = getIntent();
-        String name = in.getStringExtra("name");
+        String productName = in.getStringExtra("name");
         currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         InternetConnectivity connectivity = new InternetConnectivity();
         if (!connectivity.isConnected(SearchProductActivity.this)) {
@@ -64,7 +69,7 @@ public class SearchProductActivity extends AppCompatActivity {
             builder.show();
         } else {
             ProductService.ProductApi productApi = ProductService.getProductApiInstance();
-            final Call<ArrayList<Product>> productList = productApi.getProductList(currentUserId,name);
+            final Call<ArrayList<Product>> productList = productApi.getProductList(currentUserId,productName);
             productList.enqueue(new Callback<ArrayList<Product>>() {
                 @Override
                 public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
@@ -76,10 +81,10 @@ public class SearchProductActivity extends AppCompatActivity {
                             binding.rv1.setLayoutManager(new GridLayoutManager(SearchProductActivity.this, 2));
                             adapter.setOnItemClickListener(new ShowProductAdapter.OnRecyclerViewClick() {
                                 @Override
-                                public void onItemClick(Product product, int position) {
-                                    Intent in=new Intent(SearchProductActivity.this,ProductDetailsActivty.class);
-                                    in.putExtra("product", product);
-                                    startActivity(in);
+                                public void onItemClick(final Product product, int position) {
+                                    final Intent intent=new Intent(SearchProductActivity.this,ProductDetailsActivty.class);
+                                    intent.putExtra("product", product);
+                                    startActivity(intent);
                                 }
                             });
                             binding.spinKit.setVisibility(View.INVISIBLE);
