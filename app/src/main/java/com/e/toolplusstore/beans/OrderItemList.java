@@ -16,21 +16,35 @@ public class OrderItemList implements Serializable {
     @SerializedName("shopKeeperId")
     @Expose
     private String shopKeeperId;
-    @SerializedName("productName")
+    @SerializedName("name")
     @Expose
-    private String productName;
+    private String name;
     @SerializedName("qty")
     @Expose
-    private Long qty;
+    private int qty;
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
     @SerializedName("price")
     @Expose
-    private Long price;
-    @SerializedName("amount")
+    private double price;
+    @SerializedName("total")
     @Expose
-    private Long amount;
+    private double total;
+
+    public OrderItemList() {
+    }
+
+    public OrderItemList(String orderItemId, String productId, String shopKeeperId, String name, int qty, String imageUrl, double price, double total) {
+        this.orderItemId = orderItemId;
+        this.productId = productId;
+        this.shopKeeperId = shopKeeperId;
+        this.name = name;
+        this.qty = qty;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.total = total;
+    }
 
     public String getOrderItemId() {
         return orderItemId;
@@ -56,19 +70,19 @@ public class OrderItemList implements Serializable {
         this.shopKeeperId = shopKeeperId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Long getQty() {
+    public int getQty() {
         return qty;
     }
 
-    public void setQty(Long qty) {
+    public void setQty(int qty) {
         this.qty = qty;
     }
 
@@ -80,21 +94,20 @@ public class OrderItemList implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Long getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public Long getAmount() {
-        return amount;
+    public double getTotal() {
+        return total;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public void setTotal(double total) {
+        this.total = total;
     }
-
 }
 

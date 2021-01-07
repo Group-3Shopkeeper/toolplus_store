@@ -32,10 +32,10 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
     @Override
     public void onBindViewHolder(@NonNull OrderItemAdapter.OrderItemViewHolder holder, int position) {
     OrderItemList p = orderItems.get(position);
-    holder.binding.tv1.setText("Product Name : " +p.getProductName());
+    holder.binding.tv1.setText("Product Name : " +p.getName());
     holder.binding.tv2.setText("Quantity : "+p.getQty());
     holder.binding.tv3.setText("Price : "+p.getPrice());
-    holder.binding.tv4.setText("Amount : "+p.getAmount());
+    holder.binding.tv4.setText("Amount : "+p.getTotal());
     Picasso.get().load(p.getImageUrl()).into(holder.binding.iv);
     }
 

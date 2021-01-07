@@ -61,6 +61,7 @@ public class EditProduct extends AppCompatActivity {
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId,"");
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
+
         binding.productName.setText("Product name : "+product.getName());
         binding.productBrand.setText("Brand : "+product.getBrand());
         binding.productQuantity.setText("Quantity : "+""+product.getQtyInStock()+".0");
@@ -70,6 +71,7 @@ public class EditProduct extends AppCompatActivity {
         Picasso.get().load(product.getImageUrl()).into(binding.iv1);
         Picasso.get().load(product.getSecondImageUrl()).into(binding.iv2);
         Picasso.get().load(product.getThirdImageurl()).into(binding.iv3);
+
         binding.btnAddProduct.setText("Update Product");
         binding.productCategory.setText(categoryName);
         categoryId = product.getCategoryId();

@@ -1,6 +1,7 @@
 package com.e.toolplusstore.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,15 +11,25 @@ public class PurchaseOrder implements Serializable {
     @SerializedName("orderId")
     @Expose
     private String orderId;
-    @SerializedName("orderDate")
+    @SerializedName("date")
     @Expose
-    private String orderDate;
+    private String date;
     @SerializedName("totalAmount")
     @Expose
     private Long totalAmount;
-    @SerializedName("orderItemList")
+    @SerializedName("orderItem")
     @Expose
-    private List<OrderItemList> orderItemList = null;
+    private ArrayList<OrderItemList> orderItem = null;
+
+    public PurchaseOrder(String orderId, String date, Long totalAmount, ArrayList<OrderItemList> orderItem) {
+        this.orderId = orderId;
+        this.date = date;
+        this.totalAmount = totalAmount;
+        this.orderItem = orderItem;
+    }
+
+    public PurchaseOrder() {
+    }
 
     public String getOrderId() {
         return orderId;
@@ -28,12 +39,12 @@ public class PurchaseOrder implements Serializable {
         this.orderId = orderId;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public Long getTotalAmount() {
@@ -44,13 +55,12 @@ public class PurchaseOrder implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public List<OrderItemList> getOrderItemList() {
-        return orderItemList;
+    public ArrayList<OrderItemList> getOrderItem() {
+        return orderItem;
     }
 
-    public void setOrderItemList(List<OrderItemList> orderItemList) {
-        this.orderItemList = orderItemList;
+    public void setOrderItem(ArrayList<OrderItemList> orderItem) {
+        this.orderItem = orderItem;
     }
-
 }
 
