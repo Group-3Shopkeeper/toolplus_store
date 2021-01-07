@@ -64,7 +64,7 @@ public class NewOrderActivity extends AppCompatActivity {
                     adapter.setOnItemClickListener(new OrderHistoryAdapter.OnRecyclerViewClick() {
                         @Override
                         public void onItemClick(PurchaseOrder o, int position) {
-                            List<OrderItemList> itemList = o.getOrderItemList();
+                            List<OrderItemList> itemList = o.getOrderItem();
                             Intent in = new Intent(NewOrderActivity.this, OrderItemActivity.class);
                             in.putExtra("orderItem", (Serializable) itemList);
                             startActivity(in);

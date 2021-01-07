@@ -33,7 +33,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     public void onBindViewHolder(@NonNull OrderHistoryAdapter.OrderHistoryViewHolder holder, int position) {
         PurchaseOrder o = orderList.get(position);
         holder.binding.orderId.setText(o.getOrderId());
-        holder.binding.date.setText(o.getOrderDate());
+        holder.binding.date.setText(o.getDate());
         holder.binding.amount.setText(o.getTotalAmount()+"");
 
 

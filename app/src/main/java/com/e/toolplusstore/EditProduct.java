@@ -60,11 +60,11 @@ public class EditProduct extends AppCompatActivity {
         binding.productPrice.setText(product.getPrice()+"");
         binding.productDescription.setText(product.getDescription());
         binding.productDiscount.setText(product.getDiscount()+"");
-        Picasso.get().load(product.getImageUrl()).into(binding.productImage);
+        Picasso.get().load(product.getImageUrl()).into(binding.iv1);
         binding.btnAddProduct.setText("Update Product");
         binding.productCategory.setText(categoryName);
         categoryId = product.getCategoryId();
-        binding.productImage.setOnClickListener(new View.OnClickListener() {
+        binding.iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(Intent.ACTION_GET_CONTENT);
@@ -253,7 +253,7 @@ public class EditProduct extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == 111 && resultCode == RESULT_OK && data != null && data.getData() != null) {
                 imageUri = data.getData();
-                Picasso.get().load(imageUri).into(binding.productImage);
+                Picasso.get().load(imageUri).into(binding.iv1);
                 Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
             }
         }

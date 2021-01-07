@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Html;
 import android.util.Log;
 
 import android.text.TextUtils;
@@ -40,7 +41,6 @@ import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
-import com.e.toolplusstore.utility.OnSwipeTouchListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -62,7 +62,6 @@ import retrofit2.Response;
 public class AddProductActivity extends AppCompatActivity{
     AddProductScreenBinding binding;
     Uri imageUri;
-
     Uri secondImageUri ;
     Uri thirdImageuri;
     String title,categoryId=null,currentUserId;
@@ -78,7 +77,6 @@ public class AddProductActivity extends AppCompatActivity{
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId, "");
-
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
@@ -289,8 +287,7 @@ public class AddProductActivity extends AppCompatActivity{
                                     @Override
                                     public void onFailure(Call<Product> call, Throwable t) {
                                         Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
-
-                                                                    pd.dismiss();
+                                        pd.dismiss();
                                     }
                                 });
                             }
@@ -298,7 +295,7 @@ public class AddProductActivity extends AppCompatActivity{
                             Toast.makeText(AddProductActivity.this, "Select All Images", Toast.LENGTH_SHORT).show();
                         }
                     }catch(NumberFormatException e){
-                        Toast.makeText(AddProductActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddProductActivity.this, "Enter all valid input", Toast.LENGTH_SHORT).show();
                     }
 
                 }
