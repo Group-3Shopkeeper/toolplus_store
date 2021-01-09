@@ -82,7 +82,7 @@
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorPrimary"
                 >
-               <ImageView
+                <ImageView
                     android:id="@+id/iv3"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
@@ -125,6 +125,7 @@
             android:background="@drawable/border_white"
             android:elevation="6dp"
             android:hint="Product Name"
+            android:drawableRight="@drawable/ic_star"
             android:padding="10dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#AEB9C5"
@@ -142,6 +143,7 @@
             android:background="@drawable/border_white"
             android:elevation="6dp"
             android:hint="Brand"
+            android:drawableRight="@drawable/ic_star"
             android:padding="10dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#AEB9C5"
@@ -159,6 +161,7 @@
             android:background="@drawable/border_white"
             android:elevation="6dp"
             android:hint="Quantity In Stock"
+            android:drawableRight="@drawable/ic_star"
             android:inputType="number"
             android:padding="10dp"
             android:textColor="@color/colorPrimary"
@@ -176,17 +179,18 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/border_white"
             android:elevation="6dp"
-            android:hint="Product Price"
+            android:hint="Price"
+            android:drawableRight="@drawable/ic_star"
+            android:drawablePadding="100dp"
             android:inputType="number"
             android:padding="10dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#AEB9C5"
             android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/productDiscount"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="46dp"
             android:layout_below="@+id/productPrice"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="5dp"
@@ -194,35 +198,71 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/border_white"
             android:elevation="6dp"
-            android:hint="Product Discount"
-            android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/colorPrimary"
-            android:textColorHint="#AEB9C5"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/productDescription"
+            android:id="@+id/ll1"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/productDiscount"
+                android:layout_width="0dp"
+                android:layout_weight="0.72"
+                android:layout_height="wrap_content"
+                android:hint="Product Discount"
+                android:padding="10dp"
+                android:textColorHint="#AEB9C5"
+                android:text="0.0"
+                android:inputType="numberDecimal"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.28"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="#3BAA3F"
+                android:gravity="right"
+                android:id="@+id/tv1"
+                android:text="optional"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/productDiscount"
+            android:layout_height="46dp"
+            android:layout_below="@+id/ll1"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/border_white"
             android:elevation="6dp"
-            android:hint="Description of Product"
-            android:padding="10dp"
-            android:textColor="@color/colorPrimary"
-            android:textColorHint="#AEB9C5"
-            android:textSize="15sp" />
+            android:id="@+id/ll2"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/productDescription"
+                android:layout_width="0dp"
+                android:layout_weight="0.72"
+                android:layout_height="wrap_content"
+                android:hint="Product Description"
+                android:padding="10dp"
+                android:inputType="text"
+                android:textColorHint="#AEB9C5"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.28"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="#3BAA3F"
+                android:gravity="right"
+                android:id="@+id/tv2"
+                android:text="optional"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnAddProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/productDescription"
+            android:layout_below="@id/ll2"
             android:layout_centerInParent="true"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="30dp"
