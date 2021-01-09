@@ -50,12 +50,13 @@ public class EditProduct extends AppCompatActivity {
         binding = AddProductScreenBinding.inflate(LayoutInflater.from(EditProduct.this));
         setContentView(binding.getRoot());
         initComponent();
+        binding.productName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        binding.productBrand.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        binding.productQuantity.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        binding.productPrice.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         final Intent in = getIntent();
         final Product product = (Product) in.getSerializableExtra("product");
-
-
         categoryName = in.getStringExtra("categoryName");
-        Log.e("categoryName ","==========================>>"+categoryName);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final SharedPreferences mPref = getSharedPreferences("MyStore",MODE_PRIVATE);
         Gson gson = new Gson();
@@ -242,6 +243,8 @@ public class EditProduct extends AppCompatActivity {
     private void initComponent() {
         binding.toolbar.setTitle("Product");
         setSupportActionBar(binding.toolbar);
+        binding.tv1.setVisibility(View.GONE);
+        binding.tv2.setVisibility(View.GONE);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

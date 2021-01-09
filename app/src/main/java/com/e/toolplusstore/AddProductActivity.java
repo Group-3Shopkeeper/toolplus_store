@@ -69,7 +69,7 @@ public class AddProductActivity extends AppCompatActivity{
     Uri imageUri;
 
     ArrayList<Category> al;
-
+    Double discount=0.0;
     Uri secondImageUri ;
     Uri thirdImageuri;
     String title,categoryId=null,currentUserId;
@@ -186,8 +186,14 @@ public class AddProductActivity extends AppCompatActivity{
                         String brand = binding.productBrand.getText().toString();
                         Integer qtyInStock = Integer.parseInt(binding.productQuantity.getText().toString());
                         Double price = Double.parseDouble(binding.productPrice.getText().toString());
-                        Double discount = Double.parseDouble(binding.productDiscount.getText().toString());
+                        discount =Double.parseDouble(binding.productDiscount.getText().toString());
+                        if (discount==null){
+                            discount=0.0;
+                        }
                         String description = binding.productDescription.getText().toString();
+                        if (description.equals("")){
+                            description="";
+                        }
                         String shopKeeperId = currentUserId;
                         if (TextUtils.isEmpty(name)) {
                             binding.productName.setError("Enter Product Name");
@@ -208,9 +214,6 @@ public class AddProductActivity extends AppCompatActivity{
                         if (TextUtils.isEmpty(price.toString())) {
                             binding.productPrice.setError("Enter Price");
                             return;
-                        }
-                        if (TextUtils.isEmpty(discount.toString())) {
-                            discount = 0.0;
                         }
                         if (TextUtils.isEmpty(description)) {
                             description = "";
@@ -299,6 +302,7 @@ public class AddProductActivity extends AppCompatActivity{
                             Toast.makeText(AddProductActivity.this, "Select All Images", Toast.LENGTH_SHORT).show();
                         }
                     }catch(NumberFormatException e){
+                        Log.e("exception ","========================>>"+e);
                         Toast.makeText(AddProductActivity.this, "Enter all valid input", Toast.LENGTH_SHORT).show();
                     }
 
