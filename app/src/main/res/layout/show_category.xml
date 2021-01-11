@@ -10,7 +10,7 @@
         android:layout_height="150dp"
         android:id="@+id/ivCategory"
         android:layout_margin="10dp"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:src="@drawable/logo_white"/>
     <TextView
         android:layout_width="match_parent"
