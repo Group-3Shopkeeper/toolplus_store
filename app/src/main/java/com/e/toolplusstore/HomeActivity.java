@@ -74,7 +74,6 @@ public class HomeActivity extends AppCompatActivity {
             });
             builder.show();
         } else {
-            checkUserProfile();
             Sprite doubleBounce = new Wave();
             binding.spinKit.setIndeterminateDrawable(doubleBounce);
             CategoryService.CategoryApi categoryApi = CategoryService.getCategoryApiInstance();
@@ -207,7 +206,6 @@ public class HomeActivity extends AppCompatActivity {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final SharedPreferences sp = getSharedPreferences("MyStore",MODE_PRIVATE);
         String id = sp.getString("userId","Not found");
-        Log.e("status : ","=====>"+id);
         if(!id.equals("Not found")){
                 if(!id.equals(currentUserId)){
                     StoreService.ServiceApi storeApi = StoreService.getStoreApiInstance();
@@ -273,5 +271,11 @@ public class HomeActivity extends AppCompatActivity {
     private void sendUserToAddStoreActivity(){
         Intent in = new Intent(this,AddStore.class);
         startActivity(in);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkUserProfile();
     }
 }
