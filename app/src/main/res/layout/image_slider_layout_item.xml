@@ -9,7 +9,7 @@
         android:id="@+id/iv_auto_image_slider"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:background="@color/white"/>
     <ImageView
         android:id="@+id/iv_gif_container"

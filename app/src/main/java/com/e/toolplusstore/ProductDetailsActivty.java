@@ -1,4 +1,5 @@
 package com.e.toolplusstore;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -46,9 +48,11 @@ public class ProductDetailsActivty extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProductDetailsBinding.inflate(LayoutInflater.from(this));
+        initComponant();
         setContentView(binding.getRoot());
         Intent in = getIntent();
         p = (Product) in.getSerializableExtra("product");
+
         CategoryService.CategoryApi categoryApi=CategoryService.getCategoryApiInstance();
         Call<ArrayList<Category>> call1=categoryApi.getCategoryList();
         call1.enqueue(new Callback<ArrayList<Category>>() {
@@ -181,5 +185,18 @@ public class ProductDetailsActivty extends AppCompatActivity {
             sliderItemList.add(sliderItem);
         }
         adapter.renewItems(sliderItemList);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private  void initComponant(){
+        binding.productDescriptionToolbar.setTitle("Product Detail");
+        setSupportActionBar(binding.productDescriptionToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

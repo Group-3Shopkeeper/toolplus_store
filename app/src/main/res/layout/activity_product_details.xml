@@ -5,17 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProductDetailsActivty">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        app:title="Product Detail Screen"
+        app:titleTextColor="@color/white"
+        android:id="@+id/productDescriptionToolbar"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/ll"
+        android:layout_below="@+id/productDescriptionToolbar"
         android:layout_marginBottom="10dp"
         android:fillViewport="true">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mainRl"
-        >
+        android:id="@+id/mainRl">
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_slider_mainActivity"
             android:layout_width="match_parent"

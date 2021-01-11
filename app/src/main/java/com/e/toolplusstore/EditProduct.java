@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -240,6 +241,16 @@ public class EditProduct extends AppCompatActivity {
                 Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
             }
         }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initComponent() {
         binding.toolbar.setTitle("Product");
         setSupportActionBar(binding.toolbar);

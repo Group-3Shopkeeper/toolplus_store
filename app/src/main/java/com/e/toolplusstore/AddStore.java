@@ -177,7 +177,6 @@ public class AddStore extends AppCompatActivity {
             }
         });
     }
-
     private void initComponent() {
         binding.toolbar.setTitle("Add Store");
         setSupportActionBar(binding.toolbar);

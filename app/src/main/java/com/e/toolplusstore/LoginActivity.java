@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         firebaseAuth.addAuthStateListener(listener);
     }
-
     @Override
     protected void onStop() {
         if (listener != null)
@@ -64,12 +63,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==AUTH_REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                Toast.makeText(this, "Successfully login", Toast.LENGTH_SHORT).show();
                 sendUserToHomeScreen();
+                finish();
             }
-        }
-        else {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
 
