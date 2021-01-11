@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
 
     private void changeActivity(boolean isConnected) {
         if(isConnected){
-            Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
             setContentView(binding.getRoot());
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
             }, 3000);
         }
         else {
-            Toast.makeText(this, "Not Connected", Toast.LENGTH_SHORT).show();
             offlineActivityBinding = OfflineActivityBinding.inflate(LayoutInflater.from(this));
             setContentView(offlineActivityBinding.getRoot());
         }
