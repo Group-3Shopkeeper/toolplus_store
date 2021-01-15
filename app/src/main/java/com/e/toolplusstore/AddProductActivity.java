@@ -7,8 +7,10 @@ import android.content.Context;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -66,12 +68,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddProductActivity extends AppCompatActivity{
+public class AddProductActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
     AddProductScreenBinding binding;
     Uri imageUri;
     OfflineActivityBinding offlineActivityBinding;
     ArrayList<Category> al;
-    Double discount=0.0;
     Uri secondImageUri ;
     Uri thirdImageuri;
     String title,categoryId=null,currentUserId;
@@ -85,6 +86,7 @@ public class AddProductActivity extends AppCompatActivity{
         setContentView(binding.getRoot());
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
+
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId, "");
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
@@ -121,44 +123,6 @@ public class AddProductActivity extends AppCompatActivity{
                 //binding.btnAddMore.setVisibility(View.GONE);
             }
         });
-        binding.productCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final PopupMenu popupMenu = new PopupMenu(AddProductActivity.this, binding.productCategory);
-                popupMenu.setGravity(Gravity.END);
-                CategoryService.CategoryApi userapi= CategoryService.getCategoryApiInstance();
-                Call<ArrayList<Category>> call = userapi.getCategoryList();
-                call.enqueue(new Callback<ArrayList<Category>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-                        al = response.body();
-                        for(Category c : al){
-                            popupMenu.getMenu().add(c.getCategoryName());
-                        }
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                String  categoryName=item.getTitle().toString();
-                                binding.productCategory.setText(categoryName);
-                                for(Category c : al){
-                                    if(c.getCategoryName()==categoryName){
-                                        categoryId = c.getCategoryId();
-                                    }
-                                }
-                                popupMenu.dismiss();
-                                return false;
-                            }
-                        });
-                        popupMenu.show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
 
     }
     private void checkInternetConnection() {
@@ -168,6 +132,46 @@ public class AddProductActivity extends AppCompatActivity{
 
     private void changeActivity(boolean isConnected) {
         if(isConnected){
+            setContentView(binding.getRoot());
+            binding.productCategory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final PopupMenu popupMenu = new PopupMenu(AddProductActivity.this, binding.productCategory);
+                    popupMenu.setGravity(Gravity.END);
+                    CategoryService.CategoryApi userapi= CategoryService.getCategoryApiInstance();
+                    Call<ArrayList<Category>> call = userapi.getCategoryList();
+                    call.enqueue(new Callback<ArrayList<Category>>() {
+                        @Override
+                        public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                            al = response.body();
+                            for(Category c : al){
+                                popupMenu.getMenu().add(c.getCategoryName());
+                            }
+                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    String  categoryName=item.getTitle().toString();
+                                    binding.productCategory.setText(categoryName);
+                                    for(Category c : al){
+                                        if(c.getCategoryName()==categoryName){
+                                            categoryId = c.getCategoryId();
+                                        }
+                                    }
+                                    popupMenu.dismiss();
+                                    return false;
+                                }
+                            });
+                            popupMenu.show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+
+                        }
+                    });
+                }
+            });
+
             binding.btnAddProduct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -176,10 +180,12 @@ public class AddProductActivity extends AppCompatActivity{
                             String brand = binding.productBrand.getText().toString();
                             Integer qtyInStock = Integer.parseInt(binding.productQuantity.getText().toString());
                             Double price = Double.parseDouble(binding.productPrice.getText().toString());
-                            discount = Double.parseDouble(binding.productDiscount.getText().toString());
-                            if (discount == null) {
-                                discount = 0.0;
+                            String dis = binding.productDiscount.getText().toString();
+                            if(dis.equals("")){
+                                dis = "0.0";
                             }
+                            Double discount = Double.parseDouble(dis);
+                            Toast.makeText(AddProductActivity.this, "disc===."+discount, Toast.LENGTH_SHORT).show();
                             String description = binding.productDescription.getText().toString();
                             if (description.equals("")) {
                                 description = "";
@@ -204,9 +210,6 @@ public class AddProductActivity extends AppCompatActivity{
                             if (TextUtils.isEmpty(price.toString())) {
                                 binding.productPrice.setError("Enter Price");
                                 return;
-                            }
-                            if (TextUtils.isEmpty(description)) {
-                                description = "";
                             }
 
                             if (imageUri != null && secondImageUri != null && thirdImageuri != null) {
@@ -291,9 +294,9 @@ public class AddProductActivity extends AppCompatActivity{
                             } else {
                                 Toast.makeText(AddProductActivity.this, "Select All Images", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (NumberFormatException e) {
+                        } catch (Exception e) {
                             Log.e("exception ", "========================>>" + e);
-                            Toast.makeText(AddProductActivity.this, "Enter all valid input", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddProductActivity.this, "please enter all input", Toast.LENGTH_SHORT).show();
                         }
                     }
             });
@@ -302,6 +305,16 @@ public class AddProductActivity extends AppCompatActivity{
             offlineActivityBinding = OfflineActivityBinding.inflate(LayoutInflater.from(this));
             setContentView(offlineActivityBinding.getRoot());
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+        ConnectivityReceiver connectivityReceiver = new ConnectivityReceiver();
+        registerReceiver(connectivityReceiver,intentFilter);
+        MyApp.getInstance().setConnectivityListener(this);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -331,4 +344,8 @@ public class AddProductActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        changeActivity(isConnected);
+    }
 }

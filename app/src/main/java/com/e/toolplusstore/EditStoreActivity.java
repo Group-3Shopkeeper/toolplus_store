@@ -49,6 +49,10 @@ public class EditStoreActivity extends AppCompatActivity {
         binding = ActivityAddStoreBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
         initComponent();
+        binding.storeName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        binding.storeAddress.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        binding.storeEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        binding.storeNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);

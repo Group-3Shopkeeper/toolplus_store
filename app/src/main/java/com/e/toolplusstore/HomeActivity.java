@@ -1,16 +1,23 @@
 package com.e.toolplusstore;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,10 +29,13 @@ import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.e.toolplusstore.adapter.CategoryAdapter;
+import com.e.toolplusstore.adapter.ShowProductAdapter;
 import com.e.toolplusstore.apis.CategoryService;
 
+import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.apis.StoreService;
 import com.e.toolplusstore.beans.Category;
+import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.ActivityHomeBinding;
 import com.firebase.ui.auth.AuthUI;
@@ -49,6 +59,9 @@ public class HomeActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     CategoryAdapter adapter;
     String currentUserId;
+    String name = "";
+    ShowProductAdapter adapter1;
+    ArrayList<Category> al;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,26 +167,96 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.etSearchBar.setVisibility(View.VISIBLE);
-                binding.ivsearch.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = "";
-                        Intent intent = new Intent(HomeActivity.this, SearchProductActivity.class);
-                        name = binding.etSearchBar.getText().toString();
-                        if (TextUtils.isEmpty(name)) {
-                            binding.etSearchBar.setError("write here and than search..");
-                        } else {
-                            intent.putExtra("name", name);
-                            startActivity(intent);
-                            binding.etSearchBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+                binding.etSearchBar.addTextChangedListener(new TextWatcher() {
+                   @Override
+                   public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                   }
+
+                   @Override
+                   public void onTextChanged(CharSequence s, int start, int before, int count) {
+                      name=s.toString();
+                      binding.addProduct.setVisibility(View.GONE);
+                      binding.rv.setVisibility(View.GONE);
+                      binding.rv1.setVisibility(View.VISIBLE);
+                      searchProduct();
+                      if (name.isEmpty()){
+                          binding.rv.setVisibility(View.VISIBLE);
+                          binding.rv1.setVisibility(View.GONE);
+                          binding.etSearchBar.setVisibility(View.GONE);
+                          binding.addProduct.setVisibility(View.VISIBLE);
+                          InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                          imm.hideSoftInputFromWindow(binding.etSearchBar.getWindowToken(), 0);
+                      }
+                   }
+                   @Override
+                   public void afterTextChanged(Editable s) {
+
+                   }
+               });
+                binding.rv.setVisibility(View.VISIBLE);
+                binding.rv1.setVisibility(View.GONE);
+                binding.addProduct.setVisibility(View.VISIBLE);
+
             }
         });
 
     }
-        @Override
+
+    private void searchProduct() {
+        currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        InternetConnectivity connectivity = new InternetConnectivity();
+        if (!connectivity.isConnected(HomeActivity.this)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+            builder.setMessage("Please connect to the Internet to Proceed Further").setCancelable(false);
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    System.exit(0);
+                }
+            }).setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    startActivity(new Intent(Settings.ACTION_SETTINGS));
+                }
+            });
+            builder.show();
+        } else {
+            ProductService.ProductApi productApi = ProductService.getProductApiInstance();
+            final Call<ArrayList<Product>> productList = productApi.getProductList(currentUserId,name);
+            productList.enqueue(new Callback<ArrayList<Product>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                    if (response.isSuccessful()) {
+                        if (!response.body().isEmpty()) {
+                            ArrayList<Product> productList = response.body();
+                            adapter1 = new ShowProductAdapter(HomeActivity.this, productList);
+                            binding.rv1.setAdapter(adapter1);
+                            binding.rv1.setLayoutManager(new GridLayoutManager(HomeActivity.this, 2));
+                            adapter1.setOnItemClickListener(new ShowProductAdapter.OnRecyclerViewClick() {
+                                @Override
+                                public void onItemClick(final Product product, int position) {
+                                    final Intent intent=new Intent(HomeActivity.this,ProductDetailsActivty.class);
+                                    intent.putExtra("product", product);
+                                    startActivity(intent);
+                                }
+                            });
+                            binding.spinKitt.setVisibility(View.INVISIBLE);
+                        }
+                        else {
+                            binding.spinKitt.setVisibility(View.INVISIBLE);
+                            binding.noMatch.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                    Toast.makeText(HomeActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+    @Override
         public boolean onCreateOptionsMenu (Menu menu){
             menu.add("Settings");
             menu.add("Logout");
@@ -189,15 +272,29 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             if (title.equals("Logout")) {
-                AuthUI.getInstance()
-                        .signOut(this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                startActivity(new Intent(HomeActivity.this,LoginActivity.class));
-                                finish();;
-                            }
-                        });
+                final AlertDialog.Builder ab = new AlertDialog.Builder(HomeActivity.this);
+                ab.setTitle("Are You Sure?");
+
+                ab.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AuthUI.getInstance()
+                                .signOut(HomeActivity.this)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+                                        finish();;
+                                    }
+                                });
+                    }
+                });
+                ab.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                ab.show();
             }
             return super.onOptionsItemSelected(item);
         }

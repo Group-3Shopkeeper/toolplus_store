@@ -254,8 +254,6 @@ public class EditProduct extends AppCompatActivity {
     private void initComponent() {
         binding.toolbar.setTitle("Product");
         setSupportActionBar(binding.toolbar);
-        binding.tv1.setVisibility(View.GONE);
-        binding.tv2.setVisibility(View.GONE);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

@@ -17,8 +17,8 @@ public class OrderService {
     public  static OrderApi getOrderApiInstance(){
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(2000, TimeUnit.SECONDS)
-                .readTimeout(2000, TimeUnit.SECONDS)
+                .connectTimeout(5000, TimeUnit.SECONDS)
+                .readTimeout(5000, TimeUnit.SECONDS)
                 .build();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(ServerAddress.BASE_URL)
