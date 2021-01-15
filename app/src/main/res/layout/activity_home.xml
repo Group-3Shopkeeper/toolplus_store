@@ -42,8 +42,8 @@
                         android:layout_marginTop="5dp"
                         android:hint="Search product here"
                         android:paddingLeft="10dp"
-                        android:background="@drawable/white_searchbar_decorator"
-                        android:textColor="@color/colorPrimary"
+                        android:background="@color/colorPrimary"
+                        android:textColor="@color/white"
                         android:textAlignment="textStart"
                         android:textCursorDrawable="@color/white"
                         android:textColorHint="@color/white"
@@ -59,8 +59,41 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/etSearchBar"
                 android:paddingTop="10dp"
-                android:id="@+id/rv">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:id="@+id/rv"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/etSearchBar"
+                    android:visibility="gone"
+                    android:id="@+id/rv1"/>
+                <com.github.ybq.android.spinkit.SpinKitView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/spin_kitt"
+                    style="@style/SpinKitView.Large.Circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerInParent="true"
+                    app:SpinKit_Color="@color/colorPrimaryDark" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/noMatch"
+                    android:gravity="center"
+                    android:scaleType="fitXY"
+                    android:layout_below="@+id/toolbar"
+                    android:visibility="gone"
+                    android:src="@drawable/searchnotavailble"
+                    />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/nope"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    android:layout_below="@+id/toolbar"
+                    android:src="@drawable/notavailble"
+                    />
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
@@ -93,4 +126,5 @@
         android:layout_gravity="center"
         android:layout_centerInParent="true"
         app:SpinKit_Color="@color/colorPrimaryDark" />
+
 </RelativeLayout>

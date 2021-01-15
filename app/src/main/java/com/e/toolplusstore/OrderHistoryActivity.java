@@ -45,7 +45,6 @@ public class OrderHistoryActivity extends AppCompatActivity {
         OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
         Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
 
-        
 
         call.enqueue(new Callback<ArrayList<PurchaseOrder>>() {
             @Override

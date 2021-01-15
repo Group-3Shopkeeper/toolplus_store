@@ -24,8 +24,8 @@ public class ProductService {
     public static ProductApi productApi;
     public  static ProductApi getProductApiInstance(){
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(1000, TimeUnit.SECONDS)
-                .readTimeout(1000, TimeUnit.SECONDS)
+                .connectTimeout(5000, TimeUnit.SECONDS)
+                .readTimeout(5000, TimeUnit.SECONDS)
                 .build();
                  Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(ServerAddress.BASE_URL)
