@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 app:sliderAnimationDuration="600"
-                android:background="@drawable/ic_launcher_background"
+                android:background="@color/white"
                 app:sliderAutoCycleDirection="back_and_forth"
                 app:sliderIndicatorAnimationDuration="600"
                 app:sliderIndicatorEnabled="true"

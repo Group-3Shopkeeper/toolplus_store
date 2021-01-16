@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
         if(requestCode==AUTH_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 sendUserToHomeScreen();
-                finish();
             }
         }
     }
@@ -72,5 +71,6 @@ public class LoginActivity extends AppCompatActivity {
     private void sendUserToHomeScreen() {
         Intent in = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(in);
+        finish();
     }
 }

@@ -91,10 +91,10 @@ public class ProductDetailsActivty extends AppCompatActivity {
             binding.tvPrice.setText("Price : " + p.getPrice() + "");
         } else {
             binding.tvDiscount.setText("Off : (" + p.getDiscount() + "%)");
-            binding.tvMRP.setText("MRP : " + p.getPrice() + "");
+            binding.tvMRP.setText("MRP : ₹" + p.getPrice() + "");
             binding.tvMRP.setPaintFlags(binding.tvMRP.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             Double ap = p.getPrice() - (p.getPrice() * p.getDiscount() / 100);
-            binding.tvPrice.setText("" + ap);
+            binding.tvPrice.setText("₹" + ap);
         }
         adapter = new SliderAdapterExample(this);
         binding.iv.setSliderAdapter(adapter);
