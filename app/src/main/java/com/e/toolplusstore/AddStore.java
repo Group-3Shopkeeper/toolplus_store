@@ -150,6 +150,8 @@ public class AddStore extends AppCompatActivity {
                                     editor.putString("name",shopkeeper.getShopName());
                                     editor.commit();
                                     Toast.makeText(AddStore.this, "Saved", Toast.LENGTH_SHORT).show();
+                                    Intent inte=new Intent(AddStore.this,HomeActivity.class);
+                                    startActivity(inte);
                                     finish();
                                     Log.e("=========", "200");
                                 } else if (response.code() == 404) {
@@ -188,7 +190,6 @@ public class AddStore extends AppCompatActivity {
         if (requestCode == 111 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             Picasso.get().load(imageUri).into(binding.storeImage);
-            Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
         }
     }
 }
