@@ -17,6 +17,7 @@ import com.e.toolplusstore.beans.OrderItemList;
 import com.e.toolplusstore.beans.PurchaseOrder;
 import com.e.toolplusstore.databinding.ActivityOrderHistoryBinding;
 import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -39,7 +40,7 @@ public class NewOrderActivity extends AppCompatActivity {
         binding = ActivityOrderHistoryBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
         initComponent();
-        Sprite doubleBounce = new Wave();
+        Sprite doubleBounce = new FadingCircle();
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
         shopKeeperId= FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         Log.e("==================",shopKeeperId);

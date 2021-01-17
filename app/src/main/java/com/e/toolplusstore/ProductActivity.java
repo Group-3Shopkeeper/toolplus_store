@@ -19,6 +19,7 @@ import com.e.toolplusstore.apis.ProductService;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
 import com.e.toolplusstore.databinding.ProductActivityBinding;
+import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
@@ -41,7 +42,7 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ProductActivityBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
-        Sprite doubleBounce = new Wave();
+        Sprite doubleBounce = new FadingCircle() ;
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
         initComponent();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();

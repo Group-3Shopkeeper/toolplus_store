@@ -4,11 +4,14 @@
     <group android:checkableBehavior="single"
         android:id="@+id/gp2">
         <item android:id="@+id/name"
-            android:title="ToolPlus"
+            android:title="Edit Store"
             android:icon="@drawable/edit"/>
         <item android:id="@+id/addProduct"
             android:title="Add Product"
             android:icon="@drawable/add" />
+        <item android:id="@+id/storeProfile"
+            android:title="Store Profile"
+            android:icon="@drawable/store_profile" />
     </group>
     <group android:checkableBehavior="all"
         android:id="@+id/gp3">

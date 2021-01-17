@@ -75,25 +75,25 @@
                     android:layout_gravity="center"
                     android:layout_centerInParent="true"
                     app:SpinKit_Color="@color/colorPrimaryDark" />
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/noMatch"
-                    android:gravity="center"
-                    android:scaleType="fitXY"
-                    android:layout_below="@+id/toolbar"
-                    android:visibility="gone"
-                    android:src="@drawable/searchnotavailble"
-                    />
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/nope"
-                    android:scaleType="fitXY"
-                    android:visibility="gone"
-                    android:layout_below="@+id/toolbar"
-                    android:src="@drawable/notavailble"
-                    />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/nope"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                android:layout_below="@+id/toolbar"
+                android:src="@drawable/notavailble"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/noMatch"
+                android:gravity="center"
+                android:scaleType="fitXY"
+                android:layout_below="@+id/toolbar"
+                android:visibility="gone"
+                android:src="@drawable/searchnotavailble"
+                />
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
