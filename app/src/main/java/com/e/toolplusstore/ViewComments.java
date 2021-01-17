@@ -54,10 +54,12 @@ public class ViewComments extends AppCompatActivity {
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
                 if(response.code()==200) {
                     List<Comment> arrayList = response.body();
-
+                    if(arrayList.size()==0){
+                        binding.tvNoComments.setVisibility(View.VISIBLE);
+                    }else{
                     adapter = new ViewCommentAdapter(ViewComments.this,arrayList);
                     binding.rv.setAdapter(adapter);
-                    binding.rv.setLayoutManager(new LinearLayoutManager(ViewComments.this));
+                    binding.rv.setLayoutManager(new LinearLayoutManager(ViewComments.this));}
                 }
             }
 
