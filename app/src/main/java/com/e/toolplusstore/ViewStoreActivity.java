@@ -63,7 +63,7 @@ public class ViewStoreActivity extends AppCompatActivity {
                         sum = sum+totalAmount;
                         count++;
                     }
-                    binding.tvBillingAmount.setText(""+sum);
+                    binding.tvBillingAmount.setText("₹"+sum);
                     binding.tvOrderCount.setText(""+count);
                 }
             }

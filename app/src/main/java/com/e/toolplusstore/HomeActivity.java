@@ -40,6 +40,7 @@ import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.ActivityHomeBinding;
 import com.firebase.ui.auth.AuthUI;
 import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,8 +68,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(HomeActivity.this));
         setContentView(binding.getRoot());
-
-
         InternetConnectivity connectivity = new InternetConnectivity();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (!connectivity.isConnected(HomeActivity.this)) {
@@ -87,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
             });
             builder.show();
         } else {
-            Sprite doubleBounce = new Wave();
+            Sprite doubleBounce = new FadingCircle();
             binding.spinKit.setIndeterminateDrawable(doubleBounce);
             CategoryService.CategoryApi categoryApi = CategoryService.getCategoryApiInstance();
             Call<ArrayList<Category>> call = categoryApi.getCategoryList();
@@ -136,7 +135,7 @@ public class HomeActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     binding.drawer.closeDrawer(GravityCompat.START);
                     String title = item.getTitle().toString();
-                    if (title.equals("ToolPlus")) {
+                    if (title.equals("Edit Store")) {
                         Intent intent=new Intent(HomeActivity.this,EditStoreActivity.class);
                         startActivity(intent);
 
@@ -145,7 +144,13 @@ public class HomeActivity extends AppCompatActivity {
                         Intent intent = new Intent(HomeActivity.this, AddProductActivity.class);
                         startActivity(intent);
 
-                    } else if (title.equals("New Order")) {
+                    }
+                    else if (title.equals("Store Profile")) {
+                        Intent intent = new Intent(HomeActivity.this, ViewStoreActivity.class);
+                        startActivity(intent);
+                    }
+
+                    else if (title.equals("New Order")) {
                         Intent intent = new Intent(HomeActivity.this, NewOrderActivity.class);
                         startActivity(intent);
 
