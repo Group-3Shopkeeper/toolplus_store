@@ -31,9 +31,10 @@ public class LoginActivity extends AppCompatActivity {
     }
     @Override
     protected void onStop() {
+        super.onStop();
         if (listener != null)
             firebaseAuth.removeAuthStateListener(listener);
-        super.onStop();
+
     }
     private void SignInUser() {
         providers = Arrays.asList(
@@ -54,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                             .setTheme(R.style.LoginTheme)
                             .setAvailableProviders(providers)
                             .build(),AUTH_REQUEST_CODE);
+
                 }
             }
         };
