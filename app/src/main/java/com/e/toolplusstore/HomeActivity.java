@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(HomeActivity.this));
         setContentView(binding.getRoot());
         InternetConnectivity connectivity = new InternetConnectivity();
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (!connectivity.isConnected(HomeActivity.this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
@@ -305,9 +306,10 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     private void checkUserProfile(){
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final SharedPreferences sp = getSharedPreferences("MyStore",MODE_PRIVATE);
-        String id = sp.getString("userId","Not found");
+        String id = sp.getString("shpKeeperId","Not found");
+
         if(!id.equals("Not found")){
                 if(!id.equals(currentUserId)){
                     StoreService.ServiceApi storeApi = StoreService.getStoreApiInstance();
@@ -318,7 +320,7 @@ public class HomeActivity extends AppCompatActivity {
                             if(response.code() == 200){
                                 Shopkeeper shopkeeper = response.body();
                                 SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("userId",shopkeeper.getShopKeeperId());
+                                editor.putString("shopKeeperId",shopkeeper.getShopKeeperId());
                                 editor.putString("address",shopkeeper.getAddress());
                                 editor.putString("email",shopkeeper.getEmail());
                                 editor.putString("contact",shopkeeper.getContactNumber());
@@ -340,6 +342,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         else{
+
             StoreService.ServiceApi storeApi = StoreService.getStoreApiInstance();
             Call<Shopkeeper> call = storeApi.getStoreProfile(currentUserId);
             call.enqueue(new Callback<Shopkeeper>() {
@@ -347,8 +350,9 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
                     if(response.code() == 200){
                         Shopkeeper shopkeeper = response.body();
+
                         SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("userId",shopkeeper.getShopKeeperId());
+                        editor.putString("shopKeeperId",shopkeeper.getShopKeeperId());
                         editor.putString("address",shopkeeper.getAddress());
                         editor.putString("email",shopkeeper.getEmail());
                         editor.putString("contact",shopkeeper.getContactNumber());
@@ -356,6 +360,7 @@ public class HomeActivity extends AppCompatActivity {
                         editor.putString("imageUrl",shopkeeper.getImageUrl());
                         editor.putString("name",shopkeeper.getShopName());
                         editor.commit();
+
                     }
                     else if(response.code() == 404){
                         sendUserToAddStoreActivity();
