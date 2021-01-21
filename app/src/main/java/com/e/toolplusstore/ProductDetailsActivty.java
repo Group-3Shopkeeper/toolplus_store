@@ -173,19 +173,25 @@ public class ProductDetailsActivty extends AppCompatActivity {
     }
     public void renewItems(View view) {
         List<SliderItem> sliderItemList = new ArrayList<>();
-        for (int i = 1; i < 4; i++) {
-            SliderItem sliderItem = new SliderItem();
-            if (i == 1) {
-                sliderItem.setImageUrl(p.getImageUrl());
-            } else if (i == 2) {
-                    sliderItem.setImageUrl(p.getSecondImageUrl());
-            } else if (i == 3) {
-                    sliderItem.setImageUrl(p.getThirdImageurl());
+        if (p.getImageUrl()!=null){
+            SliderItem sliderItem1=new SliderItem();
+            sliderItem1.setImageUrl(p.getImageUrl());
+            sliderItemList.add(sliderItem1);
+            if (p.getSecondImageUrl()!=null){
+                SliderItem sliderItem2=new SliderItem();
+                sliderItem2.setImageUrl(p.getSecondImageUrl());
+                sliderItemList.add(sliderItem2);
+                if (p.getThirdImageurl()!=null){
+                    SliderItem sliderItem3=new SliderItem();
+                    sliderItem3.setImageUrl(p.getThirdImageurl());
+                    sliderItemList.add(sliderItem3);
+                }
             }
-            sliderItemList.add(sliderItem);
         }
         adapter.renewItems(sliderItemList);
+
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
