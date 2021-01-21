@@ -29,9 +29,19 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/ivmic"
+                        android:src="@drawable/ic_mike"
+                        android:layout_gravity="right"
+                        android:onClick="getSpeechInput"
+                        android:layout_marginRight="5dp"
+                        android:paddingTop="2dp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/ivsearch"
                         android:src="@drawable/search"
                         android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
                         android:paddingTop="2dp"/>
                     <EditText
                         android:id="@+id/etSearchBar"
