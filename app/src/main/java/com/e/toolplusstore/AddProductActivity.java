@@ -70,11 +70,11 @@ import retrofit2.Response;
 
 public class AddProductActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
     AddProductScreenBinding binding;
-    Uri imageUri;
+    Uri imageUri=null;
     OfflineActivityBinding offlineActivityBinding;
     ArrayList<Category> al;
-    Uri secondImageUri ;
-    Uri thirdImageuri;
+    Uri secondImageUri=null ;
+    Uri thirdImageuri=null;
     String title,categoryId=null,currentUserId;
     ProgressDialog pd;
     MultipartBody.Part body2,body3,body;
@@ -212,22 +212,18 @@ public class AddProductActivity extends AppCompatActivity implements Connectivit
                                 return;
                             }
 
-                            if (imageUri != null && secondImageUri != null && thirdImageuri != null) {
-                                pd = new ProgressDialog(AddProductActivity.this);
-                                pd.setTitle("Saving");
-                                pd.setMessage("Please wait");
-                                pd.show();
+                            if (imageUri!=null) {
 
-                                if (imageUri != null && secondImageUri != null && thirdImageuri != null) {
-                                    File file = FileUtils.getFile(AddProductActivity.this, imageUri);
-                                    RequestBody requestFile =
-                                            RequestBody.create(
-                                                    MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
-                                                    file
-                                            );
-                                    body =
-                                            MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                                File file = FileUtils.getFile(AddProductActivity.this, imageUri);
+                                RequestBody requestFile =
+                                        RequestBody.create(
+                                                MediaType.parse(Objects.requireNonNull(getContentResolver().getType(imageUri))),
+                                                file
+                                        );
+                                body =
+                                        MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
+                                if (secondImageUri!=null){
 
                                     File file2 = FileUtils.getFile(AddProductActivity.this, secondImageUri);
                                     RequestBody requestFile2 =
@@ -237,62 +233,68 @@ public class AddProductActivity extends AppCompatActivity implements Connectivit
                                             );
                                     body2 =
                                             MultipartBody.Part.createFormData("file2", file2.getName(), requestFile2);
+                                    if (thirdImageuri!=null){
 
-                                    File file3 = FileUtils.getFile(AddProductActivity.this, thirdImageuri);
-                                    RequestBody requestFile3 =
-                                            RequestBody.create(
-                                                    MediaType.parse(Objects.requireNonNull(getContentResolver().getType(thirdImageuri))),
-                                                    file3
-                                            );
-                                    body3 =
-                                            MultipartBody.Part.createFormData("file3", file3.getName(), requestFile3);
+                                        File file3 = FileUtils.getFile(AddProductActivity.this, thirdImageuri);
+                                        RequestBody requestFile3 =
+                                                RequestBody.create(
+                                                        MediaType.parse(Objects.requireNonNull(getContentResolver().getType(thirdImageuri))),
+                                                        file3
+                                                );
+                                        body3 =
+                                                MultipartBody.Part.createFormData("file3", file3.getName(), requestFile3);
+                                    }
+                                }
+                                pd = new ProgressDialog(AddProductActivity.this);
+                                pd.setTitle("Saving");
+                                pd.setMessage("Please wait");
+                                pd.show();
+                                RequestBody productName = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, name);
 
-                                    RequestBody productName = RequestBody.create(
-                                            okhttp3.MultipartBody.FORM, name);
+                                RequestBody productBrand = RequestBody.create(okhttp3.MultipartBody.FORM, brand);
+                                RequestBody productPrice = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, String.valueOf(price));
+                                RequestBody productDiscount = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, String.valueOf(discount));
+                                RequestBody productQtyInStock = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, String.valueOf(qtyInStock));
+                                RequestBody productCategoryId = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, categoryId);
+                                RequestBody productDescription = RequestBody.create(
+                                        okhttp3.MultipartBody.FORM, description);
+                                RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopKeeperId);
 
-                                    RequestBody productBrand = RequestBody.create(okhttp3.MultipartBody.FORM, brand);
-                                    RequestBody productPrice = RequestBody.create(
-                                            okhttp3.MultipartBody.FORM, String.valueOf(price));
-                                    RequestBody productDiscount = RequestBody.create(
-                                            okhttp3.MultipartBody.FORM, String.valueOf(discount));
-                                    RequestBody productQtyInStock = RequestBody.create(
-                                            okhttp3.MultipartBody.FORM, String.valueOf(qtyInStock));
-                                    RequestBody productCategoryId = RequestBody.create(
-                                            okhttp3.MultipartBody.FORM, categoryId);
-                                    RequestBody productDescription = RequestBody.create(
-                                            okhttp3.MultipartBody.FORM, description);
-                                    RequestBody shopkeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, shopKeeperId);
+                                ProductService.ProductApi productApi = ProductService.getProductApiInstance();
+                                Call<Product> call = productApi.saveProduct(body, body2, body3, productName, productQtyInStock, productPrice
+                                        , productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId);
 
-                                    ProductService.ProductApi productApi = ProductService.getProductApiInstance();
-                                    Call<Product> call = productApi.saveProduct(body, body2, body3, productName, productQtyInStock, productPrice
-                                            , productDescription, productDiscount, shopkeeperId, productBrand, productCategoryId);
-
-                                    call.enqueue(new Callback<Product>() {
-                                        @Override
-                                        public void onResponse(Call<Product> call, Response<Product> response) {
-                                            if (response.code() == 200) {
-                                                pd.dismiss();
-                                                Product product = response.body();
-                                                Toast.makeText(AddProductActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                            } else if (response.code() == 404) {
-                                                pd.dismiss();
-                                                Toast.makeText(AddProductActivity.this, "404", Toast.LENGTH_SHORT).show();
-                                            } else if (response.code() == 500) {
-                                                Toast.makeText(AddProductActivity.this, "500", Toast.LENGTH_SHORT).show();
-                                                pd.dismiss();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Product> call, Throwable t) {
-                                            Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                                call.enqueue(new Callback<Product>() {
+                                    @Override
+                                    public void onResponse(Call<Product> call, Response<Product> response) {
+                                        if (response.code() == 200) {
+                                            pd.dismiss();
+                                            Product product = response.body();
+                                            Toast.makeText(AddProductActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else if (response.code() == 404) {
+                                            pd.dismiss();
+                                            Toast.makeText(AddProductActivity.this, "404", Toast.LENGTH_SHORT).show();
+                                        } else if (response.code() == 500) {
+                                            Toast.makeText(AddProductActivity.this, "500", Toast.LENGTH_SHORT).show();
                                             pd.dismiss();
                                         }
-                                    });
-                                }
-                            } else {
-                                Toast.makeText(AddProductActivity.this, "Select All Images", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Product> call, Throwable t) {
+                                        Toast.makeText(AddProductActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                                        pd.dismiss();
+                                    }
+                                });
+                            }
+                            else {
+                                Toast.makeText(AddProductActivity.this, "Select Atleast One Image", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             Log.e("exception ", "========================>>" + e);
