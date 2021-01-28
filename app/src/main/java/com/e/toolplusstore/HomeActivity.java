@@ -172,6 +172,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.etSearchBar.setVisibility(View.VISIBLE);
+                binding.etSearchBar.setCursorVisible(true);
                 binding.etSearchBar.addTextChangedListener(new TextWatcher() {
                    @Override
                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
