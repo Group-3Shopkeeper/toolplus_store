@@ -17,15 +17,15 @@ public class PurchaseOrder implements Serializable {
     @SerializedName("totalAmount")
     @Expose
     private Long totalAmount;
-    @SerializedName("orderItem")
+    @SerializedName("orderItemList")
     @Expose
-    private ArrayList<OrderItemList> orderItem = null;
+    private ArrayList<OrderItemList> orderItemList = null;
 
-    public PurchaseOrder(String orderId, String date, Long totalAmount, ArrayList<OrderItemList> orderItem) {
+    public PurchaseOrder(String orderId, String date, Long totalAmount, ArrayList<OrderItemList> orderItemList) {
         this.orderId = orderId;
         this.date = date;
         this.totalAmount = totalAmount;
-        this.orderItem = orderItem;
+        this.orderItemList = orderItemList;
     }
 
     public PurchaseOrder() {
@@ -55,12 +55,12 @@ public class PurchaseOrder implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public ArrayList<OrderItemList> getOrderItem() {
-        return orderItem;
+    public ArrayList<OrderItemList> getOrderItemList() {
+        return orderItemList;
     }
 
-    public void setOrderItem(ArrayList<OrderItemList> orderItem) {
-        this.orderItem = orderItem;
+    public void setOrderItemList(ArrayList<OrderItemList> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 }
 

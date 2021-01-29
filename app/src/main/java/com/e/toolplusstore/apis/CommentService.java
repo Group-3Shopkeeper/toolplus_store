@@ -24,6 +24,7 @@ public class CommentService {
                 .build();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(ServerAddress.BASE_URL)
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         if(commentApi==null)

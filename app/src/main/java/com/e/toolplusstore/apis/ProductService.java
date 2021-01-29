@@ -29,6 +29,7 @@ public class ProductService {
                 .build();
                  Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(ServerAddress.BASE_URL)
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -56,9 +57,7 @@ public class ProductService {
 
         @Multipart
         @POST("product/")
-        public Call<Product> saveProduct(@Part  MultipartBody.Part file,
-                                         @Part  MultipartBody.Part file2,
-                                         @Part  MultipartBody.Part file3,
+        public Call<Product> saveProduct(@Part List<MultipartBody.Part> file,
                                          @Part("name")RequestBody name,
                                          @Part("qtyInStock") RequestBody qtyInStock,
                                          @Part("price") RequestBody price,
