@@ -129,7 +129,9 @@
             android:textColor="@color/colorPrimary"
             android:textColorHint="#AEB9C5"
             android:textSize="15sp" />
-        <EditText
+        <AutoCompleteTextView
+            android:completionThreshold="1"
+            android:inputType="textAutoComplete|textAutoCorrect"
             android:id="@+id/productBrand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

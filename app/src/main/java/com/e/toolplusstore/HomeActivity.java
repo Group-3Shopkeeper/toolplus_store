@@ -196,7 +196,6 @@ public class HomeActivity extends AppCompatActivity {
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                     }
-
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         name=s.toString();
@@ -221,7 +220,6 @@ public class HomeActivity extends AppCompatActivity {
                 binding.rv.setVisibility(View.VISIBLE);
                 binding.rv1.setVisibility(View.GONE);
                 binding.addProduct.setVisibility(View.VISIBLE);
-
             }
 
     private void searchProduct() {
@@ -268,6 +266,7 @@ public class HomeActivity extends AppCompatActivity {
                             binding.spinKitt.setVisibility(View.INVISIBLE);
                             binding.noMatch.setVisibility(View.VISIBLE);
                         }
+                        binding.noMatch.setVisibility(View.INVISIBLE);
                     }
                 }
                 @Override

@@ -2,6 +2,7 @@ package com.e.toolplusstore;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,20 +58,23 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 }
                 if(response.code() == 200) {
                     final ArrayList<PurchaseOrder> orderList = response.body();
-                    Log.e("====", "" + orderList);
-                    adapter = new OrderHistoryAdapter(OrderHistoryActivity.this, orderList);
-                    binding.rvOrderHistory.setAdapter(adapter);
-                    binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(OrderHistoryActivity.this));
-                    binding.spinKit.setVisibility(View.INVISIBLE);
-                    adapter.setOnItemClickListener(new OrderHistoryAdapter.OnRecyclerViewClick() {
-                        @Override
-                        public void onItemClick(PurchaseOrder o, int position) {
-                            List<OrderItemList> itemList = o.getOrderItem();
-                            Intent in = new Intent(OrderHistoryActivity.this,OrderItemActivity.class);
-                            in.putExtra("orderItem", (Serializable) itemList);
-                            startActivity(in);
-                        }
-                    });
+                    if(orderList.size()!=0) {
+                        Log.e("====", "" + orderList);
+                        adapter = new OrderHistoryAdapter(OrderHistoryActivity.this, orderList);
+                        binding.rvOrderHistory.setAdapter(adapter);
+                        binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(OrderHistoryActivity.this));
+                        binding.spinKit.setVisibility(View.INVISIBLE);
+                        adapter.setOnItemClickListener(new OrderHistoryAdapter.OnRecyclerViewClick() {
+                            @Override
+                            public void onItemClick(PurchaseOrder o, int position) {
+                                ArrayList<OrderItemList> itemLists = o.getOrderItemList();
+                                Log.e("sljflsdjfls ","======>"+itemLists.size());
+                                Intent intent2 = new Intent(OrderHistoryActivity.this,OrderItemActivity.class);
+                                intent2.putExtra("orderItem", itemLists);
+                                startActivity(intent2);
+                            }
+                        });
+                    }
                 }
                 if(response.code()==404){
                     Toast.makeText(OrderHistoryActivity.this, "400", Toast.LENGTH_SHORT).show();
