@@ -87,7 +87,7 @@ public class AddProductActivity extends AppCompatActivity implements Connectivit
     ProgressDialog pd;
 
     ArrayList<String> arrayList;
-    MultipartBody.Part body2,body3,body;
+    //MultipartBody.Part body2,body3,body;
 
     List<MultipartBody.Part> body=new ArrayList<>();
 

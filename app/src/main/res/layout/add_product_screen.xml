@@ -152,10 +152,6 @@
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl2"
-        <AutoCompleteTextView
-            android:completionThreshold="1"
-            android:inputType="textAutoComplete|textAutoCorrect"
-            android:id="@+id/productBrand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -165,6 +161,23 @@
             android:elevation="6dp"
             android:background="@color/white"
             android:layout_below="@+id/rl1">
+        <AutoCompleteTextView
+            android:id="@+id/productBrand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:inputType="textAutoComplete|textAutoCorrect"
+            android:layout_toRightOf="@+id/tvProductBrand"
+            android:background="@drawable/border_white"
+            android:drawableRight="@drawable/ic_star"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="#AEB9C5"
+            android:textSize="15sp"
+            />
             <TextView
                 android:id="@+id/tvProductBrand"
                 android:layout_width="wrap_content"
@@ -177,21 +190,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="#AEB9C5"
                 android:textSize="15sp" />
-            <EditText
-                android:id="@+id/productBrand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tvProductBrand"
-                android:background="@drawable/border_white"
-                android:drawableRight="@drawable/ic_star"
-                android:paddingTop="10dp"
-                android:paddingLeft="5dp"
-                android:paddingBottom="10dp"
-                android:inputType="textCapWords"
-                android:paddingRight="5dp"
-                android:textColor="@color/colorPrimary"
-                android:textColorHint="#AEB9C5"
-                android:textSize="15sp" />
+
         </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl3"
