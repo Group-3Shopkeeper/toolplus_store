@@ -190,6 +190,7 @@ public class HomeActivity extends AppCompatActivity {
     public void  search(){
 
                 binding.etSearchBar.setVisibility(View.VISIBLE);
+                binding.etSearchBar.setCursorVisible(true);
                 binding.etSearchBar.setFocusableInTouchMode(true);
                 binding.etSearchBar.addTextChangedListener(new TextWatcher() {
                     @Override

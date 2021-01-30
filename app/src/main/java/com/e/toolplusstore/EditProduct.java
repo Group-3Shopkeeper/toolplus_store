@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -64,12 +65,12 @@ public class EditProduct extends AppCompatActivity {
         String json = mPref.getString(currentUserId,"");
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
 
-        binding.productName.setText("Product name : "+product.getName());
-        binding.productBrand.setText("Brand : "+product.getBrand());
-        binding.productQuantity.setText("Quantity : "+""+product.getQtyInStock()+".0");
-        binding.productPrice.setText("Price : "+"₹"+product.getPrice()+"");
-        binding.productDescription.setText("Description : "+product.getDescription());
-        binding.productDiscount.setText("Discount : "+product.getDiscount()+"%");
+        binding.productName.setText(product.getName());
+        binding.productBrand.setText(product.getBrand());
+        binding.productQuantity.setText(product.getQtyInStock()+".0");
+        binding.productPrice.setText("₹"+product.getPrice()+"");
+        binding.productDescription.setText(product.getDescription());
+        binding.productDiscount.setText(product.getDiscount()+"%");
         Picasso.get().load(product.getImageUrl()).into(binding.iv1);
         Picasso.get().load(product.getSecondImageUrl()).into(binding.iv2);
         Picasso.get().load(product.getThirdImageurl()).into(binding.iv3);
@@ -85,13 +86,20 @@ public class EditProduct extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(in,"Select image"),111);
             }
         });
-         binding.productCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            setCategoryCode();
+        binding.productCategory.setOnTouchListener(new View.OnTouchListener(){
 
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction())
+                {
+                    view.performClick();
+                    setCategoryCode();
+                    return true;
+                }
+                return false;
             }
-         });
+        });
+
         binding.btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
