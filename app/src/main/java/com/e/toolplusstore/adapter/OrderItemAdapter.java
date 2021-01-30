@@ -13,12 +13,13 @@ import com.e.toolplusstore.databinding.OrderItemBinding;
 import com.squareup.picasso.Picasso;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.OrderItemViewHolder> {
     Context context;
-    List<OrderItemList> orderItems;
-    public OrderItemAdapter(Context context, List<OrderItemList> orderItems){
+    ArrayList<OrderItemList> orderItems;
+    public OrderItemAdapter(Context context, ArrayList<OrderItemList> orderItems){
         this.context = context;
         this.orderItems = orderItems;
     }

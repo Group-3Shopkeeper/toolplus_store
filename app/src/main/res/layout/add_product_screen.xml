@@ -152,6 +152,10 @@
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl2"
+        <AutoCompleteTextView
+            android:completionThreshold="1"
+            android:inputType="textAutoComplete|textAutoCorrect"
+            android:id="@+id/productBrand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"

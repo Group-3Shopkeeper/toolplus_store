@@ -126,8 +126,7 @@ public class AddStore extends AppCompatActivity {
                         RequestBody storeEmail = RequestBody.create(okhttp3.MultipartBody.FORM, email);
                         RequestBody storeAddress = RequestBody.create(okhttp3.MultipartBody.FORM, address);
                         RequestBody storeToken = RequestBody.create(okhttp3.MultipartBody.FORM, token);
-                        RequestBody shopKeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, currentUserId);
-
+                        RequestBody shopKeeperId = RequestBody.create(okhttp3.MultipartBody.FORM, FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                         StoreService.ServiceApi serviceApi = StoreService.getStoreApiInstance();
                         Call<Shopkeeper> call = serviceApi.saveStore(body, storeName, storeNumber, storeAddress, storeEmail,shopKeeperId, storeToken);
@@ -139,9 +138,7 @@ public class AddStore extends AppCompatActivity {
                                     pd.dismiss();
                                     Shopkeeper shopkeeper = response.body();
                                     SharedPreferences.Editor editor = mPref.edit();
-                                    //Gson gson = new Gson();
-                                    //String json = gson.toJson(shopkeeper);
-                                    editor.putString("userId",shopkeeper.getShopKeeperId());
+                                    editor.putString("shopKeeperId",shopkeeper.getShopKeeperId());
                                     editor.putString("address",shopkeeper.getAddress());
                                     editor.putString("email",shopkeeper.getEmail());
                                     editor.putString("contact",shopkeeper.getContactNumber());
@@ -150,30 +147,24 @@ public class AddStore extends AppCompatActivity {
                                     editor.putString("name",shopkeeper.getShopName());
                                     editor.commit();
                                     Toast.makeText(AddStore.this, "Saved", Toast.LENGTH_SHORT).show();
-                                    Intent inte=new Intent(AddStore.this,HomeActivity.class);
+                                    Intent inte = new Intent(AddStore.this,HomeActivity.class);
                                     startActivity(inte);
                                     finish();
-                                    Log.e("=========", "200");
                                 } else if (response.code() == 404) {
                                     pd.dismiss();
-                                    Toast.makeText(AddStore.this, "404", Toast.LENGTH_SHORT).show();
-                                    Log.e("=========", "404");
                                 } else if (response.code() == 500) {
                                     pd.dismiss();
-                                    Toast.makeText(AddStore.this, "500", Toast.LENGTH_SHORT).show();
-                                    Log.e(TAG, "onResponse:========================> "+response.errorBody());
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Shopkeeper> call, Throwable t) {
                                 pd.dismiss();
-                                Toast.makeText(AddStore.this, "" + t, Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, "onFailure: =====================>"+t );
                             }
                         });
                     } else {
                         Toast.makeText(AddStore.this, "Please select store image", Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
                     }
                 }
             }

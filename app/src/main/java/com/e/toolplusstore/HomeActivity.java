@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -50,6 +51,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,7 +70,22 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(HomeActivity.this));
         setContentView(binding.getRoot());
+
+        binding.ivsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search();
+            }
+        });
+        binding.ivmic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSpeechInput(binding.getRoot());
+                search();
+            }
+        });
         InternetConnectivity connectivity = new InternetConnectivity();
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (!connectivity.isConnected(HomeActivity.this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
@@ -168,46 +185,43 @@ public class HomeActivity extends AppCompatActivity {
                     return false;
                 }
             });
-        binding.ivsearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+    }
+    public void  search(){
+
                 binding.etSearchBar.setVisibility(View.VISIBLE);
                 binding.etSearchBar.setCursorVisible(true);
+                binding.etSearchBar.setFocusableInTouchMode(true);
                 binding.etSearchBar.addTextChangedListener(new TextWatcher() {
-                   @Override
-                   public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                   }
+                    }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        name=s.toString();
+                        binding.addProduct.setVisibility(View.GONE);
+                        binding.rv.setVisibility(View.GONE);
+                        binding.rv1.setVisibility(View.VISIBLE);
+                        searchProduct();
+                        if (name.isEmpty()){
+                            binding.rv.setVisibility(View.VISIBLE);
+                            binding.rv1.setVisibility(View.GONE);
+                            binding.etSearchBar.setVisibility(View.GONE);
+                            binding.addProduct.setVisibility(View.VISIBLE);
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(binding.etSearchBar.getWindowToken(), 0);
+                        }
+                    }
+                    @Override
+                    public void afterTextChanged(Editable s) {
 
-                   @Override
-                   public void onTextChanged(CharSequence s, int start, int before, int count) {
-                      name=s.toString();
-                      binding.addProduct.setVisibility(View.GONE);
-                      binding.rv.setVisibility(View.GONE);
-                      binding.rv1.setVisibility(View.VISIBLE);
-                      searchProduct();
-                      if (name.isEmpty()){
-                          binding.rv.setVisibility(View.VISIBLE);
-                          binding.rv1.setVisibility(View.GONE);
-                          binding.etSearchBar.setVisibility(View.GONE);
-                          binding.addProduct.setVisibility(View.VISIBLE);
-                          InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                          imm.hideSoftInputFromWindow(binding.etSearchBar.getWindowToken(), 0);
-                      }
-                   }
-                   @Override
-                   public void afterTextChanged(Editable s) {
-
-                   }
-               });
+                    }
+                });
                 binding.rv.setVisibility(View.VISIBLE);
                 binding.rv1.setVisibility(View.GONE);
                 binding.addProduct.setVisibility(View.VISIBLE);
-
             }
-        });
-
-    }
 
     private void searchProduct() {
         currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -253,6 +267,7 @@ public class HomeActivity extends AppCompatActivity {
                             binding.spinKitt.setVisibility(View.INVISIBLE);
                             binding.noMatch.setVisibility(View.VISIBLE);
                         }
+                        binding.noMatch.setVisibility(View.INVISIBLE);
                     }
                 }
                 @Override
@@ -306,9 +321,10 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     private void checkUserProfile(){
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final SharedPreferences sp = getSharedPreferences("MyStore",MODE_PRIVATE);
-        String id = sp.getString("userId","Not found");
+        String id = sp.getString("shpKeeperId","Not found");
+
         if(!id.equals("Not found")){
                 if(!id.equals(currentUserId)){
                     StoreService.ServiceApi storeApi = StoreService.getStoreApiInstance();
@@ -319,7 +335,7 @@ public class HomeActivity extends AppCompatActivity {
                             if(response.code() == 200){
                                 Shopkeeper shopkeeper = response.body();
                                 SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("userId",shopkeeper.getShopKeeperId());
+                                editor.putString("shopKeeperId",shopkeeper.getShopKeeperId());
                                 editor.putString("address",shopkeeper.getAddress());
                                 editor.putString("email",shopkeeper.getEmail());
                                 editor.putString("contact",shopkeeper.getContactNumber());
@@ -341,6 +357,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         else{
+
             StoreService.ServiceApi storeApi = StoreService.getStoreApiInstance();
             Call<Shopkeeper> call = storeApi.getStoreProfile(currentUserId);
             call.enqueue(new Callback<Shopkeeper>() {
@@ -348,8 +365,9 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Shopkeeper> call, Response<Shopkeeper> response) {
                     if(response.code() == 200){
                         Shopkeeper shopkeeper = response.body();
+
                         SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("userId",shopkeeper.getShopKeeperId());
+                        editor.putString("shopKeeperId",shopkeeper.getShopKeeperId());
                         editor.putString("address",shopkeeper.getAddress());
                         editor.putString("email",shopkeeper.getEmail());
                         editor.putString("contact",shopkeeper.getContactNumber());
@@ -357,6 +375,7 @@ public class HomeActivity extends AppCompatActivity {
                         editor.putString("imageUrl",shopkeeper.getImageUrl());
                         editor.putString("name",shopkeeper.getShopName());
                         editor.commit();
+
                     }
                     else if(response.code() == 404){
                         sendUserToAddStoreActivity();
@@ -380,5 +399,27 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         checkUserProfile();
+    }
+    public void getSpeechInput(View view) {
+        binding.etSearchBar.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        if (intent.resolveActivity(getPackageManager())!=null) {
+            startActivityForResult(intent, 10);
+        }
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 10:
+                if (resultCode==RESULT_OK && data != null){
+                    ArrayList<String> al=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    binding.etSearchBar.setText(al.get(0));
+                }
+                break;
+        }
     }
 }
