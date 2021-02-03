@@ -34,14 +34,10 @@ public class ViewStoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ViewStoreBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
+
         initComponent();
+
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
-        binding.tvStoreNumber.setText(mPref.getString("contact","Contact number"));
-        binding.tvStoreEmail.setText(mPref.getString("email","Email"));
-        Picasso.get().load(mPref.getString("imageUrl","")).into(binding.cvstoreImage);
-        binding.tvStoreName.setText(mPref.getString("name","Name"));
-        binding.tvStoreAddress.setText(mPref.getString("address","address"));
         binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +69,21 @@ public class ViewStoreActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setData();
+    }
+
+    private void setData() {
+        final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
+        binding.tvStoreNumber.setText(mPref.getString("contact","Contact number"));
+        binding.tvStoreEmail.setText(mPref.getString("email","Email"));
+        Picasso.get().load(mPref.getString("imageUrl","")).into(binding.cvstoreImage);
+        binding.tvStoreName.setText(mPref.getString("name","Name"));
+        binding.tvStoreAddress.setText(mPref.getString("address","address"));
     }
     private void initComponent() {
         binding.toolbar.setTitle("My Store");

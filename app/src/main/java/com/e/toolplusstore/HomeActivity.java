@@ -304,6 +304,10 @@ public class HomeActivity extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
+                                        SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = mPref.edit();
+                                        editor.clear();
+                                        editor.apply();
                                         startActivity(new Intent(HomeActivity.this,LoginActivity.class));
                                         finish();;
                                     }
@@ -316,6 +320,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
                 ab.show();
+
             }
             return super.onOptionsItemSelected(item);
         }

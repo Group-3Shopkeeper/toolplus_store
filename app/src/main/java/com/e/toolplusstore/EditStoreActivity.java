@@ -112,7 +112,11 @@ public class EditStoreActivity extends AppCompatActivity {
                             binding.storeNumber.setError("Enter Number");
                             return;
                         }
-                        shopKeeperId = mPref.getString("userId","");
+                        if (number.length() <10) {
+                            binding.storeNumber.setError("Enter 10 digits of number");
+                            return;
+                        }
+                        shopKeeperId = mPref.getString("shopKeeperId","");
                         token = mPref.getString("token","");
                         if (imageUri != null) {
                             pd = new ProgressDialog(EditStoreActivity.this);
@@ -146,7 +150,7 @@ public class EditStoreActivity extends AppCompatActivity {
                                         Shopkeeper shopkeeper = response.body();
                                         SharedPreferences.Editor editor = mPref.edit();
 
-                                        editor.putString("userId",shopkeeper.getShopKeeperId());
+                                        editor.putString("shopKeeperId",shopkeeper.getShopKeeperId());
                                         editor.putString("address",shopkeeper.getAddress());
                                         editor.putString("email",shopkeeper.getEmail());
                                         editor.putString("contact",shopkeeper.getContactNumber());
@@ -180,10 +184,15 @@ public class EditStoreActivity extends AppCompatActivity {
                                     if (response.code() == 200) {
                                         progressDialog.dismiss();
                                         Shopkeeper shopkeeper1 = response.body();
+
                                         SharedPreferences.Editor editor = mPref.edit();
-                                        Gson gson = new Gson();
-                                        String json = gson.toJson(shopkeeper1);
-                                        editor.putString(currentUserId, json);
+                                        editor.putString("shopKeeperId",shopkeeper1.getShopKeeperId());
+                                        editor.putString("address",shopkeeper1.getAddress());
+                                        editor.putString("email",shopkeeper1.getEmail());
+                                        editor.putString("contact",shopkeeper1.getContactNumber());
+                                        editor.putString("token",shopkeeper1.getToken());
+                                        editor.putString("imageUrl",shopkeeper1.getImageUrl());
+                                        editor.putString("name",shopkeeper1.getShopName());
                                         editor.commit();
                                         Toast.makeText(EditStoreActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                                         finish();

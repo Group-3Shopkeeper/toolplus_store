@@ -22,11 +22,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SignInUser();
+
     }
     @Override
     protected void onStart() {
         super.onStart();
+        SignInUser();
         firebaseAuth.addAuthStateListener(listener);
     }
     @Override
