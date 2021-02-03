@@ -98,19 +98,22 @@ public class AddProductActivity extends AppCompatActivity implements Connectivit
         super.onCreate(savedInstanceState);
         binding = AddProductScreenBinding.inflate(LayoutInflater.from(AddProductActivity.this));
         setContentView(binding.getRoot());
+
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         chooseBrand();
+        checkInternetConnection();
+
         final SharedPreferences mPref = getSharedPreferences("MyStore", MODE_PRIVATE);
-        Toast.makeText(this, ""+categoryId, Toast.LENGTH_SHORT).show();
         Gson gson = new Gson();
         String json = mPref.getString(currentUserId, "");
-        arrayList = new ArrayList<>();
         final Shopkeeper shopkeeper = gson.fromJson(json, Shopkeeper.class);
+
+        arrayList = new ArrayList<>();
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
         }
         initComponent();
-        checkInternetConnection();
         binding.tvProductName.setVisibility(View.GONE);
         binding.tvProductQty.setVisibility(View.GONE);
         binding.productName.setHint("Product Name");
@@ -148,7 +151,6 @@ public class AddProductActivity extends AppCompatActivity implements Connectivit
                 in.setType("image/*");
                 in.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(in,"Select image"),113);
-                //binding.btnAddMore.setVisibility(View.GONE);
             }
         });
 

@@ -129,6 +129,7 @@ public class ProductDetailsActivty extends AppCompatActivity {
                         final ProgressDialog pd = new ProgressDialog(ProductDetailsActivty.this);
                         pd.setTitle("Deleting");
                         pd.setMessage("Please wait..");
+                        pd.show();
                         ProductService.ProductApi productApi = ProductService.getProductApiInstance();
                         Call<Product> call = productApi.deleteProduct(p.getProductId());
                         call.enqueue(new Callback<Product>() {

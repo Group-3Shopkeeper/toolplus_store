@@ -36,11 +36,9 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         binding = ActivityMainBinding.inflate(inflater);
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         View v = binding.getRoot();
         setContentView(v);
         connectivity = new InternetConnectivity();
-        checkInternetConnection();
     }
     /*@Override
     protected void onStart() {
@@ -76,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
          }
      }
     */
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkInternetConnection();
+    }
+
     private void checkInternetConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
         changeActivity(isConnected);
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
 
     private void changeActivity(boolean isConnected) {
         if(isConnected){
+            currentUser = FirebaseAuth.getInstance().getCurrentUser();
             setContentView(binding.getRoot());
             new Handler().postDelayed(new Runnable() {
                 @Override

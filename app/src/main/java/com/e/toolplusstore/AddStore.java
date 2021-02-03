@@ -106,6 +106,10 @@ public class AddStore extends AppCompatActivity {
                         binding.storeNumber.setError("Enter Number");
                         return;
                     }
+                    if (Integer.parseInt(number)<10) {
+                        binding.storeNumber.setError("Enter 10 digits of number");
+                        return;
+                    }
                     final ProgressDialog pd = new ProgressDialog(AddStore.this);
                     pd.setTitle("Saving");
                     pd.setMessage("Please wait");

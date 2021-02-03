@@ -67,8 +67,8 @@ public class EditProduct extends AppCompatActivity {
 
         binding.productName.setText(product.getName());
         binding.productBrand.setText(product.getBrand());
-        binding.productQuantity.setText(product.getQtyInStock()+".0");
-        binding.productPrice.setText("₹"+product.getPrice()+"");
+        binding.productQuantity.setText(""+product.getQtyInStock());
+        binding.productPrice.setText(product.getPrice()+"");
         binding.productDescription.setText(product.getDescription());
         binding.productDiscount.setText(product.getDiscount()+"%");
         Picasso.get().load(product.getImageUrl()).into(binding.iv1);
@@ -198,6 +198,8 @@ public class EditProduct extends AppCompatActivity {
 
                         String shopkeeperId = currentUserId;
                         String imageUrl = product.getImageUrl();
+                        String secondImageUri = product.getSecondImageUrl();
+                        String thirdImageuri = product.getThirdImageurl();
                         Product p = new Product();
                         p.setDescription(description);
                         p.setBrand(brand);
@@ -206,6 +208,8 @@ public class EditProduct extends AppCompatActivity {
                         p.setName(name);
                         p.setQtyInStock(quantity);
                         p.setImageUrl(imageUrl);
+                        p.setSecondImageUrl(secondImageUri);
+                        p.setThirdImageurl(thirdImageuri);
                         p.setPrice(price);
                         p.setProductId(product.getProductId());
                         p.setShopKeeperId(shopkeeperId);
