@@ -81,5 +81,15 @@ public class ProductService {
 
         @POST("product/update/withoutImage")
         public Call<Product> updateProductWithoutImage(@Body Product product);
+
+        @Multipart
+        @POST("product/updateImages")
+        public Call<Product> updateProductImage(@Part List<MultipartBody.Part> file,
+                                                @Part ("urlFirst") RequestBody urlFirst,
+                                                @Part("urlSecond") RequestBody urlSecond,
+                                                @Part("urlThird") RequestBody urlThird,
+                                                @Part("productId") RequestBody productId);
+
+
     }
 }

@@ -374,6 +374,7 @@ public class AddProductActivity extends AppCompatActivity implements Connectivit
 
     private void initComponent() {
         binding.toolbar.setTitle("Add Product");
+        binding.updateImage.setVisibility(View.GONE);
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
