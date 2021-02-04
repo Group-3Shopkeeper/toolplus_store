@@ -28,7 +28,6 @@
 
         <activity
             android:name=".ViewComments"
-            android:parentActivityName=".ProductDetailsActivty"
             android:screenOrientation="portrait"/>
         <activity android:name=".AddStore"
             android:screenOrientation="portrait"/>
