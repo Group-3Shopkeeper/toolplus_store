@@ -1,129 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="20dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="5dp"
-    android:elevation="40dp"
-    android:layout_margin="9dp"
-    android:padding="9dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<ScrollView android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:fillViewport="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp"
+        android:elevation="5dp"
+        app:cardBackgroundColor="#EBF0F3"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="8dp">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="3dp"
-            android:weightSum="1"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:text="Order Id :"
-                android:layout_marginLeft="10dp"
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="10dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="end"
+                    android:text="Order Id :  "
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/orderId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="dsie5sdg5g65f95s6sdf86sdg5sd954sdg56sdg8sd6sdg856sd5"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:id="@+id/orderId"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:orientation="horizontal"
-            android:weightSum="1">
+                android:layout_below="@id/ll1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:textColor="@color/black"
-                android:text="Order Date :"
-                />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.5"
+                    android:textAlignment="viewStart"
+                    android:background="@drawable/rounde_corner_spinner"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="0dp"
-                android:layout_marginTop="1dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:orientation="horizontal"
-            android:weightSum="1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:textAlignment="viewStart"
+                        android:text="Other Details"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:ignore="RtlCompat" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="1dp"
-                android:textColor="@color/black"
-                android:layout_weight="0.5"
-                android:text="Total Amount :" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Shipping Status"
+                        android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/amount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
+                    <TextView
+                        android:id="@+id/shippingStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="2dp"
+                        android:text="Placed"
+                        android:textColor="@color/green"
+                        android:textSize="16sp" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="3dp"
-            >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="2dp"
+                        android:text="Order Date"
+                        android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:layout_marginTop="1dp"
-                android:text="View More..."
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                android:id="@+id/more"
-                android:layout_marginBottom="10dp"
-                />
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="21/01/2021"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
 
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView>
-</androidx.cardview.widget.CardView>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="15dp">
+
+                        <TextView
+                            android:id="@+id/text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Items in Order : "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/itemsInOrder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/text"
+                            android:layout_weight="0.3"
+                            android:text="10"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rl9"
+                    android:layout_weight="0.5">
+                    <RelativeLayout
+                        android:id="@+id/rlAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounde_corner_spinner"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:paddingTop="25dp"
+                        android:paddingBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/textTotalAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Total Billing"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textTotalAmount"
+                            android:layout_centerHorizontal="true"
+                            android:text="300"
+                            android:drawableLeft="@drawable/indian_rupee2"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="27sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_below="@+id/rlAmount"
+                        android:text="@string/view_more_order_history"
+                        android:textColor="@color/colorCloudLight"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
