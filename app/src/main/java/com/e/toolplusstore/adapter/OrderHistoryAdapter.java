@@ -35,6 +35,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.binding.orderId.setText(o.getOrderId());
         holder.binding.date.setText(o.getDate());
         holder.binding.amount.setText(o.getTotalAmount()+"");
+        holder.binding.itemsInOrder.setText(o.getOrderItemList().size()+"");
 
 
 

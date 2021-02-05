@@ -106,7 +106,7 @@ public class AddStore extends AppCompatActivity {
                         binding.storeNumber.setError("Enter Number");
                         return;
                     }
-                    if (Integer.parseInt(number)<10) {
+                    if (number.length()<10 && number.length() > 10) {
                         binding.storeNumber.setError("Enter 10 digits of number");
                         return;
                     }
