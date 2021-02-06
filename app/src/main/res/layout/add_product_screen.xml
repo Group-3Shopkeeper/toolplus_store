@@ -45,42 +45,76 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="40dp"
                 android:id="@+id/cv1"
-                app:cardElevation="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorPrimary"
                 >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:elevation="6dp"
+                        android:gravity="center"
+                        android:text="Front View"
+                        android:textColor="@color/colorPrimaryDark"
+                        />
                 <ImageView
                     android:id="@+id/iv1"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/add_photos"
                     />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv2"
                 android:layout_width="0dp"
                 android:layout_weight="1.0"
                 android:layout_height="fill_parent"
                 app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
                 android:layout_toRightOf="@+id/cv1"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorPrimary"
                 >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="1"
+                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:elevation="6dp"
+                    android:gravity="center"
+                    android:text="Back View"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
                 <ImageView
                     android:id="@+id/iv2"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/add_photos"
                     />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv3"
@@ -89,37 +123,38 @@
                 android:layout_height="fill_parent"
                 app:cardCornerRadius="15dp"
                 android:layout_toRightOf="@+id/cv2"
-                app:cardElevation="10dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorPrimary"
                 >
-                <ImageView
-                    android:id="@+id/iv3"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/add_photos"
+                    android:layout_height="match_parent"
+                    android:weightSum="1"
+                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:elevation="6dp"
+                    android:gravity="center"
+                    android:text="Side View"
+                    android:textColor="@color/colorPrimaryDark"
                     />
+                <ImageView
+                        android:id="@+id/iv3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.8"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/add_photos" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/updateImage"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="120dp"
-            android:layout_marginRight="120dp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:paddingTop="5dp"
-            android:paddingBottom="3dp"
-            android:background="@drawable/search_bar_decorator"
-            android:text="Update Image"
-            android:layout_marginBottom="5dp"
-            android:elevation="10dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
         <Button
