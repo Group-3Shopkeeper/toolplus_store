@@ -82,12 +82,12 @@ public class EditProduct extends AppCompatActivity {
         Picasso.get().load(product.getImageUrl()).into(binding.iv1);
         Picasso.get().load(product.getSecondImageUrl()).into(binding.iv2);
         Picasso.get().load(product.getThirdImageurl()).into(binding.iv3);
-        binding.updateImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateImages();
-            }
-        });
+        //binding.updateImage.setOnClickListener(new View.OnClickListener() {
+           // @Override
+            //public void onClick(View v) {
+              //  updateImages();
+            //}
+        //});
         binding.btnAddProduct.setText("Update Product");
         binding.productCategory.setText(categoryName);
         categoryId = product.getCategoryId();
