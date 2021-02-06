@@ -25,6 +25,7 @@ import com.e.toolplusstore.beans.Category;
 import com.e.toolplusstore.beans.Product;
 import com.e.toolplusstore.beans.Shopkeeper;
 import com.e.toolplusstore.databinding.AddProductScreenBinding;
+import com.e.toolplusstore.databinding.UpdateProductScreenBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -42,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditProduct extends AppCompatActivity {
-    AddProductScreenBinding binding;
+    UpdateProductScreenBinding binding;
     String currentUserId,categoryId=null,title;
     String categoryName,cN;
     String firstImageUrl,secondImageUrl,thirdImageUrl;
@@ -57,7 +58,7 @@ public class EditProduct extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = AddProductScreenBinding.inflate(LayoutInflater.from(EditProduct.this));
+        binding = UpdateProductScreenBinding.inflate(LayoutInflater.from(EditProduct.this));
         setContentView(binding.getRoot());
         initComponent();
         binding.productName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -254,6 +255,7 @@ public class EditProduct extends AppCompatActivity {
                                     Log.e("=======================", "onResponse: "+p );
                                     Toast.makeText(EditProduct.this, "Updated", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(EditProduct.this, HomeActivity.class));
+                                    finish();
                                 } else if (response.code() == 404)
                                     Toast.makeText(EditProduct.this, "404", Toast.LENGTH_SHORT).show();
                                 else if (response.code() == 500) {
