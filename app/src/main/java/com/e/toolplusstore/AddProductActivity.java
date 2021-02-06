@@ -114,18 +114,6 @@ public class AddProductActivity extends AppCompatActivity implements Connectivit
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
         }
         initComponent();
-        binding.tvProductName.setVisibility(View.GONE);
-        binding.tvProductQty.setVisibility(View.GONE);
-        binding.productName.setHint("Product Name");
-        binding.productBrand.setHint("Brand");
-        binding.productQuantity.setHint("Quantity");
-        binding.productDiscount.setHint("Product Discount (Optional)");
-        binding.tvProductDiscount.setVisibility(View.GONE);
-        binding.productDescription.setHint("Product Description (Optional)");
-        binding.tvProductDescription.setVisibility(View.GONE);
-        binding.tvProductBrand.setVisibility(View.GONE);
-        binding.productPrice.setHint("Price");
-        binding.tvProductPrice.setVisibility(View.GONE);
         binding.iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
