@@ -46,7 +46,7 @@ public class ViewStoreActivity extends AppCompatActivity {
             }
         });
         OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
-        Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
+        Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList1(currentUserId);
         call.enqueue(new Callback<ArrayList<PurchaseOrder>>() {
             @Override
             public void onResponse(Call<ArrayList<PurchaseOrder>> call, Response<ArrayList<PurchaseOrder>> response) {
