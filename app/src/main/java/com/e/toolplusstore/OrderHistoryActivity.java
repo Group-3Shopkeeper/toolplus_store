@@ -2,7 +2,6 @@ package com.e.toolplusstore;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +11,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.e.toolplusstore.adapter.HistoryAdapter;
 import com.e.toolplusstore.adapter.OrderHistoryAdapter;
 import com.e.toolplusstore.apis.OrderService;
+import com.e.toolplusstore.beans.History;
+import com.e.toolplusstore.beans.OrderItem;
 import com.e.toolplusstore.beans.OrderItemList;
 import com.e.toolplusstore.beans.PurchaseOrder;
 import com.e.toolplusstore.databinding.ActivityOrderHistoryBinding;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.github.ybq.android.spinkit.style.Wave;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +31,7 @@ import retrofit2.Response;
 
 public class OrderHistoryActivity extends AppCompatActivity {
     ActivityOrderHistoryBinding binding;
-    OrderHistoryAdapter adapter;
+    HistoryAdapter adapter;
     String currentUserId;
 
     @Override
@@ -45,33 +44,36 @@ public class OrderHistoryActivity extends AppCompatActivity {
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
         currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         OrderService.OrderApi orderApi = OrderService.getOrderApiInstance();
-        Call<ArrayList<PurchaseOrder>> call = orderApi.getOrderList(currentUserId);
+        Call<ArrayList<History>> call = orderApi.getOrderList(currentUserId);
 
 
-        call.enqueue(new Callback<ArrayList<PurchaseOrder>>() {
+        call.enqueue(new Callback<ArrayList<History>>() {
             @Override
-            public void onResponse(Call<ArrayList<PurchaseOrder>> call, Response<ArrayList<PurchaseOrder>> response) {
+            public void onResponse(Call<ArrayList<History>> call, Response<ArrayList<History>> response) {
                 Log.e("Response","=====>"+response.code());
                 if (response.body().isEmpty()){
                     binding.spinKit.setVisibility(View.INVISIBLE);
                     binding.notFound.setVisibility(View.VISIBLE);
                 }
                 if(response.code() == 200) {
-                    final ArrayList<PurchaseOrder> orderList = response.body();
+                    final ArrayList<History> orderList = response.body();
+
                     if(orderList.size()!=0) {
-                        Log.e("====", "" + orderList);
-                        adapter = new OrderHistoryAdapter(OrderHistoryActivity.this, orderList);
+                        Log.e("====", "order" + orderList);
+                        adapter = new HistoryAdapter(OrderHistoryActivity.this, orderList);
                         binding.rvOrderHistory.setAdapter(adapter);
                         binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(OrderHistoryActivity.this));
                         binding.spinKit.setVisibility(View.INVISIBLE);
-                        adapter.setOnItemClickListener(new OrderHistoryAdapter.OnRecyclerViewClick() {
+                        adapter.setOnItemClickListener(new HistoryAdapter.OnRecyclerViewClick() {
                             @Override
-                            public void onItemClick(PurchaseOrder o, int position) {
-                                ArrayList<OrderItemList> itemLists = o.getOrderItemList();
+                            public void onItemClick(History o, int position) {
+                                Log.e("history ","============>"+o.getOrderId());
+                                ArrayList<OrderItem> itemLists = o.getOrderItem();
                                 Log.e("sljflsdjfls ","======>"+itemLists.size());
                                 Intent intent2 = new Intent(OrderHistoryActivity.this,OrderItemActivity.class);
                                 intent2.putExtra("orderItem", itemLists);
                                 startActivity(intent2);
+
                             }
                         });
                     }
@@ -86,7 +88,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
 
             @Override
-            public void onFailure(Call<ArrayList<PurchaseOrder>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<History>> call, Throwable t) {
                 Toast.makeText(OrderHistoryActivity.this, ""+t, Toast.LENGTH_SHORT).show();
             }
         });

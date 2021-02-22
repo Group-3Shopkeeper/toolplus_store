@@ -1,5 +1,6 @@
 package com.e.toolplusstore.apis;
 
+import com.e.toolplusstore.beans.History;
 import com.e.toolplusstore.beans.PurchaseOrder;
 
 import java.util.ArrayList;
@@ -33,10 +34,13 @@ public class OrderService {
         return  orderApi;
     }
     public  interface OrderApi{
-        @GET("order/orderHistory/{shopKeeperId}")
-        public Call<ArrayList<PurchaseOrder>> getOrderList(@Path("shopKeeperId") String shopKeeperId);
+        @GET("order/historyShopkeeper/{currentUserId}")
+        public Call<ArrayList<PurchaseOrder>> getOrderList1(@Path("currentUserId") String currentUserId);
 
-        @GET("order/newOrder/{shopKeeperId}")
+        @GET("order/historyShopkeeper/{currentUserId}")
+        public Call<ArrayList<History>> getOrderList(@Path("currentUserId") String currentUserId);
+
+        @GET("order/orderHistory/{shopKeeperId}")
         public Call<ArrayList<PurchaseOrder>> getNewOreder(@Path("shopKeeperId") String shopKeeperId);
 
     }

@@ -1,12 +1,12 @@
 package com.e.toolplusstore.beans;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PurchaseOrder implements Serializable {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class History implements Serializable {
 
     @SerializedName("orderId")
     @Expose
@@ -20,9 +20,9 @@ public class PurchaseOrder implements Serializable {
     @SerializedName("shippingStatus")
     @Expose
     private String shippingStatus;
-    @SerializedName("orderItemList")
+    @SerializedName("orderItem")
     @Expose
-    private ArrayList<OrderItemList> orderItemList = null;
+    private ArrayList<OrderItem> orderItem = null;
 
     public String getShippingStatus() {
         return shippingStatus;
@@ -32,22 +32,22 @@ public class PurchaseOrder implements Serializable {
         this.shippingStatus = shippingStatus;
     }
 
-    public PurchaseOrder(String orderId, String date, Long totalAmount, String shippingStatus, ArrayList<OrderItemList> orderItemList) {
+    public History(String orderId, String date, Long totalAmount, String shippingStatus, ArrayList<OrderItem> orderItem) {
         this.orderId = orderId;
         this.date = date;
         this.totalAmount = totalAmount;
         this.shippingStatus = shippingStatus;
-        this.orderItemList = orderItemList;
+        this.orderItem = orderItem;
     }
 
-    public PurchaseOrder(String orderId, String date, Long totalAmount, ArrayList<OrderItemList> orderItemList) {
+    public History(String orderId, String date, Long totalAmount, ArrayList<OrderItem> orderItem) {
         this.orderId = orderId;
         this.date = date;
         this.totalAmount = totalAmount;
-        this.orderItemList = orderItemList;
+        this.orderItem = orderItem;
     }
 
-    public PurchaseOrder() {
+    public History() {
     }
 
     public String getOrderId() {
@@ -74,12 +74,12 @@ public class PurchaseOrder implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public ArrayList<OrderItemList> getOrderItemList() {
-        return orderItemList;
+    public ArrayList<OrderItem> getOrderItem() {
+        return orderItem;
     }
 
-    public void setOrderItemList(ArrayList<OrderItemList> orderItemList) {
-        this.orderItemList = orderItemList;
+    public void setOrderItem(ArrayList<OrderItem> orderItem) {
+        this.orderItem = orderItem;
     }
 }
 
