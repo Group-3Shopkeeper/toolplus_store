@@ -66,7 +66,7 @@ public class NewOrderActivity extends AppCompatActivity {
                         @Override
                         public void onItemClick(PurchaseOrder o, int position) {
                             List<OrderItemList> itemList = o.getOrderItemList();
-                            Intent in = new Intent(NewOrderActivity.this, OrderItemActivity.class);
+                            Intent in = new Intent(NewOrderActivity.this, NewOrderItemActivity.class);
                             in.putExtra("orderItem", (Serializable) itemList);
                             startActivity(in);
                         }
