@@ -35,6 +35,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ProductDetailsActivty"
             android:screenOrientation="portrait"/>
+        <activity android:name=".NewOrderItemActivity"/>
         <activity android:name=".LoginActivity"
             android:screenOrientation="portrait"/>
         <activity

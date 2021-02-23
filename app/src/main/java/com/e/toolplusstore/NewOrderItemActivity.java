@@ -10,15 +10,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.e.toolplusstore.adapter.HistoryOrderItemAdapter;
+import com.e.toolplusstore.adapter.OrderItemAdapter;
 import com.e.toolplusstore.beans.OrderItem;
+import com.e.toolplusstore.beans.OrderItemList;
 import com.e.toolplusstore.databinding.ActivityOrderItemBinding;
 
 import java.util.ArrayList;
 
-public class OrderItemActivity extends AppCompatActivity {
+public class NewOrderItemActivity extends AppCompatActivity {
     ActivityOrderItemBinding binding;
-    HistoryOrderItemAdapter adapter;
-
+    OrderItemAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,10 +28,8 @@ public class OrderItemActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initComponent();
         Intent in = getIntent();
-        ArrayList<OrderItem> list = (ArrayList<OrderItem>) in.getSerializableExtra("orderItem");
-        Log.e("Size", "=====================>cLLWSSSS.....");
-        Log.e("itemlist", "=============>>>>>" + list.size());
-        adapter = new HistoryOrderItemAdapter(this, list);
+        ArrayList<OrderItemList> list = (ArrayList<OrderItemList>) in.getSerializableExtra("orderItem");
+        adapter = new OrderItemAdapter(this, list);
         binding.rv.setAdapter(adapter);
         binding.rv.setLayoutManager(new LinearLayoutManager(this));
     }

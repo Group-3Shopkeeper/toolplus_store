@@ -56,8 +56,6 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
                     int position=getAdapterPosition();
                     if (position!=RecyclerView.NO_POSITION && listener!=null ){
                        PurchaseOrder o= orderList.get(position);
-                       Log.e("orderitem","=============>"+o.getOrderItemList());
-                        Log.e("==============", "onClick: "+orderList );
                         listener.onItemClick(o,position);
                     }
                 }
